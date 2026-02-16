@@ -1,11 +1,7 @@
 import streamlit as st
 from datamanager import SupaBaseDataManager
 
-#st.title("Product matcher")
-
 dm = SupaBaseDataManager()
-
-#st.write("Hello Streamlit 🚀")
 
 st.title("Ár összehasonlító")
 
@@ -19,4 +15,5 @@ if keyword:
 
     st.subheader("Beszállítók")
     st.dataframe(raw_df)
+
 
