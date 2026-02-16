@@ -99,7 +99,7 @@ class SupaBaseDataManager:
           print(f"Error writing data to Supabase table '{table_name}': {e}")
           return None
 
-  def read_products_from_db(self, table_name="raw_products", query: dict = None) -> list[Product]:
+  def read_products_from_db(self, table_name="raw_products", query: dict = None):
       """Reads products from the specified Supabase table and returns a list of Product instances."""
       data = self.read_data(table_name, query)
       if not data:
@@ -322,4 +322,5 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
 
