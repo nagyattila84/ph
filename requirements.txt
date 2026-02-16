@@ -3,4 +3,3 @@ pandas
 supabase
 python-dotenv
 rapidfuzz
-difflib
