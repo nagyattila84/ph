@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from supabase import create_client, Client
-from scraper import Webshop
+from scraper import *
 
 
 # @title
@@ -323,6 +323,7 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
 
 
 
