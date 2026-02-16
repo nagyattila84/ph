@@ -8,8 +8,6 @@ import streamlit as st
 # @title
 class SupaBaseDataManager:
   def __init__(self):
-      #SUPABASE_URL='https://rteebdpadwkwxvbvnmje.supabase.co'
-      #SUPABASE_KEY='sb_publishable_6VpTeoncxJQtnmzUds32qw_CUITQ6_2'
       SUPABASE_URL=st.secrets["SUPABASE_URL"]
       SUPABASE_KEY=st.secrets["SUPABASE_KEY"]
       try:
@@ -326,6 +324,7 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
 
 
 
