@@ -8,8 +8,8 @@ import streamlit as st
 # @title
 class SupaBaseDataManager:
   def __init__(self):
-      SUPABASE_URL=st.secrets["SUPABASE_URL"]
-      SUPABASE_KEY=st.secrets["SUPABASE_KEY"]
+      SUPABASE_URL=st.secrets["supabase"]["url"]
+      SUPABASE_KEY=st.secrets["supabase"]["key"]
       try:
           self.client = create_client(SUPABASE_URL, SUPABASE_KEY)
           print("Successfully connected to Supabase.")
@@ -324,6 +324,7 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
 
 
 
