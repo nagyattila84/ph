@@ -1,5 +1,5 @@
-
 import os
+import pandas as pd
 from supabase import create_client, Client
 
 
@@ -322,3 +322,4 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
