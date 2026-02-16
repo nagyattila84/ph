@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from supabase import create_client, Client
-import scraper from Webshop
+from scraper import Webshop
 
 
 # @title
