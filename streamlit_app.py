@@ -57,8 +57,6 @@ def page_visual():
     st.title("Ár összehasonlító")   
  
     own_df, raw_df = dm.get_products_by_keyword("hunter")
-    st.write("Columns:", own_df.columns.tolist())
-    st.write(own_df.head())
     fig = px.strip(
         own_df,
         x="price",
@@ -113,6 +111,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
