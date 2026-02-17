@@ -160,8 +160,7 @@ class SupaBaseDataManager:
 
     print(f"Saved {len(match_rows)} matches.")
 
-  def load_clusters_by_keyword(self, keyword):
-
+  def get_clusters(self, keyword):
     kw = keyword.lower()
 
     response = (
@@ -229,14 +228,4 @@ class SupaBaseDataManager:
         .execute()
         .data
     )
-
     return pd.DataFrame(own), pd.DataFrame(raw)
-
-
-
-
-
-
-
-
-
