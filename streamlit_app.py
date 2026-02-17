@@ -79,6 +79,7 @@ def page_visual():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_visual2():
+    dm = SupaBaseDataManager()
     fig = go.Figure()
     st.title("Ár összehasonlító")   
  
@@ -139,6 +140,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
