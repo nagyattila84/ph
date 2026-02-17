@@ -2,6 +2,7 @@ import streamlit as st
 from werkzeug.security import check_password_hash
 from datamanager import SupaBaseDataManager
 import plotly.express as px
+import plotly.graph_objects as go
 
 users = st.secrets["users"]
 
@@ -77,6 +78,33 @@ def page_visual():
     
     st.plotly_chart(fig, use_container_width=True)
 
+def page_visual2():
+    fig = go.Figure()
+    st.title("Ár összehasonlító")   
+ 
+    own_df, raw_df = dm.get_products_by_keyword("hunter")
+    
+    for product in raw_df["cluste_id"].unique():
+        sub = df[df["cluste_id"] == product]
+    
+        fig.add_trace(go.Scatter(
+            x=[sub.price.min(), sub.price.max()],
+            y=[product, product],
+            mode="lines",
+            line=dict(width=2),
+            showlegend=False
+        ))
+    
+        fig.add_trace(go.Scatter(
+            x=sub.price,
+            y=[product]*len(sub),
+            mode="markers",
+            text=sub.webshop_id,
+            hovertemplate="%{text}<br>%{x} Ft"
+        ))
+    
+    st.plotly_chart(fig, use_container_width=True)
+
 def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
@@ -107,10 +135,11 @@ else:
         page_search()
 
     elif page == "Vizuál":
-        page_visual()
+        page_visual2()
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
