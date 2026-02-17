@@ -45,6 +45,20 @@ class SupaBaseDataManager:
           print(f"✅ Uploaded {len(records)} products.")
           return result
 
+  def count_rows(self, table_name: str, filters: dict = None):
+    if not self.client:
+        print("Supabase client not initialized.")
+        return None
+
+    query = self.client.table(table_name).select("*", count="exact")
+
+    if filters:
+        query = query.match(filters)
+
+    response = query.execute()
+
+    return response.count
+
   #csak 1000 rekordig működik
   def read_data(self, table_name: str, query: dict = None):
       #Reads data from a specified Supabase table.
