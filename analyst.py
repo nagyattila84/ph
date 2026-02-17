@@ -12,6 +12,6 @@ class PriceAnalyst:
         links = self.dm.read_data("product_cluster_links")
         shops = self.dm.read_data("webshops")
         
-        df = clusters.join(links, how="outer", lsuffix="_cluster", rsuffix="_link")
+        df = clusters.join(links, how="outer", lsuffix="_suffcluster", rsuffix="_sufflink")
     
         return df
