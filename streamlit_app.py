@@ -59,13 +59,15 @@ def page_visual():
 
     if keyword:
         own_df, raw_df = dm.get_products_by_keyword(keyword)
+        st.write("Columns:", own_df.columns.tolist())
+        st.write(own_df.head())
         fig = px.strip(
             own_df,
             x="price",
             y="sku",
-            color="shop",
+            color="webshop_id",
             orientation="h",
-            hover_data=["shop", "price"]
+            hover_data=["name", "price4"]
         )
         
         fig.update_traces(jitter=0.3, marker=dict(size=10))
@@ -113,6 +115,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
