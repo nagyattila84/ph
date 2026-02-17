@@ -20,13 +20,13 @@ class PriceAnalyst:
         df = own.merge(
             links,
             left_on="id",
-            right_on="own_product_id",
+            right_on="product_id",
             how="left"
         )
     
         df = df.merge(
             raw,
-            left_on="raw_product_id",
+            left_on="product_id",
             right_on="id",
             how="left",
             suffixes=("_own", "_raw")
