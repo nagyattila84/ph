@@ -5,7 +5,6 @@ from datamanager import SupaBaseDataManager
 
 dm = SupaBaseDataManager()
 
-
 # --- Secrets-ből olvasás ---
 users = st.secrets["users"]
 
@@ -26,13 +25,14 @@ if not st.session_state["logged_in"]:
     
         if username in users:
             try:
-                ok = check_password_hash(users[username], password)
+                ok = check_password_hash(users[username], password)            
             except Exception as e:
                 st.write(e)
     
         if ok:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
+            st.write("Sikeres belépés!")
             st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
@@ -51,6 +51,7 @@ if not st.session_state["logged_in"]:
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
 
 
 
