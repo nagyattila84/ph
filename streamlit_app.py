@@ -54,13 +54,15 @@ def page_search():
         st.dataframe(raw_df)
 
 def page_visual():
+    dm = SupaBaseDataManager()
+    own_df, raw_df = dm.get_products_by_keyword(keyword)
     fig = px.strip(
-        df,
+        own_df,
         x="price",
-        y="product",
+        y="name",
         color="shop",
         orientation="h",
-        hover_data=["shop", "price"],
+        hover_data=["webshop_id", "price4"],
     )
     
     fig.update_traces(jitter=0.3, marker=dict(size=10))
@@ -78,7 +80,9 @@ def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
     
-# ================= MAIN APP =================
+#============================================
+#===============   MAIN APP   ===============
+#============================================
 if not st.session_state.logged_in:
     login_page()
 
@@ -106,6 +110,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
