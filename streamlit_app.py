@@ -43,7 +43,7 @@ def page_dashboard():
 
 def page_search():
     dm = SupaBaseDataManager()
-    pa = PriceAnalyist()
+    pa = PriceAnalyst()
     st.title("Ár összehasonlító")    
     keyword = st.text_input("Keresőszó")
     
@@ -203,6 +203,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
