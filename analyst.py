@@ -9,10 +9,8 @@ class PriceAnalyst:
     def get_cluster_price_view(self, keyword=None):
         clusters = self.dm.get_clusters(keyword)
         own, raw = self.dm.get_products_by_keyword(keyword)
-        links = self.dm.read_data("product_cluster_links")
-        print("links type:", type(links))
-        print("links:", links)
-        shops = self.dm.read_data("webshops")
+        links = pd.DataFrame(self.dm.read_data("product_cluster_links"))
+        shops = pd.DataFrame(self.dm.read_data("webshops"))
 
         df = pd.concat([
             own.assign(source="own"),
