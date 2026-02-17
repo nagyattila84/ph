@@ -16,22 +16,32 @@ class PriceAnalyst:
             own.assign(source="own"),
             raw.assign(source="supplier")
         ])
-
-        df = df.merge(links, on="product_id", how="left")
-        df = df.merge(clusters[["id", "name"]], left_on="cluster_id", right_on="id", how="left")
-        df = df.merge(shops, on="webshop_id", how="left")
-
-        df.rename(columns={
-            "name": "cluster_name",
-            "price": "price",
-            "shop_name": "shop"
-        }, inplace=True)
-
-        return df[[
-            "cluster_id",
-            "cluster_name",
-            "product_id",
-            "price",
-            "shop",
-            "source"
-        ]]
+        
+        df = own.merge(
+            links,
+            left_on="id",
+            right_on="own_product_id",
+            how="left"
+        )
+    
+        df = df.merge(
+            raw,
+            left_on="raw_product_id",
+            right_on="id",
+            how="left",
+            suffixes=("_own", "_raw")
+        )
+    
+        df = df.merge(
+            clusters[["id", "name"]],
+            left_on="cluster_id",
+            right_on="id",
+            how="left"
+        )
+    
+        df.rename(columns={"name": "cluster_name"}, inplace=True)
+    
+        if keyword:
+            df = df[df["cluster_name"].str.contains(keyword, case=False, na=False)]
+    
+        return df
