@@ -5,35 +5,22 @@ from datamanager import SupaBaseDataManager
 
 dm = SupaBaseDataManager()
 
+if st.button("Belépés"):
+    ok = False
 
-pw = generate_password_hash("METRA47a")
-st.title(pw)
+    if username in users:
+        try:
+            ok = check_password_hash(users[username], password)
+        except Exception as e:
+            st.write(e)
 
-# --- Secrets-ből olvasás ---
-users = st.secrets["users"]
+    if ok:
+        st.session_state["logged_in"] = True
+        st.session_state["username"] = username
+        st.rerun()
+    else:
+        st.error("Hibás felhasználónév vagy jelszó")
 
-# --- Session state a bejelentkezéshez ---
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
-if "username" not in st.session_state:
-    st.session_state["username"] = ""
-
-# --- Bejelentkezési űrlap ---
-if not st.session_state["logged_in"]:
-    st.title("Bejelentkezés")
-    username = st.text_input("Felhasználónév")
-    password = st.text_input("Jelszó", type="password")
-
-    if st.button("Belépés"):
-        if username in users and check_password_hash(users[username], password):
-            st.success(f"Sikeres belépés: {username}")
-            st.session_state["logged_in"] = True
-            st.session_state["username"] = username
-        else:
-            st.error("Hibás felhasználónév vagy jelszó")
-else:
-    st.sidebar.write(f"Bejelentkezve: {st.session_state['username']}")
-    st.sidebar.button("Kijelentkezés", on_click=lambda: st.session_state.update({"logged_in": False, "username": ""}))
     
     # --- Itt lehet adatbázis lekérdezést csinálni ---
     st.title("Ár összehasonlító")
@@ -48,6 +35,7 @@ else:
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
 
 
 
