@@ -5,21 +5,37 @@ from datamanager import SupaBaseDataManager
 
 dm = SupaBaseDataManager()
 
-if st.button("Belépés"):
-    ok = False
 
-    if username in users:
-        try:
-            ok = check_password_hash(users[username], password)
-        except Exception as e:
-            st.write(e)
+# --- Secrets-ből olvasás ---
+users = st.secrets["users"]
 
-    if ok:
-        st.session_state["logged_in"] = True
-        st.session_state["username"] = username
-        st.rerun()
-    else:
-        st.error("Hibás felhasználónév vagy jelszó")
+# --- Session state a bejelentkezéshez ---
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+if "username" not in st.session_state:
+    st.session_state["username"] = ""
+
+# --- Bejelentkezési űrlap ---
+if not st.session_state["logged_in"]:
+    st.title("Bejelentkezés")
+    username = st.text_input("Felhasználónév")
+    password = st.text_input("Jelszó", type="password")
+
+    if st.button("Belépés"):
+        ok = False
+    
+        if username in users:
+            try:
+                ok = check_password_hash(users[username], password)
+            except Exception as e:
+                st.write(e)
+    
+        if ok:
+            st.session_state["logged_in"] = True
+            st.session_state["username"] = username
+            st.rerun()
+        else:
+            st.error("Hibás felhasználónév vagy jelszó")
 
     
     # --- Itt lehet adatbázis lekérdezést csinálni ---
@@ -35,6 +51,7 @@ if st.button("Belépés"):
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
 
 
 
