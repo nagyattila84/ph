@@ -70,6 +70,45 @@ def page_visual3():
         df["max_price"] - df["min_price"]
     ).fillna(0)
 
+    fig = go.Figure()
+
+    for product in df["id"].unique():
+        sub = df[df["id"] == product]
+    
+        # Számegyenes (min → max)
+        fig.add_trace(go.Scatter(
+            x=[0, 1],
+            y=[product, product],
+            mode="lines",
+            line=dict(width=2),
+            showlegend=False
+        ))
+    
+        # Pontok (webshop árak)
+        fig.add_trace(go.Scatter(
+            x=sub["norm"],
+            y=[product]*len(sub),
+            mode="markers",
+            marker=dict(size=10),
+            text=sub["webshop_id"],
+            customdata=sub["price"],
+            hovertemplate="%{text}<br>%{customdata} Ft",
+            showlegend=False
+        ))
+    
+    fig.update_layout(
+        height=600,
+        xaxis=dict(
+            range=[-0.05, 1.05],
+            tickvals=[0, 1],
+            ticktext=["Min", "Max"]
+        ),
+        yaxis_title="",
+        xaxis_title="Ár pozíció terméken belül"
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+
 def page_visual():
     dm = SupaBaseDataManager()
     st.title("Ár összehasonlító")   
@@ -157,6 +196,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
