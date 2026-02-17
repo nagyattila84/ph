@@ -1,6 +1,7 @@
 import streamlit as st
 from werkzeug.security import check_password_hash
 from datamanager import SupaBaseDataManager
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -52,6 +53,22 @@ def page_search():
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
+def page_visual3():
+    dm = SupaBaseDataManager()
+    own_df, raw_df = dm.get_products_by_keyword("hunter")
+    df = own_df.copy()
+    
+    st.title("Ár összehasonlító") 
+
+    # Min / Max termékenként
+    df["min_price"] = df.groupby("cluster_id")["price"].transform("min")
+    df["max_price"] = df.groupby("cluster_id")["price"].transform("max")
+    
+    # Normalizált pozíció (0–1)
+    df["norm"] = (df["price"] - df["min_price"]) / (
+        df["max_price"] - df["min_price"]
+    ).fillna(0)
 
 def page_visual():
     dm = SupaBaseDataManager()
@@ -140,6 +157,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
