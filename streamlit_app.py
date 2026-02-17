@@ -153,10 +153,11 @@ else:
         page_search()
 
     elif page == "Vizuál":
-        page_visual2()
+        page_visual3()
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
