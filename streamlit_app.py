@@ -1,6 +1,7 @@
 import streamlit as st
 from werkzeug.security import check_password_hash
 from datamanager import SupaBaseDataManager
+import plotly.express as px
 
 users = st.secrets["users"]
 
@@ -52,6 +53,27 @@ def page_search():
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
 
+def page_visual():
+    fig = px.strip(
+        df,
+        x="price",
+        y="product",
+        color="shop",
+        orientation="h",
+        hover_data=["shop", "price"],
+    )
+    
+    fig.update_traces(jitter=0.3, marker=dict(size=10))
+    
+    fig.update_layout(
+        height=600,
+        showlegend=True,
+        xaxis_title="Ár",
+        yaxis_title=""
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+
 def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
@@ -70,7 +92,7 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Keresés", "Beállítások"]
+        ["Dashboard", "Keresés", "Vizuál", "Beállítások"]
     )
 
     if page == "Dashboard":
@@ -79,8 +101,12 @@ else:
     elif page == "Keresés":
         page_search()
 
+    elif page == "Vizuál":
+        page_visual()
+
     elif page == "Beállítások":
         page_settings()
+
 
 
 
