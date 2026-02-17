@@ -5,5 +5,4 @@ supabase
 python-dotenv
 rapidfuzz
 werkzeug
-
-
+plotly
