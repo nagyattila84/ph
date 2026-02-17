@@ -2,6 +2,7 @@ import streamlit as st
 from werkzeug.security import check_password_hash
 from datamanager import SupaBaseDataManager
 import pandas as pd
+from analyst import PriceAnalyst
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -42,17 +43,16 @@ def page_dashboard():
 
 def page_search():
     dm = SupaBaseDataManager()
+    pa = PriceAnalyist()
     st.title("Ár összehasonlító")    
     keyword = st.text_input("Keresőszó")
     
     if keyword:
-        own_df, raw_df = dm.get_products_by_keyword(keyword)
+        #own_df, raw_df = dm.get_products_by_keyword(keyword)
+        df = pa.get_cluster_price_view(keyword)
     
-        st.subheader("Saját termékek")
-        st.dataframe(own_df)
-    
-        st.subheader("Beszállítók")
-        st.dataframe(raw_df)
+        st.subheader("Termékek")
+        st.dataframe(df)
 
 def page_visual3():
     st.title("Ár összehasonlító") 
@@ -203,6 +203,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
