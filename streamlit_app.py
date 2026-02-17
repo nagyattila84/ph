@@ -40,8 +40,7 @@ def page_dashboard():
 
 def page_search():
     dm = SupaBaseDataManager()
-    st.title("Ár összehasonlító")
-    
+    st.title("Ár összehasonlító")    
     keyword = st.text_input("Keresőszó")
     
     if keyword:
@@ -55,26 +54,30 @@ def page_search():
 
 def page_visual():
     dm = SupaBaseDataManager()
-    own_df, raw_df = dm.get_products_by_keyword(keyword)
-    fig = px.strip(
-        own_df,
-        x="price",
-        y="name",
-        color="shop",
-        orientation="h",
-        hover_data=["webshop_id", "price4"],
-    )
-    
-    fig.update_traces(jitter=0.3, marker=dict(size=10))
-    
-    fig.update_layout(
-        height=600,
-        showlegend=True,
-        xaxis_title="Ár",
-        yaxis_title=""
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
+    st.title("Ár összehasonlító")    
+    keyword = st.text_input("Keresőszó")
+
+    if keyword:
+        own_df, raw_df = dm.get_products_by_keyword(keyword)
+        fig = px.strip(
+            own_df,
+            x="price",
+            y="name",
+            color="shop",
+            orientation="h",
+            hover_data=["webshop_id", "price4"],
+        )
+        
+        fig.update_traces(jitter=0.3, marker=dict(size=10))
+        
+        fig.update_layout(
+            height=600,
+            showlegend=True,
+            xaxis_title="Ár",
+            yaxis_title=""
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
 
 def page_settings():
     st.header("⚙️ Beállítások")
@@ -110,6 +113,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
