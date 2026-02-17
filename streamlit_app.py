@@ -62,10 +62,10 @@ def page_visual():
         fig = px.strip(
             own_df,
             x="price",
-            y="name",
+            y="sku",
             color="shop",
             orientation="h",
-            hover_data=["webshop_id", "price4"],
+            hover_data=["sku", "price"],
         )
         
         fig.update_traces(jitter=0.3, marker=dict(size=10))
@@ -113,6 +113,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
