@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 from datamanager import SupaBaseDataManager
 from analyst import PriceAnalyst
-from stat import Statistic
+from my_stat import Statistic
 
 users = st.secrets["users"]
 st.set_page_config(page_title="PriceHunter", layout="centered")
