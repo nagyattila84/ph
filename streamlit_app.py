@@ -6,7 +6,7 @@ from datamanager import SupaBaseDataManager
 dm = SupaBaseDataManager()
 
 
-pw = generate_password_hash("titkos123")
+pw = generate_password_hash("METRA47a")
 st.title(pw)
 
 # --- Secrets-ből olvasás ---
@@ -48,6 +48,7 @@ else:
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
 
 
 
