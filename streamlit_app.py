@@ -55,11 +55,10 @@ def page_search():
         st.dataframe(raw_df)
 
 def page_visual3():
+    st.title("Ár összehasonlító") 
     dm = SupaBaseDataManager()
     own_df, raw_df = dm.get_products_by_keyword("pgv")
     df = raw_df.copy()
-    
-    st.title("Ár összehasonlító") 
 
     # Min / Max termékenként
     df["min_price"] = df.groupby("cluster_id")["price"].transform("min")
@@ -70,8 +69,6 @@ def page_visual3():
         df["max_price"] - df["min_price"]
     ).fillna(0)
 
-    fig = go.Figure()
-    
     #Termékek limitálása
     products = st.multiselect(
         "Termékek",
@@ -79,7 +76,9 @@ def page_visual3():
         df["product"].unique()[:5]
     )
     df = df[df["product"].isin(products)]
-    
+
+    fig = go.Figure()
+
     for product in df["id"].unique():
         sub = df[df["id"] == product]
     
@@ -204,6 +203,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
