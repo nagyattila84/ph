@@ -57,7 +57,7 @@ def page_search():
 def page_visual3():
     dm = SupaBaseDataManager()
     own_df, raw_df = dm.get_products_by_keyword("hunter")
-    df = own_df.copy()
+    df = raw_df.copy()
     
     st.title("Ár összehasonlító") 
 
@@ -157,6 +157,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
