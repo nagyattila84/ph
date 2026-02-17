@@ -57,7 +57,7 @@ class SupaBaseDataManager:
           else:
               response = self.client.table(table_name).select("*").execute()
           print(f"Successfully read data from table '{table_name}'.")
-          return response.data
+          return pd.DataFrame(response.data)
       except Exception as e:
           print(f"Error reading data from Supabase table '{table_name}': {e}")
           return None
@@ -229,3 +229,4 @@ class SupaBaseDataManager:
         .data
     )
     return pd.DataFrame(own), pd.DataFrame(raw)
+
