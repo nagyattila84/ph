@@ -12,7 +12,7 @@ class Statistic:
         return self.dm.count_rows("clusters", filters)
 
     def count_own_products(self, filters=None):
-        return self.dm.count_rows("own_product", filters)
+        return self.dm.count_rows("own_products", filters)
 
     def count_raw_products(self, filters=None):
-        return self.dm.count_rows("raw_product", filters)
+        return self.dm.count_rows("raw_products", filters)
