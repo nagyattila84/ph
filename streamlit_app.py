@@ -169,6 +169,55 @@ def page_visual2():
     
     st.plotly_chart(fig, use_container_width=True)
 
+def page_controlpanel():
+    # Oldal beállítás
+st.set_page_config(page_title="Vezérlőpult demo", layout="centered")
+
+# Cím
+st.title("📊 Mini vezérlőpult")
+
+st.write("Ez egy egyszerű Streamlit dashboard példa.")
+
+# ---- Beviteli mezők ----
+
+nev = st.text_input("Add meg a neved:")
+
+kor = st.number_input(
+    "Add meg az életkorod:",
+    min_value=0,
+    max_value=120,
+    step=1
+)
+
+opcio = st.selectbox(
+    "Válassz egy opciót:",
+    ["A", "B", "C"]
+)
+
+# ---- Gomb ----
+
+if st.button("Mentés"):
+    st.success("Adatok elmentve!")
+
+    st.write("### Bevitt adatok:")
+    st.write(f"Név: {nev}")
+    st.write(f"Kor: {kor}")
+    st.write(f"Opció: {opcio}")
+
+# ---- Oldalsáv (sidebar) ----
+
+st.sidebar.header("⚙ Beállítások")
+
+debug = st.sidebar.checkbox("Debug mód")
+
+if debug:
+    st.sidebar.write("Debug aktív")
+    st.sidebar.json({
+        "nev": nev,
+        "kor": kor,
+        "opcio": opcio
+    })
+
 def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
@@ -189,11 +238,14 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Keresés", "Vizuál", "Beállítások"]
+        ["Dashboard", "Vezérlő", "Keresés", "Vizuál", "Beállítások"]
     )
 
     if page == "Dashboard":
         page_dashboard()
+
+    elif page == "Vezérlő":
+        page_controlpanel()
 
     elif page == "Keresés":
         page_search()
@@ -203,6 +255,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
