@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 users = st.secrets["users"]
+st.set_page_config(page_title="PriceHunter", layout="centered")
 
 # ============= SESSION INIT ===============
 if "logged_in" not in st.session_state:
@@ -170,13 +171,19 @@ def page_visual2():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_controlpanel():
-    # Oldal beállítás
-    st.set_page_config(page_title="Vezérlőpult demo", layout="centered")
-    
     # Cím
-    st.title("📊 Mini vezérlőpult")
+    st.title("📊 Vezérlőpult")
     
     st.write("Ez egy egyszerű Streamlit dashboard példa.")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.text_input("Bal oldal")
+    
+    with col2:
+        st.text_input("Jobb oldal")
+
     
     # ---- Beviteli mezők ----
     
@@ -255,45 +262,3 @@ else:
 
     elif page == "Beállítások":
         page_settings()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
