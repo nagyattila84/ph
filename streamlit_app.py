@@ -86,7 +86,7 @@ def page_visual2():
     own_df, raw_df = dm.get_products_by_keyword("hunter")
     
     for product in raw_df["id"].unique():
-        sub = df[df["id"] == product]
+        sub = raw_df[raw_df["id"] == product]
     
         fig.add_trace(go.Scatter(
             x=[sub.price.min(), sub.price.max()],
@@ -140,6 +140,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
