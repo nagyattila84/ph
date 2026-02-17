@@ -64,8 +64,7 @@ def page_visual():
             x="price",
             y="sku",
             color="shop",
-            orientation="h",
-            #hover_data=["sku", "price"],
+            orientation="h"
         )
         
         fig.update_traces(jitter=0.3, marker=dict(size=10))
@@ -113,6 +112,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
