@@ -47,14 +47,14 @@ def page_dashboard():
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
 
-    c1.metric("Webshopok", stat.count_shops)
-    c2.metric("Clusterek", cluster_count)
-    c3.metric("Saját termékek", own_products)
-    c4.metric("Idegen termékek", foreign_products)
+    c1.metric("Webshopok", stat.count_shops())
+    c2.metric("Clusterek", stat.count_clusters())
+    c3.metric("Saját termékek", stat.count_own_products())
+    c4.metric("Idegen termékek", stat.count_raw_products())
 
     df = pd.DataFrame({
         "type": ["Saját", "Idegen"],
-        "count": [own_products, foreign_products]
+        "count": [stat.count_own_products(), stat.count_raw_products()]
     })
 
     fig = px.pie(df, names="type", values="count", hole=0.4)
