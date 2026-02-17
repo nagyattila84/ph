@@ -39,8 +39,11 @@ def login_page():
 
 # ================= PAGES =================
 def page_dashboard():
+    dm = SupaBaseDataManager()
+    
     st.header("📊 Dashboard")
     st.write("Ez az első oldal")
+
 
 def page_search():
     dm = SupaBaseDataManager()
