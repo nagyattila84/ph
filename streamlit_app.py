@@ -14,7 +14,7 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state["username"] = ""
 
-# --- Bejelentkezési űrlap ---
+# ================= LOGIN =================
 if not st.session_state["logged_in"]:
     st.title("Bejelentkezés")
     username = st.text_input("Felhasználónév")
@@ -36,7 +36,8 @@ if not st.session_state["logged_in"]:
         else:
             st.error("Hibás felhasználónév vagy jelszó")
 
-    
+else:
+# ================= APP =================
     # --- Itt lehet adatbázis lekérdezést csinálni ---
     if st.session_state["logged_in"]:
         st.title("Ár összehasonlító")
@@ -51,6 +52,7 @@ if not st.session_state["logged_in"]:
         
             st.subheader("Beszállítók")
             st.dataframe(raw_df)
+
 
 
 
