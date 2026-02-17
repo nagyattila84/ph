@@ -71,7 +71,15 @@ def page_visual3():
     ).fillna(0)
 
     fig = go.Figure()
-
+    
+    #Termékek limitálása
+    products = st.multiselect(
+        "Termékek",
+        df["product"].unique(),
+        df["product"].unique()[:5]
+    )
+    df = df[df["product"].isin(products)]
+    
     for product in df["id"].unique():
         sub = df[df["id"] == product]
     
@@ -196,6 +204,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
