@@ -45,32 +45,6 @@ class SupaBaseDataManager:
           print(f"✅ Uploaded {len(records)} products.")
           return result
 
-  def read_all(self, table_name: str, batch_size=500):
-
-    all_rows = []
-    offset = 0
-
-    while True:
-
-        response = (
-            self.client
-            .table(table_name)
-            .select("*")
-            .range(offset, offset + batch_size - 1)
-            .execute()
-        )
-
-        data = response.data
-
-        if not data:
-            break
-
-        all_rows.extend(data)
-
-        offset += batch_size
-
-    return pd.DataFrame(all_rows)
-
   #csak 1000 rekordig működik
   def read_data(self, table_name: str, query: dict = None):
       #Reads data from a specified Supabase table.
@@ -87,44 +61,6 @@ class SupaBaseDataManager:
       except Exception as e:
           print(f"Error reading data from Supabase table '{table_name}': {e}")
           return None
-
-  def write_data(self, table_name: str, data: list):
-      """Writes data to a specified Supabase table."""
-      if not self.client:
-          print("SupaBase client not initialized. Cannot write data.")
-          return None
-      try:
-          response = self.client.table(table_name).insert(data).execute()
-          print(f"Successfully wrote data to table '{table_name}'.")
-          return response.data
-      except Exception as e:
-          print(f"Error writing data to Supabase table '{table_name}': {e}")
-          return None
-
-  def read_products_from_db(self, table_name="raw_products", query: dict = None):
-      """Reads products from the specified Supabase table and returns a list of Product instances."""
-      data = self.read_data(table_name, query)
-      if not data:
-          return []
-
-      products = []
-      for item in data:
-          try:
-              # Ensure all fields expected by Product dataclass are handled, with type conversion
-              product = Product(
-                  id=int(item.get('id')) if item.get('id') is not None else 0, # Assuming ID cannot be None, default to 0 or handle as Optional
-                  webshop_id=int(item.get('webshop_id')) if item.get('webshop_id') is not None else 0,
-                  sku=item.get('sku') if item.get('sku') is not None else '',
-                  name=item.get('name') if item.get('name') is not None else '',
-                  url=item.get('url') if item.get('url') is not None else '',
-                  price=int(item.get('price')) if item.get('price') is not None else 0,
-                  sale_price=int(item.get('sale_price')) if item.get('sale_price') is not None else 0,
-                  scraped_date=item.get('scraped_date') if item.get('scraped_date') is not None else ''
-              )
-              products.append(product)
-          except (ValueError, TypeError, KeyError) as e:
-              print(f"Error creating Product object from data: {item}. Skipping. Error: {e}")
-      return products
 
   def read_webshops_from_db(self, table_name="webshops") -> list[Webshop]:
       """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
@@ -159,35 +95,6 @@ class SupaBaseDataManager:
           except (ValueError, TypeError, KeyError) as e:
               print(f"Error creating Webshop object from data: {item}. Skipping. Error: {e}")
       return webshops
-
-  def read_own_products_from_db(self, table_name="own_products") -> list[OwnProduct]:
-      """Reads own products from the specified Supabase table and returns a list of OwnProduct instances."""
-      data = self.read_data(table_name)
-      if not data:
-          return []
-
-      own_products = []
-      for item in data:
-          try:
-              own_product = OwnProduct(
-                  id=int(item.get('id')) if item.get('id') is not None else 0,
-                  webshop_id=int(item.get('webshop_id')) if item.get('webshop_id') is not None else 0,
-                  sku=item.get('sku') if item.get('sku') is not None else '',
-                  name=item.get('name') if item.get('name') is not None else '',
-                  url=item.get('url'), # URL can be None
-                  price=int(item.get('price')) if item.get('price') is not None else 0,
-                  price2=int(item.get('price2')) if item.get('price2') is not None else 0,
-                  price3=int(item.get('price3')) if item.get('price3') is not None else 0,
-                  price4=int(item.get('price4')) if item.get('price4') is not None else 0,
-                  price5=int(item.get('price5')) if item.get('price5') is not None else 0,
-                  price6=int(item.get('price6')) if item.get('price6') is not None else 0,
-                  purchase_price=int(item.get('purchase_price')) if item.get('purchase_price') is not None else 0,
-                  scraped_date=item.get('scraped_date') if item.get('scraped_date') is not None else ''
-              )
-              own_products.append(own_product)
-          except (ValueError, TypeError, KeyError) as e:
-              print(f"Error creating OwnProduct object from data: {item}. Skipping. Error: {e}")
-      return own_products
 
   def process_matches_batch(self, df, batch=300):
 
@@ -324,6 +231,7 @@ class SupaBaseDataManager:
     )
 
     return pd.DataFrame(own), pd.DataFrame(raw)
+
 
 
 
