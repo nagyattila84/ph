@@ -4,4 +4,6 @@ beautifulsoup4
 supabase
 python-dotenv
 rapidfuzz
+werkzeug
+
 
