@@ -22,7 +22,7 @@ def login_page():
     password = st.text_input("Jelszó", type="password")
 
     if st.button("Belépés"):
-        ok = True
+        ok = False
     
         if username in users:
             try:
@@ -262,3 +262,4 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
