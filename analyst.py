@@ -1,4 +1,5 @@
 import pandas as pd
+from datamanager import SupaBaseDataManager
 
 class PriceAnalyst:
 
