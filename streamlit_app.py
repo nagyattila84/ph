@@ -1,12 +1,13 @@
 import streamlit as st
 from werkzeug.security import check_password_hash
+from werkzeug.security import *
 from datamanager import SupaBaseDataManager
 
 dm = SupaBaseDataManager()
 
 
-generate_password_hash("titkos123")
-st.title("Bejelentkezés")
+pw = generate_password_hash("titkos123")
+st.title(pw)
 
 # --- Secrets-ből olvasás ---
 users = st.secrets["users"]
@@ -47,6 +48,7 @@ else:
     
         st.subheader("Beszállítók")
         st.dataframe(raw_df)
+
 
 
 
