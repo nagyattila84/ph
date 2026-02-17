@@ -16,3 +16,6 @@ class Statistic:
 
     def count_raw_products(self, filters=None):
         return self.dm.count_rows("raw_products", filters)
+
+    def shops_small(self, filters=None):
+        return self.dm.read_data("webshops", filters)

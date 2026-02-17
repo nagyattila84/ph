@@ -60,21 +60,44 @@ class SupaBaseDataManager:
     return response.count
 
   #csak 1000 rekordig működik
-  def read_data(self, table_name: str, query: dict = None):
-      #Reads data from a specified Supabase table.
-      if not self.client:
-          print("SupaBase client not initialized. Cannot read data.")
-          return None
-      try:
-          if query:
-              response = self.client.table(table_name).select("*").match(query).execute()
-          else:
-              response = self.client.table(table_name).select("*").execute()
-          print(f"Successfully read data from table '{table_name}'.")
-          return pd.DataFrame(response.data)
-      except Exception as e:
-          print(f"Error reading data from Supabase table '{table_name}': {e}")
-          return None
+  def read_data(
+    self,
+    table_name: str,
+    query: dict = None,
+    columns: list = None,
+    order_by: str = None,
+    descending: bool = False
+    ):
+    # Reads data from a specified Supabase table (extended)
+
+    if not self.client:
+        print("SupaBase client not initialized. Cannot read data.")
+        return None
+
+    try:
+        # oszlopok
+        select_cols = "*"
+        if columns:
+            select_cols = ",".join(columns)
+
+        qb = self.client.table(table_name).select(select_cols)
+
+        # where (régi query param megmarad!)
+        if query:
+            qb = qb.match(query)
+
+        # order by (új)
+        if order_by:
+            qb = qb.order(order_by, desc=descending)
+
+        response = qb.execute()
+
+        print(f"Successfully read data from table '{table_name}'.")
+        return pd.DataFrame(response.data)
+
+    except Exception as e:
+        print(f"Error reading data from Supabase table '{table_name}': {e}")
+        return None
 
   def read_webshops_from_db(self, table_name="webshops") -> list[Webshop]:
       """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
