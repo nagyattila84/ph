@@ -33,24 +33,25 @@ if not st.session_state["logged_in"]:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
             st.write("Sikeres belépés!")
-            st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
 
     
     # --- Itt lehet adatbázis lekérdezést csinálni ---
-    st.title("Ár összehasonlító")
-    
-    keyword = st.text_input("Keresőszó")
-    
-    if keyword:
-        own_df, raw_df = dm.get_products_by_keyword(keyword)
-    
-        st.subheader("Saját termékek")
-        st.dataframe(own_df)
-    
-        st.subheader("Beszállítók")
-        st.dataframe(raw_df)
+    if st.session_state["logged_in"]:
+        st.title("Ár összehasonlító")
+        
+        keyword = st.text_input("Keresőszó")
+        
+        if keyword:
+            own_df, raw_df = dm.get_products_by_keyword(keyword)
+        
+            st.subheader("Saját termékek")
+            st.dataframe(own_df)
+        
+            st.subheader("Beszállítók")
+            st.dataframe(raw_df)
+
 
 
 
