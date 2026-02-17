@@ -72,10 +72,10 @@ def page_visual3():
     #Termékek limitálása
     products = st.multiselect(
         "Termékek",
-        df["product"].unique(),
-        df["product"].unique()[:5]
+        df["id"].unique(),
+        df["id"].unique()[:5]
     )
-    df = df[df["product"].isin(products)]
+    df = df[df["id"].isin(products)]
 
     fig = go.Figure()
 
@@ -203,6 +203,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
