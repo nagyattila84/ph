@@ -72,15 +72,15 @@ def page_visual3():
     #Termékek limitálása
     products = st.multiselect(
         "Termékek",
-        df["id"].unique(),
-        df["id"].unique()[:5]
+        df["cluster_id"].unique(),
+        df["cluster_id"].unique()[:5]
     )
-    df = df[df["id"].isin(products)]
+    df = df[df["cluster_id"].isin(products)]
 
     fig = go.Figure()
 
-    for product in df["id"].unique():
-        sub = df[df["id"] == product]
+    for product in df["cluster_id"].unique():
+        sub = df[df["cluster_id"] == product]
     
         # Számegyenes (min → max)
         fig.add_trace(go.Scatter(
@@ -203,6 +203,7 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
 
 
