@@ -1,10 +1,12 @@
 import streamlit as st
 from werkzeug.security import check_password_hash
-from datamanager import SupaBaseDataManager
 import pandas as pd
-from analyst import PriceAnalyst
 import plotly.express as px
 import plotly.graph_objects as go
+
+from datamanager import SupaBaseDataManager
+from analyst import PriceAnalyst
+from stat import * as sta
 
 users = st.secrets["users"]
 st.set_page_config(page_title="PriceHunter", layout="centered")
@@ -40,9 +42,22 @@ def login_page():
 # ================= PAGES =================
 def page_dashboard():
     dm = SupaBaseDataManager()
-    
+
     st.header("📊 Dashboard")
-    st.write("Ez az első oldal")
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric("Webshopok", sta.count_rows)
+    c2.metric("Clusterek", cluster_count)
+    c3.metric("Saját termékek", own_products)
+    c4.metric("Idegen termékek", foreign_products)
+
+    df = pd.DataFrame({
+        "type": ["Saját", "Idegen"],
+        "count": [own_products, foreign_products]
+    })
+
+    fig = px.pie(df, names="type", values="count", hole=0.4)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def page_search():
