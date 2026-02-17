@@ -60,6 +60,8 @@ def page_dashboard():
     fig = px.pie(df, names="type", values="count", hole=0.4)
     st.plotly_chart(fig, use_container_width=True)
 
+    
+
 def page_search():
     dm = SupaBaseDataManager()
     pa = PriceAnalyst(dm)
