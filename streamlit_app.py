@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 from datamanager import SupaBaseDataManager
 from analyst import PriceAnalyst
-from stat import * as sta
+from stat import Statistic
 
 users = st.secrets["users"]
 st.set_page_config(page_title="PriceHunter", layout="centered")
@@ -42,11 +42,12 @@ def login_page():
 # ================= PAGES =================
 def page_dashboard():
     dm = SupaBaseDataManager()
+    stat = Statistic()
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
 
-    c1.metric("Webshopok", sta.count_rows)
+    c1.metric("Webshopok", stat.count_shops)
     c2.metric("Clusterek", cluster_count)
     c3.metric("Saját termékek", own_products)
     c4.metric("Idegen termékek", foreign_products)
