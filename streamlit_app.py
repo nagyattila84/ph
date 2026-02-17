@@ -53,7 +53,7 @@ def page_dashboard():
     c4.metric("Idegen termékek", stat.count_raw_products())
 
     df = pd.DataFrame({
-        "type": ["Saját", "Idegen"],
+        "type": ["Saját termék", "Idegen termék"],
         "count": [stat.count_own_products(), stat.count_raw_products()]
     })
 
