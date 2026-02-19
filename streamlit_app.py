@@ -199,7 +199,29 @@ def page_controlpanel():
     
     st.write("0.Saját árak feltöltése (own_product táblába manuálisan)")
     st.write("1.Webshopok beállítás: konkurens ws megadása")
-    st.dataframe(stat.shops_small())
+    
+    shops = stat.shops_small()
+    st.dataframe(shops)
+
+    # hozzáadunk egy kijelölő oszlopot
+    if "selected_shops" not in st.session_state:
+        shops["Kijelöl"] = False
+        st.session_state.selected_shops = shops
+
+    shops = st.data_editor(
+        st.session_state.selected_shops,
+        use_container_width=True,
+        num_rows="dynamic"
+    )
+
+    # kiválasztott sorok
+    selected_rows = shops[shops["Kijelöl"]]
+
+    st.write("Kijelölt sorok:")
+    st.write(selected_rows)
+    
+    
+    
     st.write("2.Árak letöltése megadott kulcsszóra")
     st.write("3.Termék párosítás")
     st.write("4.Árak összehasonlítása")
