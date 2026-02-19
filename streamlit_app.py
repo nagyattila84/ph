@@ -42,13 +42,16 @@ def login_page():
         if ok:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
+            st.session_state["dm"] = SupaBaseDataManager()
+            st.session_state["stat"] = PriceAnalyst()
             st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
 
 # ================= PAGES =================
 def page_dashboard():
-
+    dm = st.session_state["dm"]
+    stat = st.session_state["stat"]
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
