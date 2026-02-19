@@ -38,7 +38,7 @@ def login_page():
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
             st.session_state["dm"] = SupaBaseDataManager()
-            st.session_state["stat"] = PriceAnalyst()
+            st.session_state["stat"] = Statistic()
             st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
