@@ -19,11 +19,6 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state["username"] = ""
 
-# ============= LOAD CLASSES ===============
-def load_classes():
-    dm = SupaBaseDataManager()
-    stat = Statistic()
-
 # ================= LOGIN =================
 def login_page():   
     st.title("Bejelentkezés")
@@ -263,9 +258,7 @@ def page_settings():
 if not st.session_state.logged_in:
     login_page()
 
-else:
-    load_classes()
-    
+else:  
     st.sidebar.image("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
     st.sidebar.write(f"Bejelentkezve: {st.session_state.username}")
 
