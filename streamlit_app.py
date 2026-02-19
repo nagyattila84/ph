@@ -192,10 +192,14 @@ def page_visual2():
 
 def page_controlpanel():
     # Cím
+    dm = SupaBaseDataManager()
+    stat = Statistic()
+    
     st.title("📊 Vezérlőpult")
     
     st.write("0.Saját árak feltöltése (own_product táblába manuálisan)")
     st.write("1.Webshopok beállítás: konkurens ws megadása")
+    st.dataframe(stat.shops_small())
     st.write("2.Árak letöltése megadott kulcsszóra")
     st.write("3.Termék párosítás")
     st.write("4.Árak összehasonlítása")
