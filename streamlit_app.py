@@ -194,8 +194,11 @@ def page_controlpanel():
     # Cím
     st.title("📊 Vezérlőpult")
     
-
-    st.write("Ez egy egyszerű Streamlit dashboard példa.")
+    st.write("0.Saját árak feltöltése (own_product táblába manuálisan)")
+    st.write("1.Webshopok beállítás: konkurens ws megadása")
+    st.write("2.Árak letöltése megadott kulcsszóra")
+    st.write("3.Termék párosítás")
+    st.write("4.Árak összehasonlítása")
     
     col1, col2 = st.columns(2)
     
