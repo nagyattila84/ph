@@ -20,7 +20,7 @@ if "username" not in st.session_state:
     st.session_state["username"] = ""
 
 # ============= LOAD CLASSES ===============
-def load_classes:
+def load_classes():
     dm = SupaBaseDataManager()
     stat = Statistic()
 
