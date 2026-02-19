@@ -22,5 +22,5 @@ class Statistic:
             "webshops",
             columns=["name", "base_url", "company"],
             order_by="id",
-            descending=True
+            descending=False
         )
