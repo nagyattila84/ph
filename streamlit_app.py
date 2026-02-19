@@ -256,7 +256,7 @@ if not st.session_state.logged_in:
     login_page()
 
 else:
-    st.image("PriceHunter-logo-négyzet.png", caption="PriceHunter logó", use_container_width=True)
+    st.sidebar.image("PriceHunter-logo-négyzet.png", caption="PriceHunter logó", use_container_width=True)
     st.sidebar.write(f"Bejelentkezve: {st.session_state.username}")
 
     if st.sidebar.button("Kijelentkezés"):
