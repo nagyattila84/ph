@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 from datamanager import SupaBaseDataManager
 from analyst import PriceAnalyst
-from my_stat import Statistic
+from my_stat import Statistic as stat
 
 users = st.secrets["users"]
 st.set_page_config(page_title="PriceHunter", layout="centered")
@@ -42,7 +42,6 @@ def login_page():
 # ================= PAGES =================
 def page_dashboard():
     dm = SupaBaseDataManager()
-    stat = Statistic()
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
@@ -59,8 +58,6 @@ def page_dashboard():
 
     fig = px.pie(df, names="type", values="count", hole=0.4)
     st.plotly_chart(fig, use_container_width=True)
-
-    
 
 def page_search():
     dm = SupaBaseDataManager()
@@ -194,6 +191,7 @@ def page_controlpanel():
     # Cím
     st.title("📊 Vezérlőpult")
     
+
     st.write("Ez egy egyszerű Streamlit dashboard példa.")
     
     col1, col2 = st.columns(2)
