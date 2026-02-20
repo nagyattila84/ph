@@ -198,7 +198,7 @@ def page_controlpanel():
     st.title("📊 Vezérlőpult")
     
     st.write("0.Saját árak feltöltése (own_product táblába manuálisan)")
-    st.write("1.Webshopok beállítás: konkurens ws megadása")
+    st.write("1.Webshopok beállítás: konkurens webáruházak kijelölése")
     
     shops = stat.shops_small()
 
@@ -209,6 +209,11 @@ def page_controlpanel():
 
     shops = st.data_editor(
         st.session_state.selected_shops,
+         column_config={
+            "name": "Webáruház neve",
+            "base_url": "Link",
+            "company": "Cégnév"
+        },
         use_container_width=True,
         num_rows="dynamic"
     )
