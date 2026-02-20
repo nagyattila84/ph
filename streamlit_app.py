@@ -215,7 +215,6 @@ def page_controlpanel():
             "company": "Cégnév"
         },
         use_container_width=True
-        #num_rows="dynamic"
     )
 
     # kiválasztott sorok
