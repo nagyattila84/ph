@@ -201,12 +201,11 @@ def page_controlpanel():
     st.write("1.Webshopok beállítás: konkurens ws megadása")
     
     shops = stat.shops_small()
-    st.dataframe(shops)
 
     # hozzáadunk egy kijelölő oszlopot
-    #if "selected_shops" not in st.session_state:
-    shops["Kijelöl"] = False
-    st.session_state.selected_shops = shops
+    f "selected_shops" not in st.session_state:
+        shops["Kijelöl"] = False
+        st.session_state.selected_shops = shops
 
     shops = st.data_editor(
         st.session_state.selected_shops,
