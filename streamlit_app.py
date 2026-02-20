@@ -203,7 +203,7 @@ def page_controlpanel():
     shops = stat.shops_small()
 
     # hozzáadunk egy kijelölő oszlopot
-    f "selected_shops" not in st.session_state:
+    if "selected_shops" not in st.session_state:
         shops["Kijelöl"] = False
         st.session_state.selected_shops = shops
 
