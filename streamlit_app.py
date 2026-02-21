@@ -201,39 +201,40 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
     st.header("1. Webshopok beállítás")
         
-    st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
-
-    shops = stat.shops_small()
-
-    # hozzáadunk egy kijelölő oszlopot
-    if "selected_shops" not in st.session_state:
-        shops["Kijelöl"] = False
-        st.session_state.selected_shops = shops
-
-    shops = st.data_editor(
-        st.session_state.selected_shops,
-         column_config={
-            "name": "Webáruház neve",
-            "base_url": "Link",
-            "company": "Cégnév"
-        },
-        use_container_width=True
-    )
-
-    # kiválasztott sorok
-    st.write("Kijelölt sorok:")
-    selected_rows = shops[shops["Kijelöl"]]
-    st.write(selected_rows)
-    
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(3)
 
     with col1:
         keyword = st.text_input("Keresőszó", width=200)
 
 
     with col2:
-        if st.button("Árak letültése"):
-            st.write("Árak letöltve....")
+            
+        st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
+
+        shops = stat.shops_small()
+
+        # hozzáadunk egy kijelölő oszlopot
+        if "selected_shops" not in st.session_state:
+            shops["Kijelöl"] = False
+            st.session_state.selected_shops = shops
+
+        shops = st.data_editor(
+            st.session_state.selected_shops,
+            column_config={
+                "name": "Webáruház neve",
+                "base_url": "Link",
+                "company": "Cégnév"
+            },
+            use_container_width=True
+        )
+
+    # kiválasztott sorok
+    st.write("Kijelölt sorok:")
+    selected_rows = shops[shops["Kijelöl"]]
+    st.write(selected_rows)
+    
+    if st.button("Árak letültése"):
+        st.write("Árak letöltve....")
 
 
     
