@@ -195,6 +195,7 @@ def page_controlpanel():
     dm = SupaBaseDataManager()
     stat = Statistic()
     
+    st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
     
     st.header("0. Saját árak feltöltése")
