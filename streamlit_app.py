@@ -201,7 +201,7 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
     st.header("1. Webshopok beállítás")
         
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1,3]])
 
     with col1:
         keyword = st.text_input("Keresőszó", width=200)
@@ -233,7 +233,7 @@ def page_controlpanel():
     selected_rows = shops[shops["Kijelöl"]]
     st.write(selected_rows)
     
-    if st.button("Árak letültése"):
+    if st.button("Árak letÖltése"):
         st.write("Árak letöltve....")
 
 
