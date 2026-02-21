@@ -200,11 +200,8 @@ def page_controlpanel():
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
     st.header("1. Webshopok beállítás")
-    
-    keyword = st.text_input("Keresőszó")
-    
+        
     st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
-    
 
     shops = stat.shops_small()
 
@@ -224,16 +221,17 @@ def page_controlpanel():
     )
 
     # kiválasztott sorok
-    selected_rows = shops[shops["Kijelöl"]]
-
     st.write("Kijelölt sorok:")
+    selected_rows = shops[shops["Kijelöl"]]
     st.write(selected_rows)
     
+    keyword = st.text_input("Keresőszó")
     
-    
-    st.header("2.Árak letöltése megadott kulcsszóra")
-    st.header("3.Termék párosítás")
-    st.header("4.Árak összehasonlítása")
+    if st.button("Árak letültése", width=200)
+        st.write("Árak letöltve....")
+
+    st.header("2.Termék párosítás")
+    st.header("3.Árak összehasonlítása")
     
     col1, col2 = st.columns(2)
     
