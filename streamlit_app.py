@@ -199,7 +199,8 @@ def page_controlpanel():
     
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
-    st.header("1. Webshopok beállítás: konkurens webáruházak kijelölése")
+    st.header("1. Webshopok beállítás")
+    st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
     
     shops = stat.shops_small()
 
