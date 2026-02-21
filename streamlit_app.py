@@ -227,7 +227,7 @@ def page_controlpanel():
     
     keyword = st.text_input("Keresőszó")
     
-    if st.button("Árak letültése", width=200)
+    if st.button("Árak letültése", width=200):
         st.write("Árak letöltve....")
 
     st.header("2.Termék párosítás")
