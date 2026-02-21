@@ -227,7 +227,7 @@ def page_controlpanel():
     with col2:
         keyword = st.text_input("Keresőszó", width=200)
 
-        if st.button("Árak letÖltése"):
+        if st.button("Árak letöltése"):
             st.write("Árak letöltve....")
 
     # kiválasztott sorok
