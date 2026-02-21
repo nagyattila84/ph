@@ -197,8 +197,9 @@ def page_controlpanel():
     
     st.title("📊 Vezérlőpult")
     
-    st.header("0.Saját árak feltöltése (own_product táblába manuálisan)")
-    st.header("1.Webshopok beállítás: konkurens webáruházak kijelölése")
+    st.header("0. Saját árak feltöltése")
+    st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
+    st.header("1. Webshopok beállítás: konkurens webáruházak kijelölése")
     
     shops = stat.shops_small()
 
