@@ -202,7 +202,7 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
     st.header("1. Webshopok beállítás")
         
-    col1, col2 = st.columns([1,3])
+    col1, col2 = st.columns([3,1])
 
     with col1:          
         st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
