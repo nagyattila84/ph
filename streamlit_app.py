@@ -225,9 +225,9 @@ def page_controlpanel():
     selected_rows = shops[shops["Kijelöl"]]
     st.write(selected_rows)
     
-    keyword = st.text_input("Keresőszó")
+    keyword = st.text_input("Keresőszó", width=200)
     
-    if st.button("Árak letültése", width=200):
+    if st.button("Árak letültése"):
         st.write("Árak letöltve....")
 
     st.header("2.Termék párosítás")
