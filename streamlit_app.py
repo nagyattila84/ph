@@ -204,12 +204,7 @@ def page_controlpanel():
         
     col1, col2 = st.columns([1,3])
 
-    with col1:
-        keyword = st.text_input("Keresőszó", width=200)
-
-
-    with col2:
-            
+    with col1:          
         st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
 
         shops = stat.shops_small()
@@ -229,13 +224,17 @@ def page_controlpanel():
             use_container_width=True
         )
 
+    with col2:
+        keyword = st.text_input("Keresőszó", width=200)
+
+        if st.button("Árak letÖltése"):
+            st.write("Árak letöltve....")
+
     # kiválasztott sorok
     st.write("Kijelölt sorok:")
     selected_rows = shops[shops["Kijelöl"]]
     st.write(selected_rows)
     
-    if st.button("Árak letÖltése"):
-        st.write("Árak letöltve....")
 
 
     
