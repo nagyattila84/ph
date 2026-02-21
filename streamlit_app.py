@@ -225,10 +225,18 @@ def page_controlpanel():
     selected_rows = shops[shops["Kijelöl"]]
     st.write(selected_rows)
     
-    keyword = st.text_input("Keresőszó", width=200)
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        keyword = st.text_input("Keresőszó", width=200)
+
+
+    with col2:
+        if st.button("Árak letültése"):
+            st.write("Árak letöltve....")
+
+
     
-    if st.button("Árak letültése"):
-        st.write("Árak letöltve....")
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
