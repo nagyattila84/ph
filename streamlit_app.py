@@ -208,10 +208,11 @@ def page_controlpanel():
     st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
 
     shops = stat.shops_small()
+    
 
     # hozzáadunk egy kijelölő oszlopot
     if "selector_shops" not in st.session_state:
-        shops[0, "Kijelöl"] = True
+        shops.insert(0, "Kijelöl", False)
         st.session_state.selector_shops = shops
 
     shops = st.data_editor(
