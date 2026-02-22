@@ -90,7 +90,7 @@ def get_price_from_multi_webshop_df(ws_df, search_word):
 
 # search_word - erre a szora keres az oldalon
 # visszadja a táblázatot, fejléc nélkül
-def get_price_from_webshop_df(DataFrame: ws_df, search_word):
+def get_price_from_webshop_df(ws_df, search_word):
   #kereső oldal linkej a kulcsszóra
   url = ws.search_url.replace("SEARCH_WORD", search_word)
 
