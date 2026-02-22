@@ -93,9 +93,9 @@ def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
 
 # search_word - erre a szora keres az oldalon
 # visszadja a táblázatot, fejléc nélkül
-def get_price_from_webshop_df(ws_df, search_word):
+def get_price_from_webshop_df(shop, search_word):
   #kereső oldal linkej a kulcsszóra
-  url = ws.search_url.replace("SEARCH_WORD", search_word)
+  url = shop["search_url"].replace("SEARCH_WORD", search_word)
 
   #mai dátum megy a táblázatba, hogy visszakereshető egyen
   current_date = datetime.now().strftime("%Y-%m-%d")
