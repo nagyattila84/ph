@@ -85,6 +85,90 @@ class Cluster(AbstractProduct):
     id: int
     name: str
 
+def get_price_from_multi_webshop_df(ws_df, search_word):
+    return df
+
+# search_word - erre a szora keres az oldalon
+# visszadja a táblázatot, fejléc nélkül
+def get_price_from_webshop_df(DataFrame: ws_df, search_word):
+  #kereső oldal linkej a kulcsszóra
+  url = ws.search_url.replace("SEARCH_WORD", search_word)
+
+  #mai dátum megy a táblázatba, hogy visszakereshető egyen
+  current_date = datetime.now().strftime("%Y-%m-%d")
+
+  # Lekérjük a weboldal HTML tartalmát
+  response = requests.get(url)
+  print(f"Fetching URL: {url}\nHTTP Status Code: {response.status_code}")
+
+  if response.status_code != 200:
+    error("Error: Could not retrieve the webpage. Please check the URL or your internet connection.")
+    return # Exit if the request failed
+
+  soup = BeautifulSoup(response.content, "html.parser")
+
+  # Megkeressük a termékeket tartalmazó elemeket
+  products = soup.find_all(ws.product_container_selector, class_=ws.product_container_class)
+  ok(f"Number of products found: {len(products)}")
+
+  # Létrehozunk egy üres listát az adatok tárolására
+  data = []
+
+  # Végigiterálunk a termékeken és kinyerjük az adatokat
+  for i, product in enumerate(products):
+
+    #terméknév kikeresése
+    name_element = product.find(ws.name_selector, class_=ws.name_class)
+    if name_element:
+        name = name_element.text.strip()
+    else:
+        error(f"Nincs terméknév")
+        name = None
+
+    #sku, cikkszám kikeresése
+    sku_element = product.find(ws.sku_selector, class_=ws.sku_class)
+    if sku_element:
+        if ws.sku_attr:
+            # Safely get attribute value, default to "Hiányzik" if not found
+            sku = sku_element.attrs.get(ws.sku_attr, "Hiányzik")
+        else:
+            # If sku_attr is None, assume SKU is the text content
+            sku = sku_element.text.strip()
+    else:
+        sku = None
+
+    #url kikeresése
+    link_element = product.find(ws.link_selector, class_=ws.link_class)
+    if link_element and 'href' in link_element.attrs:
+        url = link_element['href']
+    else:
+        warn(f"Nincs link")
+        url = None
+
+    #ár kikeresése
+    price_element = product.find(ws.price_selector, class_=ws.price_class)
+    if price_element:
+        price = price_element.text.strip()
+        price = re.sub(r'\D', '', price)
+    else:
+        error(f"Nincs ár!")
+        price = None
+
+    #akciós ár kikeresése
+    sale_price_element = product.find(ws.sale_price_selector, class_=ws.sale_price_class)
+    if sale_price_element:
+        sale_price = sale_price_element.text.strip()
+        sale_price = re.sub(r'\D', '', sale_price)
+    else:
+        sale_price = None
+
+    data.append([ws.id, sku, name, url, price, sale_price])
+
+  # Létrehozunk egy pandas DataFrame-et az adatokból
+  df = pd.DataFrame(data, columns=["webshop_id", "sku","name", "url", "price", "sale_price"])
+
+  # Megjelenítjük/visszaadjuk a táblázatot
+  return df
 
 # search_word - erre a szora keres az oldalon
 # visszadja a táblázatot, fejléc nélkül

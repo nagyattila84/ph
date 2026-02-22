@@ -20,7 +20,6 @@ class Statistic:
     def shops_small(self, filters=None):
         return self.dm.read_data(
             "webshops",
-            columns=["name", "base_url", "company"],
             order_by="id",
             descending=False
         )
