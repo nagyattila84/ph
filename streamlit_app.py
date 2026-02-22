@@ -227,7 +227,7 @@ def page_controlpanel():
     keyword = st.text_input("Keresőszó", width=200)
 
     if st.button("Árak letöltése", type="primary"):
-        st.write("Árak letöltve....")
+        st.write(scraper.get_price_from_multi_webshop_df("ere", "kulcsszó"))
     
 
     # kiválasztott sorok
