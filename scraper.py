@@ -88,8 +88,8 @@ class Cluster(AbstractProduct):
 def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
     results = []
     for _, row in shops.iterrows():
-        result.append(get_price_from_webshop_df(row, search_word))
-    return result
+        results.append(get_price_from_webshop_df(row, search_word))
+    return results
 
 # search_word - erre a szora keres az oldalon
 # visszadja a táblázatot, fejléc nélkül
