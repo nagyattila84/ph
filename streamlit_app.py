@@ -231,8 +231,7 @@ def page_controlpanel():
     
 
     # kiválasztott sorok
-    st.write("Kijelölt sorok:")
-    selected_rows = shops[shops["Kijelöl"]]
+    selected_rows = shops[shops["selected"]]
     st.write(selected_rows)
     
 
