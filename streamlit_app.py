@@ -45,7 +45,6 @@ def login_page():
 def page_dashboard():
     dm = SupaBaseDataManager()
     stat = Statistic()
-    from scraper import * as scraper
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
@@ -192,6 +191,7 @@ def page_visual2():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_controlpanel():
+    from scraper import * as scraper
     dm = SupaBaseDataManager()
     stat = Statistic()
     
