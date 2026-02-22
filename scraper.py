@@ -87,6 +87,8 @@ class Scraper():
     from datetime import datetime
     from bs4 import BeautifulSoup
 
+    #def __init__(self):
+
     def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
         results = []
         for _, row in shops.iterrows():
