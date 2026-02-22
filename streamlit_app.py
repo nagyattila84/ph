@@ -195,6 +195,14 @@ def page_controlpanel():
     dm = SupaBaseDataManager()
     stat = Statistic()
     
+    st.sidebar.header("📊 Vezérlőpult")
+    st.sidebar("0. Saját árak feltöltése")
+    st.sidebar("1. Árak lekérése")
+    st.sidebar("2.Termék párosítás")
+    st.sidebar("3.Árak összehasonlítása")
+    
+
+
     st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
     
@@ -236,8 +244,7 @@ def page_controlpanel():
     st.write(selected_rows)
     
 
-
-    
+  
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
@@ -279,17 +286,6 @@ def page_controlpanel():
     
     # ---- Oldalsáv (sidebar) ----
     
-    st.sidebar.header("⚙ Beállítások")
-    
-    debug = st.sidebar.checkbox("Debug mód")
-    
-    if debug:
-        st.sidebar.write("Debug aktív")
-        st.sidebar.json({
-            "nev": nev,
-            "kor": kor,
-            "opcio": opcio
-        })
 
 def page_settings():
     st.header("⚙️ Beállítások")
