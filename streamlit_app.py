@@ -211,7 +211,7 @@ def page_controlpanel():
 
     # hozzáadunk egy kijelölő oszlopot
     if "selector_shops" not in st.session_state:
-        shops["Kijelöl"] = True
+        shops[0, "Kijelöl"] = True
         st.session_state.selector_shops = shops
 
     shops = st.data_editor(
