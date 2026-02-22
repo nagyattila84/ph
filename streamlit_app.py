@@ -209,14 +209,13 @@ def page_controlpanel():
 
     shops = stat.shops_small()
     
-
     # hozzáadunk egy kijelölő oszlopot
     if "selector_shops" not in st.session_state:
         shops.insert(0, "selected", False)
         st.session_state.selector_shops = shops
 
     shops = st.data_editor(
-        st.session_state.selected_shops,
+        st.session_state.selector_shops,
         column_config={
             "selected": "Kiválasztva",
             "name": "Webáruház neve",
