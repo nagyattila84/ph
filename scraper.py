@@ -85,7 +85,9 @@ class Cluster(AbstractProduct):
     id: int
     name: str
 
-def get_price_from_multi_webshop_df(ws_df, search_word):
+def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
+    
+    
     return search_word
 
 # search_word - erre a szora keres az oldalon
