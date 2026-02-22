@@ -100,7 +100,7 @@ class SupaBaseDataManager:
         print(f"Error reading data from Supabase table '{table_name}': {e}")
         return None
 
-  def read_webshops_from_db(self, table_name="webshops") -> list[Webshop]:
+  def read_webshops_from_db(self, table_name="webshops"):
       """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
       data = self.read_data(table_name)
       if not data:
