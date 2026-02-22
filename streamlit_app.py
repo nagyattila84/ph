@@ -207,7 +207,7 @@ def page_controlpanel():
     st.write("Termék árak letöltése konkurens oldalakról.")
     st.write("Webáruházak kijelölése:")
         
-    shops = stat.shops_small()
+    shops = dm.read_data("webshops", order_by="id", descending=False)
     
     # hozzáadunk egy kijelölő oszlopot
     if "selector_shops" not in st.session_state:
