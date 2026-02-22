@@ -222,7 +222,7 @@ def page_controlpanel():
             "base_url": "Link",
             "company": "Cégnév"
         },
-        use_container_width=True
+        use_container_width=False
     )
     keyword = st.text_input("Keresőszó", width=200)
 
