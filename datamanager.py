@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from supabase import create_client, Client
-from scraper import *
+from scraper import Scraper
 import streamlit as st
 
 
