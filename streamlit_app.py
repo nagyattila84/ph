@@ -191,7 +191,7 @@ def page_visual2():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_controlpanel():
-    from scraper import * as scraper
+    from scraper import get_price_from_multi_webshop_df
     dm = SupaBaseDataManager()
     stat = Statistic()
     
