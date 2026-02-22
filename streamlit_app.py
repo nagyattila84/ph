@@ -196,13 +196,14 @@ def page_controlpanel():
     stat = Statistic()
     
     st.sidebar.header("📊 Vezérlőpult")
-    st.sidebar.radio("Menü", ["Saját árak feltöltése", "Konkures árak lekérdezése", "Termék párosítás", "Árak összehasonlítása"])
+    #st.sidebar.radio("Menü", ["Saját árak feltöltése", "Konkures árak lekérdezése", "Termék párosítás", "Árak összehasonlítása"])
   
-    st.set_page_config(layout="wide")
+    #st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
     
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
+    
     st.header("1. Árak letöltése")
     st.write("Termék árak letöltése konkurens oldalakról.")
     st.write("Webáruházak kijelölése:")
