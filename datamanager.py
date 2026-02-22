@@ -15,8 +15,7 @@ class SupaBaseDataManager:
         print("Successfully connected to Supabase.")
     except Exception as e:
         print(f"Error connecting to Supabase: {e}")
-        self.client = None
-    sc = Scraper()
+        self.client = None
 
   def insert_products_from_df(self, df: pd.DataFrame):
           #Upload scraped products from DataFrame into Supabase.
