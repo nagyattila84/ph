@@ -1,3 +1,6 @@
+import pandas as pd
+from datetime import datetime
+from bs4 import BeautifulSoup
 
 #formazott uzenetek
 def error(msg):
@@ -83,10 +86,6 @@ class Cluster(AbstractProduct):
     name: str
 
 class Scraper():
-    import pandas as pd
-    from datetime import datetime
-    from bs4 import BeautifulSoup
-
     #def __init__(self):
 
     def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
