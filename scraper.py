@@ -86,7 +86,7 @@ class Cluster(AbstractProduct):
     name: str
 
 def get_price_from_multi_webshop_df(ws_df, search_word):
-    return "df"
+    return search_word
 
 # search_word - erre a szora keres az oldalon
 # visszadja a táblázatot, fejléc nélkül
