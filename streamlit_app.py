@@ -196,7 +196,7 @@ def page_controlpanel():
     stat = Statistic()
     
     st.sidebar.header("📊 Vezérlőpult")
-    st.sidebar.radio("Menü", ["0. Saját árak feltöltése", "1. Árak lekérése", "2.Termék párosítás", "3.Árak összehasonlítása"])
+    st.sidebar.radio("Menü", ["Saját árak feltöltése", "Konkures árak lekérdezése", "Termék párosítás", "Árak összehasonlítása"])
   
     st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
@@ -205,33 +205,29 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
     st.header("1. Webshopok beállítás")
         
-    col1, col2 = st.columns([3,1])
+    st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
 
-    with col1:          
-        st.write("Konkurens webáruházak kijelölése, az árak lekérdezéséhez.")
+    shops = stat.shops_small()
 
-        shops = stat.shops_small()
+    # hozzáadunk egy kijelölő oszlopot
+    if "selected_shops" not in st.session_state:
+        shops["Kijelöl"] = False
+        st.session_state.selected_shops = shops
 
-        # hozzáadunk egy kijelölő oszlopot
-        if "selected_shops" not in st.session_state:
-            shops["Kijelöl"] = False
-            st.session_state.selected_shops = shops
+    shops = st.data_editor(
+        st.session_state.selected_shops,
+        column_config={
+            "name": "Webáruház neve",
+            "base_url": "Link",
+            "company": "Cégnév"
+        },
+        use_container_width=True
+    )
+    keyword = st.text_input("Keresőszó", width=200)
 
-        shops = st.data_editor(
-            st.session_state.selected_shops,
-            column_config={
-                "name": "Webáruház neve",
-                "base_url": "Link",
-                "company": "Cégnév"
-            },
-            use_container_width=True
-        )
-
-    with col2:
-        keyword = st.text_input("Keresőszó", width=200)
-
-        if st.button("Árak letöltése", type="primary"):
-            st.write("Árak letöltve....")
+    if st.button("Árak letöltése", type="primary"):
+        st.write("Árak letöltve....")
+    
 
     # kiválasztott sorok
     st.write("Kijelölt sorok:")
@@ -244,14 +240,6 @@ def page_controlpanel():
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
     
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.text_input("Bal oldal")
-    
-    with col2:
-        st.text_input("Jobb oldal")
-
     
     # ---- Beviteli mezők ----
     
@@ -278,8 +266,8 @@ def page_controlpanel():
         st.write(f"Név: {nev}")
         st.write(f"Kor: {kor}")
         st.write(f"Opció: {opcio}")
-    
-    # ---- Oldalsáv (sidebar) ----
+
+
     
 
 def page_settings():
