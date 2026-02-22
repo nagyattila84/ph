@@ -121,7 +121,7 @@ def get_price_from_webshop_df(shop, search_word):
   for i, product in enumerate(products):
 
     #terméknév kikeresése
-    name_element = product.find(ws.name_selector, class_=ws.name_class)
+    name_element = product.find(shop["name_selector"], class_=shop["name_class"])
     if name_element:
         name = name_element.text.strip()
     else:
@@ -129,11 +129,11 @@ def get_price_from_webshop_df(shop, search_word):
         name = None
 
     #sku, cikkszám kikeresése
-    sku_element = product.find(ws.sku_selector, class_=ws.sku_class)
+    sku_element = product.find(shop["sku_selector"], class_=shop["name_class"])
     if sku_element:
-        if ws.sku_attr:
+        if shop["sku_attr"]:
             # Safely get attribute value, default to "Hiányzik" if not found
-            sku = sku_element.attrs.get(ws.sku_attr, "Hiányzik")
+            sku = sku_element.attrs.get(shop["sku_attr"], "Hiányzik")
         else:
             # If sku_attr is None, assume SKU is the text content
             sku = sku_element.text.strip()
@@ -141,7 +141,7 @@ def get_price_from_webshop_df(shop, search_word):
         sku = None
 
     #url kikeresése
-    link_element = product.find(ws.link_selector, class_=ws.link_class)
+    link_element = product.find(shop["link_selector"], class_=shop["link_class"])
     if link_element and 'href' in link_element.attrs:
         url = link_element['href']
     else:
@@ -149,7 +149,7 @@ def get_price_from_webshop_df(shop, search_word):
         url = None
 
     #ár kikeresése
-    price_element = product.find(ws.price_selector, class_=ws.price_class)
+    price_element = product.find(shop["price_selector"], class_=shop["price_class"])
     if price_element:
         price = price_element.text.strip()
         price = re.sub(r'\D', '', price)
@@ -158,14 +158,14 @@ def get_price_from_webshop_df(shop, search_word):
         price = None
 
     #akciós ár kikeresése
-    sale_price_element = product.find(ws.sale_price_selector, class_=ws.sale_price_class)
+    sale_price_element = product.find(shop["sale_price_selector"], class_=shop["sale_price_class"])
     if sale_price_element:
         sale_price = sale_price_element.text.strip()
         sale_price = re.sub(r'\D', '', sale_price)
     else:
         sale_price = None
 
-    data.append([ws.id, sku, name, url, price, sale_price])
+    data.append([shop["id"], sku, name, url, price, sale_price])
 
   # Létrehozunk egy pandas DataFrame-et az adatokból
   df = pd.DataFrame(data, columns=["webshop_id", "sku","name", "url", "price", "sale_price"])
