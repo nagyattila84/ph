@@ -196,7 +196,7 @@ def page_controlpanel():
     stat = Statistic()
     
     st.sidebar.header("📊 Vezérlőpult")
-    st.sidebar.radio("Menü", ["0. Saját árak feltöltése", "1. Árak lekérése", "2.Termék párosítás", "3.Árak összehasonlítása"]
+    st.sidebar.radio("Menü", ["0. Saját árak feltöltése", "1. Árak lekérése", "2.Termék párosítás", "3.Árak összehasonlítása"])
   
     st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
