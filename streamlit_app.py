@@ -45,6 +45,7 @@ def login_page():
 def page_dashboard():
     dm = SupaBaseDataManager()
     stat = Statistic()
+    from scraper import * as scraper
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
@@ -191,14 +192,12 @@ def page_visual2():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_controlpanel():
-    # Cím
     dm = SupaBaseDataManager()
     stat = Statistic()
     
     st.sidebar.header("📊 Vezérlőpult")
-    #st.sidebar.radio("Menü", ["Saját árak feltöltése", "Konkures árak lekérdezése", "Termék párosítás", "Árak összehasonlítása"])
-  
-    st.set_page_config(layout="wide")
+      
+    #st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
     
     st.header("0. Saját árak feltöltése")
