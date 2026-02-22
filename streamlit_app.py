@@ -210,9 +210,9 @@ def page_controlpanel():
     shops = stat.shops_small()
 
     # hozzáadunk egy kijelölő oszlopot
-    if "selected_shops" not in st.session_state:
-        shops["Kijelöl"] = False
-        st.session_state.selected_shops = shops
+    if "selector_shops" not in st.session_state:
+        shops["Kijelöl"] = True
+        st.session_state.selector_shops = shops
 
     shops = st.data_editor(
         st.session_state.selected_shops,
@@ -240,34 +240,6 @@ def page_controlpanel():
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
     
-    
-    # ---- Beviteli mezők ----
-    
-    nev = st.text_input("Add meg a neved:")
-    
-    kor = st.number_input(
-        "Add meg az életkorod:",
-        min_value=0,
-        max_value=120,
-        step=1
-    )
-    
-    opcio = st.selectbox(
-        "Válassz egy opciót:",
-        ["A", "B", "C"]
-    )
-    
-    # ---- Gomb ----
-    
-    if st.button("Mentés"):
-        st.success("Adatok elmentve!")
-    
-        st.write("# Bevitt adatok:")
-        st.write(f"Név: {nev}")
-        st.write(f"Kor: {kor}")
-        st.write(f"Opció: {opcio}")
-
-
     
 
 def page_settings():
