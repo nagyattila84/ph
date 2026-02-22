@@ -227,15 +227,9 @@ def page_controlpanel():
     keyword = st.text_input("Keresőszó", width=200)
 
     if st.button("Árak letöltése", type="primary"):
-        st.write(get_price_from_multi_webshop_df("ere", keyword))
-    
+        selected_shops = shops[shops["selected"]]
+        st.write(get_price_from_multi_webshop_df(selected_shops, keyword))
 
-    # kiválasztott sorok
-    selected_rows = shops[shops["selected"]]
-    st.write(selected_rows)
-    
-
-  
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
