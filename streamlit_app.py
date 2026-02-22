@@ -262,7 +262,7 @@ def page_controlpanel():
     if st.button("Mentés"):
         st.success("Adatok elmentve!")
     
-        st.write("### Bevitt adatok:")
+        st.write("# Bevitt adatok:")
         st.write(f"Név: {nev}")
         st.write(f"Kor: {kor}")
         st.write(f"Opció: {opcio}")
