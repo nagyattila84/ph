@@ -63,7 +63,7 @@ def page_dashboard():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_search():
-    dm = SupaBaseDataManager()
+    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
     pa = PriceAnalyst(dm)
     st.title("Ár összehasonlító")    
     keyword = st.text_input("Keresőszó")
@@ -76,8 +76,8 @@ def page_search():
         st.dataframe(df)
 
 def page_visual3():
+    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
     st.title("Ár összehasonlító") 
-    dm = SupaBaseDataManager()
     own_df, raw_df = dm.get_products_by_keyword("pgv")
     df = raw_df.copy()
 
@@ -138,7 +138,7 @@ def page_visual3():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_visual():
-    dm = SupaBaseDataManager()
+    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
     st.title("Ár összehasonlító")   
  
     own_df, raw_df = dm.get_products_by_keyword("hunter")
@@ -163,7 +163,7 @@ def page_visual():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_visual2():
-    dm = SupaBaseDataManager()
+    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
     fig = go.Figure()
     st.title("Ár összehasonlító")   
  
@@ -192,7 +192,7 @@ def page_visual2():
 
 def page_controlpanel():
     from scraper import Scraper
-    dm = SupaBaseDataManager()
+    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
     stat = Statistic()
     sc = Scraper()
     
