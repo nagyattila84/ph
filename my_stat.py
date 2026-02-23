@@ -2,8 +2,8 @@ from datamanager import SupaBaseDataManager
 
 class Statistic:
 
-    def __init__(self, dm):
-        self.dm = dm
+    def __init__(self, url, key):
+        self.dm = SupaBaseDataManager(url, key)
 
     def count_shops(self, filters=None):
         return self.dm.count_rows("webshops", filters)
