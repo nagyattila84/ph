@@ -231,7 +231,7 @@ def page_controlpanel():
     if st.button("Árak letöltése", type="primary"):
         selected_shops = shops[shops["selected"]]
         price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-        fig(price)
+        st.table(price, border="horizontal")
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
