@@ -87,7 +87,7 @@ class Cluster(AbstractProduct):
 
 class Scraper():
     def __init__(self):
-    pass
+        pass
 
     def get_price_from_multi_webshop_df(shops: pd.DataFrame, search_word):
         results = []
