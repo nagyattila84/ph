@@ -1,19 +1,17 @@
 import os
 import pandas as pd
-from supabase import create_client, Client
-
+from supabase import create_client, Client
 
 # @title
-class SupaBaseDataManager:
-  def __init__(self):
-    SUPABASE_URL=st.secrets["supabase"]["url"]
-    SUPABASE_KEY=st.secrets["supabase"]["key"]
+class SupaBaseDataManager(SUPABASE_URL, SUPABASE_KEY):
+  def __init__(self, SUPABASE_URL, SUPABASE_KEY):
     try:
         self.client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Successfully connected to Supabase.")
     except Exception as e:
         print(f"Error connecting to Supabase: {e}")
-        self.client = None
+        self.client = None
+
 
   def insert_products_from_df(self, df: pd.DataFrame):
           #Upload scraped products from DataFrame into Supabase.
