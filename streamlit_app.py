@@ -11,7 +11,7 @@ from my_stat import Statistic
 users = st.secrets["users"]
 stat = None
 dm = None
-st.set_page_config(page_title="PriceHunter", layout="center")
+st.set_page_config(page_title="PriceHunter", layout="centered")
 
 # ============= SESSION INIT ===============
 if "logged_in" not in st.session_state:
