@@ -194,6 +194,7 @@ def page_controlpanel():
     from scraper import Scraper
     dm = SupaBaseDataManager()
     stat = Statistic()
+    sc = Scraper()
     
     st.sidebar.header("📊 Vezérlőpult")
       
@@ -228,7 +229,7 @@ def page_controlpanel():
 
     if st.button("Árak letöltése", type="primary"):
         selected_shops = shops[shops["selected"]]
-        price = get_price_from_multi_webshop_df(selected_shops, keyword)
+        price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
         fig(price)
 
     st.header("2.Termék párosítás")
