@@ -43,8 +43,9 @@ def login_page():
 
 # ================= PAGES =================
 def page_dashboard():
-    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
+    db = SupaBaseDataManager(secrets.supabase.url, secrets.supabase.key)
     stat = Statistic()
+
 
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
@@ -192,7 +193,7 @@ def page_visual2():
 
 def page_controlpanel():
     from scraper import Scraper
-    db = SupaBaseDataManager(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
+    db = SupaBaseDataManager(secrets["SUPABASE_URL"], secrets["SUPABASE_KEY"])
     stat = Statistic()
     sc = Scraper()
     
