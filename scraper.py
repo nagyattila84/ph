@@ -92,7 +92,7 @@ class Scraper():
         pass
 
     def get_price_from_multi_webshop_df(self, shops, search_word):
-        results = []
+        results = pd.DataFrame()
         for _, row in shops.iterrows():
             results.append(self.get_price_from_webshop_df(row, search_word))
         return results
