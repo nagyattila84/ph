@@ -163,12 +163,15 @@ class Scraper():
             else:
                 error(f"Nincs ár!")
                 price = None
-    
+            
             #akciós ár kikeresése
-            sale_price_element = product.find(shop["sale_price_selector"], class_=shop["sale_price_class"])
-            if sale_price_element:
-                sale_price = sale_price_element.text.strip()
-                sale_price = re.sub(r'\D', '', sale_price)
+            if shop["sale_price_selector"]:
+                sale_price_element = product.find(shop["sale_price_selector"], class_=shop["sale_price_class"])
+                if sale_price_element:
+                    sale_price = sale_price_element.text.strip()
+                    sale_price = re.sub(r'\D', '', sale_price)
+                else:
+                    sale_price = None
             else:
                 sale_price = None
     
