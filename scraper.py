@@ -97,7 +97,7 @@ class Scraper():
 
     # search_word - erre a szora keres az oldalon
     # visszadja a táblázatot, fejléc nélkül
-    def get_price_from_webshop_df(shop, search_word):
+    def get_price_from_webshop_df(self, shop, search_word):
         #kereső oldal linkej a kulcsszóra
         url = shop["search_url"].replace("SEARCH_WORD", search_word)
     
