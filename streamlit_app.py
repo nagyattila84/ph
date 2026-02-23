@@ -230,9 +230,8 @@ def page_controlpanel():
 
     if st.button("Árak letöltése", type="primary"):
         selected_shops = shops[shops["selected"]]
-        with st.status("Webshopok feldolgozása...", expanded=True) as status:
+        with st.status("Árak letöltése folyamatban...", expanded=True) as status:
             price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-            status.update(label="Kész!", state="complete")
         st.set_page_config(layout="wide")
         st.table(price)
 
