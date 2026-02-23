@@ -92,7 +92,7 @@ class Scraper():
     def get_price_from_multi_webshop_df(self, shops, search_word):
         results = []
         for _, row in shops.iterrows():
-            results.append(get_price_from_webshop_df(row, search_word))
+            results.append(self.get_price_from_webshop_df(row, search_word))
         return results
 
     # search_word - erre a szora keres az oldalon
