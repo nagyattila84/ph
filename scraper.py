@@ -94,7 +94,8 @@ class Scraper():
     def get_price_from_multi_webshop_df(self, shops, search_word):
         results = pd.DataFrame()
         for _, row in shops.iterrows():
-            results.append(self.get_price_from_webshop_df(row, search_word))
+            r = self.get_price_from_webshop_df(row, search_word)
+            pd.concat([results, r], ignore_index=True)
         return results
 
     # search_word - erre a szora keres az oldalon
