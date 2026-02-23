@@ -43,7 +43,7 @@ def login_page():
 
 # ================= PAGES =================
 def page_dashboard():
-    db = SupaBaseDataManager(secrets.supabase.url, secrets.supabase.key)
+    db = SupaBaseDataManager(self.secrets.supabase.url, self.secrets.supabase.key)
     stat = Statistic()
 
 
