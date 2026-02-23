@@ -95,7 +95,7 @@ class Scraper():
         results = pd.DataFrame()
         for _, row in shops.iterrows():
             r = self.get_price_from_webshop_df(row, search_word)
-            pd.concat([results, r], ignore_index=True)
+            results = pd.concat([results, r], ignore_index=True)
         return results
 
     # search_word - erre a szora keres az oldalon
