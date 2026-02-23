@@ -179,7 +179,7 @@ class Scraper():
 
     # search_word - erre a szora keres az oldalon
     # visszadja a táblázatot, fejléc nélkül
-    def download_price_from_webshop(ws, search_word):
+    def download_price_from_webshop(self, ws, search_word):
         #kereső oldal linkej a kulcsszóra
         url = ws.search_url.replace("SEARCH_WORD", search_word)
     
@@ -259,7 +259,7 @@ class Scraper():
         # Megjelenítjük/visszaadjuk a táblázatot
         return df
 
-    def download_prices_from_df(webshops_df: pd.DataFrame, search_word: str):
+    def download_prices_from_df(self, webshops_df: pd.DataFrame, search_word: str):
 
         all_results = []
 
