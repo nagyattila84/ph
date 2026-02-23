@@ -136,7 +136,7 @@ class Scraper():
                 name = None
     
             #sku, cikkszám kikeresése
-            sku_element = product.find(shop["sku_selector"], class_=shop["name_class"])
+            sku_element = product.find(shop["sku_selector"], class_=shop["sku_class"])
             if sku_element:
                 if shop["sku_attr"]:
                     # Safely get attribute value, default to "Hiányzik" if not found
