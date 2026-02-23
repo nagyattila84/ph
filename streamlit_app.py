@@ -77,7 +77,8 @@ def page_search():
         st.dataframe(df)
 
 def page_visual3():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)    st.title("Ár összehasonlító") 
+    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)    
+    st.title("Ár összehasonlító") 
     own_df, raw_df = dm.get_products_by_keyword("pgv")
     df = raw_df.copy()
 
