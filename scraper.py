@@ -116,7 +116,7 @@ class Scraper():
         soup = BeautifulSoup(response.content, "html.parser")
     
         # Megkeressük a termékeket tartalmazó elemeket
-        products = soup.find_all(shop["product_container_selector"], class_=shop[product_container_class])
+        products = soup.find_all(shop["product_container_selector"], class_=shop["product_container_class"])
         ok(f"Number of products found: {len(products)}")
     
         # Létrehozunk egy üres listát az adatok tárolására
