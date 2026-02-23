@@ -3,10 +3,10 @@ import pandas as pd
 from supabase import create_client, Client
 
 # @title
-class SupaBaseDataManager(SUPABASE_URL, SUPABASE_KEY):
-  def __init__(self, SUPABASE_URL, SUPABASE_KEY):
+class SupaBaseDataManager:
+  def __init__(self, url, key):
     try:
-        self.client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        self.client = create_client(url, key)
         print("Successfully connected to Supabase.")
     except Exception as e:
         print(f"Error connecting to Supabase: {e}")
