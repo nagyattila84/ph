@@ -46,7 +46,7 @@ def page_dashboard():
     st.write(st.secrets.supabase.url)
     st.write(st.secrets.supabase.key)
     db = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-    stat = Statistic(dm)
+    stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
 
 
     st.header("📊 Dashboard")
