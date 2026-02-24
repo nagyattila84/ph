@@ -200,7 +200,7 @@ def page_controlpanel():
     
     st.sidebar.header("📊 Vezérlőpult")
       
-    #st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
     
     st.header("0. Saját árak feltöltése")
@@ -241,8 +241,6 @@ def page_controlpanel():
 
         with st.spinner("Árak letöltése folyamatban..."):
             price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-
-        st.set_page_config(layout="wide")
         
         col1, col2 = st.columns([1,2], vertical_alignment="bottom")
         with col1:
