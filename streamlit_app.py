@@ -208,26 +208,26 @@ def page_controlpanel():
 
     st.header("1. Árak letöltése")
     st.write("Termék árak letöltése konkurens oldalakról.")
-    st.write("Webáruházak kijelölése:")
-        
-    shops = dm.read_data("webshops", order_by="id", descending=False)
-    
-    # hozzáadunk egy kijelölő oszlopot
-    if "selector_shops" not in st.session_state:
-        shops.insert(0, "selected", False)
-        st.session_state.selector_shops = shops
-
-    shops = st.data_editor(
-        st.session_state.selector_shops,
-        column_config={
-            "selected": "Kiválasztva",
-            "name": "Webáruház neve",
-            "base_url": "Link",
-            "company": "Cégnév"
-        },
-        use_container_width=False
-    )
     with st.form("search_form"):
+        st.write("Webáruházak kijelölése:")
+            
+        shops = dm.read_data("webshops", order_by="id", descending=False)
+        
+        # hozzáadunk egy kijelölő oszlopot
+        if "selector_shops" not in st.session_state:
+            shops.insert(0, "selected", False)
+            st.session_state.selector_shops = shops
+
+        shops = st.data_editor(
+            st.session_state.selector_shops,
+            column_config={
+                "selected": "Kiválasztva",
+                "name": "Webáruház neve",
+                "base_url": "Link",
+                "company": "Cégnév"
+            },
+            use_container_width=False
+        )
 
         keyword = st.text_input("Keresőszó", width=200)
 
