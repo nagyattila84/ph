@@ -248,7 +248,10 @@ def page_controlpanel():
             
             r = dm.save_raw_products_prices(st.session_state.scraped_prices)
             del st.session_state.scraped_prices
-            st.success(r)
+            if result["success"]:
+                st.success(f"✅ {result['count']} termék sikeresen mentve.")
+            else:
+                st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
     
 
     st.header("2.Termék párosítás")
