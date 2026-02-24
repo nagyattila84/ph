@@ -18,10 +18,6 @@ class SupaBaseDataManager:
     #    ha VAN -> felülírja, de nem duplikálja 
     def save_raw_products_prices(self, df):
 
-        today = date.today().isoformat()
-
-        df["collected_at"] = today
-
         data = df.to_dict(orient="records")
 
         response = self.client.table("raw_products") \
