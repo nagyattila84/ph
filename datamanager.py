@@ -18,16 +18,27 @@ class SupaBaseDataManager:
     #    ha VAN -> felülírja, de nem duplikálja 
     def save_raw_products_prices(self, df):
 
-        data = df.to_dict(orient="records")
+        try:
+            data = df.to_dict(orient="records")
 
-        response = self.client.table("raw_products") \
-            .upsert(
-                data,
-                on_conflict="webshop_id,sku,scraped_date"
-            ) \
-            .execute()
+            response = self.client.table("raw_products") \
+                .upsert(data, on_conflict="webshop_id,sku,scraped_date") \
+                .execute()
 
-        return response
+            inserted_count = len(response.data) if response.data else 0
+
+            return {
+                "success": True,
+                "count": inserted_count,
+                "error": None
+            }
+
+        except Exception as e:
+            return {
+                "success": False,
+                "count": 0,
+                "error": str(e)
+            }
 
     def count_rows(self, table_name: str, filters: dict = None):
         if not self.client:
