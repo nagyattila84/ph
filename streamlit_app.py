@@ -243,7 +243,7 @@ def page_controlpanel():
         button2 = st.button("Árak mentése adatbázisba", type="primary")
         if button2:
             r = dm.save_raw_products_prices(price)
-            st.write(r)
+            st.success(r)
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
