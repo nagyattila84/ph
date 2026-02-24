@@ -87,7 +87,9 @@ class ProductMatcher:
         return None, best_score
 
     # Tömeges párosítás
-    def match_products(self, products_df, clusters_df):
+    def match_products(self, products_df, clusters_df, th = None):
+        if th:
+            threshold = th
         product_type = None
 
         if clusters_df is None or clusters_df.empty:
