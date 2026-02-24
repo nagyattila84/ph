@@ -207,9 +207,9 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
     st.header("1. Árak letöltése")
-    st.write("Termék árak letöltése konkurens oldalakról.")
-    with st.form("search_form"):
-        st.write("Webáruházak kijelölése:")
+    expander_download = st.expander("Termék árak letöltése konkurens oldalakról")
+    with expander_download.form("search_form"):
+        expander_download.write("Webáruházak kijelölése:")
             
         shops = dm.read_data("webshops", order_by="id", descending=False)
         
