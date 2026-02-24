@@ -227,6 +227,22 @@ def page_controlpanel():
         },
         use_container_width=False
     )
+    with st.form("search_form"):
+
+        keyword = st.text_input("Keresőszó", width=200)
+
+        submitted = st.form_submit_button("Árak letöltése")
+
+    if submitted and keyword:
+
+        selected_shops = shops[shops["selected"]]
+
+        with st.spinner("Árak letöltése folyamatban..."):
+            price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
+
+        st.success("Kész!")
+        st.table(price)
+
     keyword = st.text_input("Keresőszó", width=200)
 
     if st.button("Árak letöltése", type="primary"):
