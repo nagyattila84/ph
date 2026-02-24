@@ -29,35 +29,6 @@ class SupaBaseDataManager:
 
         return response
 
-    # XXXXX ha a save_raw_products_prices működik akkor ezt lehet törölni!
-    def insert_products_from_df(self, df: pd.DataFrame):
-            #Upload scraped products from DataFrame into Supabase.
-
-            if df.empty:
-                print("⚠️ DataFrame is empty nothing to upload.")
-                return
-
-            now = datetime.utcnow().isoformat()
-
-            records = []
-
-            for _, row in df.iterrows():
-                records.append({
-                    "webshop_id": row.get("webshop_id"),
-                    "sku": row.get("sku"),
-                    "name": row.get("name"),
-                    "url": row.get("url"),
-                    "price": row.get("price"),
-                    "sale_price": row.get("price"),
-                    "scraped_date": now
-                })
-
-            # batch insert
-            result = self.client.table("raw_products").insert(records).execute()
-
-            print(f"✅ Uploaded {len(records)} products.")
-            return result
-
     def count_rows(self, table_name: str, filters: dict = None):
         if not self.client:
             print("Supabase client not initialized.")
