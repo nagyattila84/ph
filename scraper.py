@@ -105,7 +105,7 @@ class Scraper():
         url = shop["search_url"].replace("SEARCH_WORD", search_word)
     
         #mai dátum megy a táblázatba, hogy visszakereshető egyen
-        scraped_date_date = date.today().isoformat()
+        current_date = date.today().isoformat()
     
         # Lekérjük a weboldal HTML tartalmát
         response = requests.get(url)
@@ -175,10 +175,10 @@ class Scraper():
             else:
                 sale_price = None
     
-            data.append([shop["id"], sku, name, url, price, sale_price, scraped_date])
+            data.append([shop["id"], sku, name, url, price, sale_price, current_date])
     
         # Létrehozunk egy pandas DataFrame-et az adatokból
-        df = pd.DataFrame(data, columns=["webshop_id", "sku","name", "url", "price", "sale_price"])
+        df = pd.DataFrame(data, columns=["webshop_id", "sku","name", "url", "price", "sale_price", "scraped_date"])
     
         # Megjelenítjük/visszaadjuk a táblázatot
         return df
