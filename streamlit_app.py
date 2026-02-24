@@ -238,6 +238,7 @@ def page_controlpanel():
 
             with st.spinner("Árak letöltése folyamatban..."):
                 price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
+            st.session_state.scraped_prices = price
             st.success("Kész!")
             
             expander = st.expander("Árak megtekintése")
