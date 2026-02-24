@@ -4,7 +4,7 @@ from supabase import create_client, Client
 
 # @title
 class SupaBaseDataManager:
-  def __init__(self, url, key):
+    def __init__(self, url, key):
     try:
         self.client = create_client(url, key)
         print("Successfully connected to Supabase.")
@@ -13,35 +13,56 @@ class SupaBaseDataManager:
         self.client = None
 
 
-  def insert_products_from_df(self, df: pd.DataFrame):
-          #Upload scraped products from DataFrame into Supabase.
+    # UPSERT - adatbázis ellenőrzi, van-e ilyen webshop_id+sku+scraped_date
+    #    ha NINCS ->beilleszti
+    #    ha VAN -> felülírja, de nem duplikálja 
+    def save_raw_products_prices(self, df):
 
-          if df.empty:
-              print("⚠️ DataFrame is empty – nothing to upload.")
-              return
+        today = date.today().isoformat()
 
-          now = datetime.utcnow().isoformat()
+        df["collected_at"] = today
 
-          records = []
+        data = df.to_dict(orient="records")
 
-          for _, row in df.iterrows():
-              records.append({
-                  "webshop_id": row.get("webshop_id"),
-                  "sku": row.get("sku"),
-                  "name": row.get("name"),
-                  "url": row.get("url"),
-                  "price": row.get("price"),
-                  "sale_price": row.get("price"),
-                  "scraped_date": now
-              })
+        response = self.client.table("raw_products") \
+            .upsert(
+                data,
+                on_conflict="webshop_id,sku,scraped_date"
+            ) \
+            .execute()
 
-          # batch insert
-          result = self.client.table("raw_products").insert(records).execute()
+        return response
 
-          print(f"✅ Uploaded {len(records)} products.")
-          return result
+    # XXXXX ha a save_raw_products_prices működik akkor ezt lehet törölni!
+    def insert_products_from_df(self, df: pd.DataFrame):
+            #Upload scraped products from DataFrame into Supabase.
 
-  def count_rows(self, table_name: str, filters: dict = None):
+            if df.empty:
+                print("⚠️ DataFrame is empty nothing to upload.")
+                return
+
+            now = datetime.utcnow().isoformat()
+
+            records = []
+
+            for _, row in df.iterrows():
+                records.append({
+                    "webshop_id": row.get("webshop_id"),
+                    "sku": row.get("sku"),
+                    "name": row.get("name"),
+                    "url": row.get("url"),
+                    "price": row.get("price"),
+                    "sale_price": row.get("price"),
+                    "scraped_date": now
+                })
+
+            # batch insert
+            result = self.client.table("raw_products").insert(records).execute()
+
+            print(f"✅ Uploaded {len(records)} products.")
+            return result
+
+    def count_rows(self, table_name: str, filters: dict = None):
     if not self.client:
         print("Supabase client not initialized.")
         return None
@@ -55,8 +76,8 @@ class SupaBaseDataManager:
 
     return response.count
 
-  #csak 1000 rekordig működik
-  def read_data(
+    #csak 1000 rekordig működik
+    def read_data(
     self,
     table_name: str,
     query: dict = None,
@@ -95,41 +116,41 @@ class SupaBaseDataManager:
         print(f"Error reading data from Supabase table '{table_name}': {e}")
         return None
 
-  def read_webshops_from_db(self, table_name="webshops"):
-      """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
-      data = self.read_data(table_name)
-      if not data:
-          return []
+    def read_webshops_from_db(self, table_name="webshops"):
+        """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
+        data = self.read_data(table_name)
+        if not data:
+            return []
 
-      webshops = []
-      for item in data:
-          try:
-              webshop = Webshop(
-                  id=int(item.get('id')) if item.get('id') is not None else 0,
-                  name=item.get('name') if item.get('name') is not None else '',
-                  base_url=item.get('base_url') if item.get('base_url') is not None else '',
-                  search_url=item.get('search_url') if item.get('search_url') is not None else '',
-                  company=item.get('company') if item.get('company') is not None else '',
-                  product_container_selector=item.get('product_container_selector') if item.get('product_container_selector') is not None else '',
-                  product_container_class=item.get('product_container_class') if item.get('product_container_class') is not None else '',
-                  name_selector=item.get('name_selector') if item.get('name_selector') is not None else '',
-                  name_class=item.get('name_class') if item.get('name_class') is not None else '',
-                  sku_selector=item.get('sku_selector'),
-                  sku_class=item.get('sku_class'),
-                  sku_attr=item.get('sku_attr'),
-                  link_selector=item.get('link_selector') if item.get('link_selector') is not None else '',
-                  link_class=item.get('link_class') if item.get('link_class') is not None else '',
-                  price_selector=item.get('price_selector') if item.get('price_selector') is not None else '',
-                  price_class=item.get('price_class') if item.get('price_class') is not None else '',
-                  sale_price_selector=item.get('sale_price_selector'),
-                  sale_price_class=item.get('sale_price_class')
-              )
-              webshops.append(webshop)
-          except (ValueError, TypeError, KeyError) as e:
-              print(f"Error creating Webshop object from data: {item}. Skipping. Error: {e}")
-      return webshops
+        webshops = []
+        for item in data:
+            try:
+                webshop = Webshop(
+                    id=int(item.get('id')) if item.get('id') is not None else 0,
+                    name=item.get('name') if item.get('name') is not None else '',
+                    base_url=item.get('base_url') if item.get('base_url') is not None else '',
+                    search_url=item.get('search_url') if item.get('search_url') is not None else '',
+                    company=item.get('company') if item.get('company') is not None else '',
+                    product_container_selector=item.get('product_container_selector') if item.get('product_container_selector') is not None else '',
+                    product_container_class=item.get('product_container_class') if item.get('product_container_class') is not None else '',
+                    name_selector=item.get('name_selector') if item.get('name_selector') is not None else '',
+                    name_class=item.get('name_class') if item.get('name_class') is not None else '',
+                    sku_selector=item.get('sku_selector'),
+                    sku_class=item.get('sku_class'),
+                    sku_attr=item.get('sku_attr'),
+                    link_selector=item.get('link_selector') if item.get('link_selector') is not None else '',
+                    link_class=item.get('link_class') if item.get('link_class') is not None else '',
+                    price_selector=item.get('price_selector') if item.get('price_selector') is not None else '',
+                    price_class=item.get('price_class') if item.get('price_class') is not None else '',
+                    sale_price_selector=item.get('sale_price_selector'),
+                    sale_price_class=item.get('sale_price_class')
+                )
+                webshops.append(webshop)
+            except (ValueError, TypeError, KeyError) as e:
+                print(f"Error creating Webshop object from data: {item}. Skipping. Error: {e}")
+        return webshops
 
-  def process_matches_batch(self, df, batch=300):
+    def process_matches_batch(self, df, batch=300):
 
     df = df.astype(object).where(pd.notnull(df), None)
 
@@ -144,8 +165,8 @@ class SupaBaseDataManager:
 
     print("Clusters synced.")
 
-  #df- result of matches in DataFrame with batch
-  def process_matches(self, df):
+    #df- result of matches in DataFrame with batch
+    def process_matches(self, df):
 
     # ÚJ CLUSTEREK
     new_clusters = df[df["is_new_cluster"] == True]
@@ -193,7 +214,7 @@ class SupaBaseDataManager:
 
     print(f"Saved {len(match_rows)} matches.")
 
-  def get_clusters(self, keyword):
+    def get_clusters(self, keyword):
     kw = keyword.lower()
 
     response = (
@@ -206,7 +227,7 @@ class SupaBaseDataManager:
 
     return pd.DataFrame(response.data)
 
-  def get_products_by_keyword(self, keyword):
+    def get_products_by_keyword(self, keyword):
 
     # matching clusters
     clusters = (
