@@ -65,7 +65,7 @@ def page_dashboard():
     st.plotly_chart(fig, use_container_width=True)
 
     st.table(dm.get_view("webshop_product_stats"))
-    st.bar_chart(dm.get_view("webshop_product_stats"))
+    st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count")
     #x="year", y="yield", color="site", stack=False
 
 def page_search():
