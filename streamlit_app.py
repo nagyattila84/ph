@@ -227,34 +227,6 @@ def page_controlpanel():
         use_container_width=False
     )
 
-    keyword = st.text_input("Keresőszó")
-
-    if st.button("Árak letöltése", type="primary"):
-        if not keyword.strip():
-            st.warning("Add meg a keresőszót!")
-        else:
-            selected_shops = shops[shops["selected"]]
-
-            with st.spinner("Árak letöltése folyamatban..."):
-                price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-            st.session_state.scraped_prices = price
-            st.success("Kész!")
-    
-    if "scraped_prices" in st.session_state:
-        expander = st.expander("Árak megtekintése")
-        expander.table(st.session_state.scraped_prices)
-    
-        if st.button("Árak mentése adatbázisba", type="primary"):
-            
-            result = dm.save_raw_products_prices(st.session_state.scraped_prices)
-            if result["success"]:
-                st.success(f"✅ {result['count']} termék sikeresen mentve.")
-            else:
-                st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
-            del st.session_state.scraped_prices
-    
-
-    st.header("2.Termék párosítás")
     with st.form("price_form"):
 
         keyword = st.text_input("Keresőszó")
@@ -270,6 +242,39 @@ def page_controlpanel():
 
         st.session_state.scraped_prices = price
         st.success("Letöltés kész!")
+    
+    if "scraped_prices" in st.session_state:
+
+        st.dataframe(st.session_state.scraped_prices)
+
+        if st.button("💾 Árak mentése adatbázisba", type="primary"):
+
+            with st.spinner("Mentés folyamatban..."):
+
+                result = dm.save_raw_products_prices(
+                    st.session_state.scraped_prices
+                )
+
+            if result["success"]:
+                st.success(f"✅ {result['count']} termék mentve.")
+            else:
+                st.error(f"❌ Hiba: {result['error']}")
+
+    if "scraped_prices" in st.session_state:
+        expander = st.expander("Árak megtekintése")
+        expander.table(st.session_state.scraped_prices)
+    
+        if st.button("Árak mentése adatbázisba", type="primary"):
+            
+            result = dm.save_raw_products_prices(st.session_state.scraped_prices)
+            if result["success"]:
+                st.success(f"✅ {result['count']} termék sikeresen mentve.")
+            else:
+                st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
+            del st.session_state.scraped_prices
+    
+
+    st.header("2.Termék párosítás")
 
 
     st.header("3.Árak összehasonlítása")
