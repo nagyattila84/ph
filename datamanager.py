@@ -5,12 +5,12 @@ from supabase import create_client, Client
 # @title
 class SupaBaseDataManager:
     def __init__(self, url, key):
-    try:
-        self.client = create_client(url, key)
-        print("Successfully connected to Supabase.")
-    except Exception as e:
-        print(f"Error connecting to Supabase: {e}")
-        self.client = None
+        try:
+            self.client = create_client(url, key)
+            print("Successfully connected to Supabase.")
+        except Exception as e:
+            print(f"Error connecting to Supabase: {e}")
+            self.client = None
 
 
     # UPSERT - adatbázis ellenőrzi, van-e ilyen webshop_id+sku+scraped_date
