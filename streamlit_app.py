@@ -64,6 +64,9 @@ def page_dashboard():
     fig = px.pie(df, names="type", values="count", hole=0.4)
     st.plotly_chart(fig, use_container_width=True)
 
+    stats = dm.get_webshop_product_stats()
+    st.dataframe(stats)
+
 def page_search():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
     pa = PriceAnalyst(dm)
