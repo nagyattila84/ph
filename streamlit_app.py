@@ -257,10 +257,8 @@ def page_controlpanel():
             else:
                 st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
             del st.session_state.scraped_prices
-    
 
     st.header("2.Termék párosítás")
-
 
     st.header("3.Árak összehasonlítása")
     
