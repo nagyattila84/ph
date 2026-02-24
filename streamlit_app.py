@@ -228,6 +228,16 @@ def page_controlpanel():
             },
             use_container_width=False
         )
+        col1, col2, col3 = st.columns([1, 1, 1])
+
+        with col1:
+            st.write("Keresőszó:")
+
+        with col2:
+            keyword = st.text_input("", label_visibility="collapsed")
+        
+        with col3:
+            submitted = st.form_submit_button("Árak letöltése", type="primary")
 
         keyword = st.text_input("Keresőszó", width=200)
 
