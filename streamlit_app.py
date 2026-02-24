@@ -228,8 +228,8 @@ def page_controlpanel():
             },
             use_container_width=False
         )
+        
         col1, col2 = st.columns(2, vertical_alignment="bottom")
-
         with col1:
             keyword = st.text_input("Keresőszó", width=200)
 
@@ -237,7 +237,6 @@ def page_controlpanel():
             submitted = st.form_submit_button("Árak letöltése", type="primary")
 
     if submitted and keyword:
-
         selected_shops = shops[shops["selected"]]
 
         with st.spinner("Árak letöltése folyamatban..."):
@@ -245,9 +244,9 @@ def page_controlpanel():
 
         st.set_page_config(layout="wide")
         st.success("Kész!")
-        expander = st.expander("Eredmény")
+        expander = st.expander("Eredmény megtekintése")
         expander.table(price)
-        st.table(price)
+    
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
