@@ -261,6 +261,8 @@ def page_controlpanel():
             del st.session_state.scraped_prices
 
     st.header("2.Termék párosítás")
+    threshold = st.slider("Minimum score?", 0, 100, 80)
+    st.write("A párosításhoz", threshold, "years old")
 
     st.header("3.Árak összehasonlítása")
        
