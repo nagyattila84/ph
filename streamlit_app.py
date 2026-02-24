@@ -246,12 +246,12 @@ def page_controlpanel():
     
         if st.button("Árak mentése adatbázisba", type="primary"):
             
-            r = dm.save_raw_products_prices(st.session_state.scraped_prices)
-            del st.session_state.scraped_prices
+            result = dm.save_raw_products_prices(st.session_state.scraped_prices)
             if result["success"]:
                 st.success(f"✅ {result['count']} termék sikeresen mentve.")
             else:
                 st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
+            del st.session_state.scraped_prices
     
 
     st.header("2.Termék párosítás")
