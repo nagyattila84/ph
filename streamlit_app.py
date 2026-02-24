@@ -240,14 +240,16 @@ def page_controlpanel():
                 price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
             st.session_state.scraped_prices = price
             st.success("Kész!")
-            
-            expander = st.expander("Árak megtekintése")
-            expander.table(price)
     
-    button2 = st.button("Árak mentése adatbázisba", type="primary")
-    if button2:
-        r = dm.save_raw_products_prices(price)
-        st.success(r)
+    if "scraped_prices" in st.session_state:
+        expander = st.expander("Árak megtekintése")
+        expander.table(st.session_state.scraped_prices)
+    
+        if st.button("Árak mentése adatbázisba", type="primary")
+            
+            r = dm.save_raw_products_prices(price)
+            st.success(r)
+    
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
