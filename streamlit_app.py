@@ -207,50 +207,41 @@ def page_controlpanel():
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
     st.header("1. Árak letöltése")
-    expander_download = st.expander("Termék árak letöltése konkurens oldalakról")
-    expander_download.write("Webáruházak kijelölése:")
-    with expander_download.form("search_form"):
-            
-        shops = dm.read_data("webshops", order_by="id", descending=False)
+    st.write("Webáruházak kijelölése:")
+         
+    shops = dm.read_data("webshops", order_by="id", descending=False)    
+   
+    # hozzáadunk egy kijelölő oszlopot
+    if "selector_shops" not in st.session_state:
+        shops.insert(0, "selected", False)
+        st.session_state.selector_shops = shops
+
+    shops = st.data_editor(
+        st.session_state.selector_shops,
+        column_config={
+            "selected": "Kiválasztva",
+            "name": "Webáruház neve",
+            "base_url": "Link",
+            "company": "Cégnév"
+        },
+        use_container_width=False
+    )
+
+    keyword = st.text_input("Keresőszó")
+
+    button = st.button("Árak letöltése", type="primary")
+
+    if button and keyword:
+        selected_shops = shops[shops["selected"]]
+
+        with st.spinner("Árak letöltése folyamatban..."):
+            price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
+        st.success("Kész!")
         
-        # hozzáadunk egy kijelölő oszlopot
-        if "selector_shops" not in st.session_state:
-            shops.insert(0, "selected", False)
-            st.session_state.selector_shops = shops
-
-        shops = st.data_editor(
-            st.session_state.selector_shops,
-            column_config={
-                "selected": "Kiválasztva",
-                "name": "Webáruház neve",
-                "base_url": "Link",
-                "company": "Cégnév"
-            },
-            use_container_width=False
-        )
-
-        col1, col2 = st.columns([1,2], vertical_alignment="bottom")
-        with col1:
-            keyword = st.text_input("Keresőszó")
-
-        with col2:
-            submitted = st.form_submit_button("Árak letöltése", type="primary")
-
-        if submitted and keyword:
-            selected_shops = shops[shops["selected"]]
-
-            with st.spinner("Árak letöltése folyamatban..."):
-                price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-            
-            col1, col2 = st.columns([1,2], vertical_alignment="bottom")
-            with col1:
-                st.success("Kész!")
-            with col2:
-                button = st.button("Árak mentése adatbázisba", type="primary")
-            
-            expander = st.expander("Árak megtekintése")
-            expander.table(price)
+        expander = st.expander("Árak megtekintése")
+        expander.table(price)
     
+        button = st.button("Árak mentése adatbázisba", type="primary")
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
