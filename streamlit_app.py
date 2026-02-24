@@ -208,8 +208,8 @@ def page_controlpanel():
 
     st.header("1. Árak letöltése")
     expander_download = st.expander("Termék árak letöltése konkurens oldalakról")
+    expander_download.write("Webáruházak kijelölése:")
     with expander_download.form("search_form"):
-        expander_download.write("Webáruházak kijelölése:")
             
         shops = dm.read_data("webshops", order_by="id", descending=False)
         
