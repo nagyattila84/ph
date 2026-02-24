@@ -246,7 +246,7 @@ def page_controlpanel():
     
         if st.button("Árak mentése adatbázisba", type="primary"):
             
-            r = dm.save_raw_products_prices(price)
+            r = dm.save_raw_products_prices(st.session_state.scraped_prices)
             st.success(r)
     
 
