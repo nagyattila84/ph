@@ -1,7 +1,7 @@
 import re
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import date
 from bs4 import BeautifulSoup
 
 #formazott uzenetek
@@ -105,7 +105,7 @@ class Scraper():
         url = shop["search_url"].replace("SEARCH_WORD", search_word)
     
         #mai dátum megy a táblázatba, hogy visszakereshető egyen
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        scraped_date_date = date.today().isoformat()
     
         # Lekérjük a weboldal HTML tartalmát
         response = requests.get(url)
@@ -175,7 +175,7 @@ class Scraper():
             else:
                 sale_price = None
     
-            data.append([shop["id"], sku, name, url, price, sale_price])
+            data.append([shop["id"], sku, name, url, price, sale_price, scraped_date])
     
         # Létrehozunk egy pandas DataFrame-et az adatokból
         df = pd.DataFrame(data, columns=["webshop_id", "sku","name", "url", "price", "sale_price"])
