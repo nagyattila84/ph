@@ -239,7 +239,7 @@ def page_controlpanel():
 
         with st.spinner("Árak letöltése folyamatban..."):
             price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-            downloaded_count = len(price) if price else 0
+            downloaded_count = len(price)
         st.session_state.scraped_prices = price
         st.success("Letöltés kész!")
 
