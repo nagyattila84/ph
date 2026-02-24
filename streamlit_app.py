@@ -228,7 +228,7 @@ def page_controlpanel():
             },
             use_container_width=False
         )
-        col1, col2, col3 = st.columns([1, 1, 1])
+        col1, col2, col3 = st.columns(3, gap="small", width="stretch")
 
         with col1:
             st.write("Keresőszó:")
