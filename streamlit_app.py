@@ -230,7 +230,7 @@ def page_controlpanel():
     keyword = st.text_input("Keresőszó")
 
     button1 = st.button("Árak letöltése", type="primary")
-    if button1 and keyword:
+    if button1 and keyword.strip():
         selected_shops = shops[shops["selected"]]
 
         with st.spinner("Árak letöltése folyamatban..."):
