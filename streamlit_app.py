@@ -236,20 +236,20 @@ def page_controlpanel():
         with col2:
             submitted = st.form_submit_button("Árak letöltése", type="primary")
 
-    if submitted and keyword:
-        selected_shops = shops[shops["selected"]]
+        if submitted and keyword:
+            selected_shops = shops[shops["selected"]]
 
-        with st.spinner("Árak letöltése folyamatban..."):
-            price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-        
-        col1, col2 = st.columns([1,2], vertical_alignment="bottom")
-        with col1:
-            st.success("Kész!")
-        with col2:
-            button = st.button("Árak mentése adatbázisba", type="primary")
-        
-        expander = st.expander("Árak megtekintése")
-        expander.table(price)
+            with st.spinner("Árak letöltése folyamatban..."):
+                price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
+            
+            col1, col2 = st.columns([1,2], vertical_alignment="bottom")
+            with col1:
+                st.success("Kész!")
+            with col2:
+                button = st.button("Árak mentése adatbázisba", type="primary")
+            
+            expander = st.expander("Árak megtekintése")
+            expander.table(price)
     
 
     st.header("2.Termék párosítás")
