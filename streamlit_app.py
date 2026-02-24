@@ -244,7 +244,7 @@ def page_controlpanel():
         expander = st.expander("Árak megtekintése")
         expander.table(st.session_state.scraped_prices)
     
-        if st.button("Árak mentése adatbázisba", type="primary")
+        if st.button("Árak mentése adatbázisba", type="primary"):
             
             r = dm.save_raw_products_prices(price)
             st.success(r)
