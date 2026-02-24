@@ -232,7 +232,7 @@ def page_controlpanel():
     button1 = st.button("Árak letöltése", type="primary")
     if button1:
         if not keyword.strip():
-            st.warn("Add meg a keresőszót!")
+            st.warning("Add meg a keresőszót!")
         selected_shops = shops[shops["selected"]]
 
         with st.spinner("Árak letöltése folyamatban..."):
