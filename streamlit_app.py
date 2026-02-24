@@ -229,8 +229,7 @@ def page_controlpanel():
 
     keyword = st.text_input("Keresőszó")
 
-    button1 = st.button("Árak letöltése", type="primary")
-    if button1:
+    if st.button("Árak letöltése", type="primary"):
         if not keyword.strip():
             st.warning("Add meg a keresőszót!")
         else:
