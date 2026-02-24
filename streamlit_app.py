@@ -245,6 +245,8 @@ def page_controlpanel():
 
         st.set_page_config(layout="wide")
         st.success("Kész!")
+        expander = st.expander("Eredmény")
+        expander.table(price)
         st.table(price)
 
     st.header("2.Termék párosítás")
