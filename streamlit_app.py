@@ -255,6 +255,23 @@ def page_controlpanel():
     
 
     st.header("2.Termék párosítás")
+    with st.form("price_form"):
+
+        keyword = st.text_input("Keresőszó")
+
+        submitted = st.form_submit_button("🔍 Árak letöltése")
+
+    if submitted and keyword:
+
+        selected_shops = shops[shops["selected"]]
+
+        with st.spinner("Árak letöltése folyamatban..."):
+            price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
+
+        st.session_state.scraped_prices = price
+        st.success("Letöltés kész!")
+
+
     st.header("3.Árak összehasonlítása")
     
     
