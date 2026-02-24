@@ -228,7 +228,7 @@ def page_controlpanel():
             },
             use_container_width=False
         )
-        
+
         col1, col2 = st.columns(2, vertical_alignment="bottom")
         with col1:
             keyword = st.text_input("Keresőszó", width=200)
@@ -243,7 +243,13 @@ def page_controlpanel():
             price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
 
         st.set_page_config(layout="wide")
-        st.success("Kész!")
+        
+        col1, col2 = st.columns(2, vertical_alignment="bottom")
+        with col1:
+            st.success("Kész!")
+        with col2:
+            button = st.button("Árak mentése adatbázisba", type="primary")
+        
         expander = st.expander("Eredmény megtekintése")
         expander.table(price)
     
