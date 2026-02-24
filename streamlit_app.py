@@ -231,7 +231,7 @@ def page_controlpanel():
 
         keyword = st.text_input("Keresőszó", width=200)
 
-        submitted = st.form_submit_button("Árak letöltése")
+        submitted = st.form_submit_button("Árak letöltése", type="primary")
 
     if submitted and keyword:
 
