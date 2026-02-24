@@ -64,7 +64,7 @@ def page_dashboard():
     fig = px.pie(df, names="type", values="count", hole=0.4)
     st.plotly_chart(fig, use_container_width=True)
 
-    st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort=True)
+    st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort="product_count")
 
 def page_search():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
