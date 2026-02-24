@@ -239,34 +239,19 @@ def page_controlpanel():
 
         with st.spinner("Árak letöltése folyamatban..."):
             price = sc.get_price_from_multi_webshop_df(selected_shops, keyword)
-
+            downloaded_count = len(price) if price else 0
         st.session_state.scraped_prices = price
         st.success("Letöltés kész!")
-    
-    if "scraped_prices" in st.session_state:
-
-        st.dataframe(st.session_state.scraped_prices)
-
-        if st.button("💾 Árak mentése adatbázisba", type="primary"):
-
-            with st.spinner("Mentés folyamatban..."):
-
-                result = dm.save_raw_products_prices(
-                    st.session_state.scraped_prices
-                )
-
-            if result["success"]:
-                st.success(f"✅ {result['count']} termék mentve.")
-            else:
-                st.error(f"❌ Hiba: {result['error']}")
 
     if "scraped_prices" in st.session_state:
         expander = st.expander("Árak megtekintése")
         expander.table(st.session_state.scraped_prices)
     
-        if st.button("Árak mentése adatbázisba", type="primary"):
+        if st.button("💾 Árak mentése adatbázisba", type="primary"):
             
-            result = dm.save_raw_products_prices(st.session_state.scraped_prices)
+            with st.spinner("Mentés folyamatban..."):
+                result = dm.save_raw_products_prices(st.session_state.scraped_prices)
+
             if result["success"]:
                 st.success(f"✅ {result['count']} termék sikeresen mentve.")
             else:
