@@ -17,3 +17,10 @@ class Statistic:
     def count_raw_products(self, filters=None):
         return self.dm.count_rows("raw_products", filters)
 
+    def get_view(self, view):
+        response = self.client.table(view) \
+            .select("*") \
+            .execute()
+
+        return pd.DataFrame(response.data)
+

@@ -12,6 +12,12 @@ class SupaBaseDataManager:
             print(f"Error connecting to Supabase: {e}")
             self.client = None
 
+    def get_view(self, view):
+        response = self.client.table(view) \
+            .select("*") \
+            .execute()
+
+        return pd.DataFrame(response.data)
 
     # UPSERT - adatbázis ellenőrzi, van-e ilyen webshop_id+sku+scraped_date
     #    ha NINCS ->beilleszti

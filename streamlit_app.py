@@ -261,8 +261,7 @@ def page_controlpanel():
     st.header("2.Termék párosítás")
 
     st.header("3.Árak összehasonlítása")
-    
-    
+       
 
 def page_settings():
     st.header("⚙️ Beállítások")
