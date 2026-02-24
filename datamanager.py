@@ -63,58 +63,58 @@ class SupaBaseDataManager:
             return result
 
     def count_rows(self, table_name: str, filters: dict = None):
-    if not self.client:
-        print("Supabase client not initialized.")
-        return None
+        if not self.client:
+            print("Supabase client not initialized.")
+            return None
 
-    query = self.client.table(table_name).select("*", count="exact")
+        query = self.client.table(table_name).select("*", count="exact")
 
-    if filters:
-        query = query.match(filters)
+        if filters:
+            query = query.match(filters)
 
-    response = query.execute()
+        response = query.execute()
 
-    return response.count
+        return response.count
 
     #csak 1000 rekordig működik
     def read_data(
-    self,
-    table_name: str,
-    query: dict = None,
-    columns: list = None,
-    order_by: str = None,
-    descending: bool = False
-    ):
-    # Reads data from a specified Supabase table (extended)
+        self,
+        table_name: str,
+        query: dict = None,
+        columns: list = None,
+        order_by: str = None,
+        descending: bool = False
+        ):
+        # Reads data from a specified Supabase table (extended)
 
-    if not self.client:
-        print("SupaBase client not initialized. Cannot read data.")
-        return None
+        if not self.client:
+            print("SupaBase client not initialized. Cannot read data.")
+            return None
 
-    try:
-        # oszlopok
-        select_cols = "*"
-        if columns:
-            select_cols = ",".join(columns)
+        try:
+            # oszlopok
+            select_cols = "*"
+            if columns:
+                select_cols = ",".join(columns)
 
-        qb = self.client.table(table_name).select(select_cols)
+            qb = self.client.table(table_name).select(select_cols)
 
-        # where (régi query param megmarad!)
-        if query:
-            qb = qb.match(query)
+            # where (régi query param megmarad!)
+            if query:
+                qb = qb.match(query)
 
-        # order by (új)
-        if order_by:
-            qb = qb.order(order_by, desc=descending)
+            # order by (új)
+            if order_by:
+                qb = qb.order(order_by, desc=descending)
 
-        response = qb.execute()
+            response = qb.execute()
 
-        print(f"Successfully read data from table '{table_name}'.")
-        return pd.DataFrame(response.data)
+            print(f"Successfully read data from table '{table_name}'.")
+            return pd.DataFrame(response.data)
 
-    except Exception as e:
-        print(f"Error reading data from Supabase table '{table_name}': {e}")
-        return None
+        except Exception as e:
+            print(f"Error reading data from Supabase table '{table_name}': {e}")
+            return None
 
     def read_webshops_from_db(self, table_name="webshops"):
         """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
@@ -152,135 +152,135 @@ class SupaBaseDataManager:
 
     def process_matches_batch(self, df, batch=300):
 
-    df = df.astype(object).where(pd.notnull(df), None)
+        df = df.astype(object).where(pd.notnull(df), None)
 
-    for i in range(0, len(df), batch):
-        batch_df = df.iloc[i : i + batch].copy()
-        self.process_matches(batch_df)
+        for i in range(0, len(df), batch):
+            batch_df = df.iloc[i : i + batch].copy()
+            self.process_matches(batch_df)
 
-    print("All batches processed.")
+        print("All batches processed.")
 
-    self.client.rpc("sync_raw_clusters").execute()
-    self.client.rpc("sync_own_clusters").execute()
+        self.client.rpc("sync_raw_clusters").execute()
+        self.client.rpc("sync_own_clusters").execute()
 
-    print("Clusters synced.")
+        print("Clusters synced.")
 
     #df- result of matches in DataFrame with batch
     def process_matches(self, df):
 
-    # ÚJ CLUSTEREK
-    new_clusters = df[df["is_new_cluster"] == True]
+        # ÚJ CLUSTEREK
+        new_clusters = df[df["is_new_cluster"] == True]
 
-    if not new_clusters.empty:
+        if not new_clusters.empty:
 
-        insert_payload = []
+            insert_payload = []
 
-        for _, row in new_clusters.iterrows():
-            insert_payload.append({
-                "name": row["cluster_name"]
+            for _, row in new_clusters.iterrows():
+                insert_payload.append({
+                    "name": row["cluster_name"]
+                })
+
+            res = self.client.table("clusters").insert(insert_payload).execute()
+
+            returned = res.data
+
+            # cluster_name → id mapping
+            mapping = {
+                r["name"]: r["id"]
+                for r in returned
+            }
+
+            # visszatöltjük DF-be
+            for i in df.index:
+                if df.at[i, "is_new_cluster"]:
+                    df.at[i, "cluster_id"] = mapping[df.at[i, "cluster_name"]]
+
+        # MATCH TABLE INSERT
+
+        df["product_id"] = df["product_id"].astype("Int64")
+        df["cluster_id"] = df["cluster_id"].astype("Int64")
+
+        match_rows = []
+
+        for _, row in df.iterrows():
+            match_rows.append({
+                "cluster_id": int(row["cluster_id"]),
+                "product_id": int(row["product_id"]),
+                "product_type": row["product_type"],
+                "score": float(row["score"]) if pd.notna(row["score"]) else None
             })
 
-        res = self.client.table("clusters").insert(insert_payload).execute()
+        self.client.table("product_cluster_links").insert(match_rows).execute()
 
-        returned = res.data
-
-        # cluster_name → id mapping
-        mapping = {
-            r["name"]: r["id"]
-            for r in returned
-        }
-
-        # visszatöltjük DF-be
-        for i in df.index:
-            if df.at[i, "is_new_cluster"]:
-                df.at[i, "cluster_id"] = mapping[df.at[i, "cluster_name"]]
-
-    # MATCH TABLE INSERT
-
-    df["product_id"] = df["product_id"].astype("Int64")
-    df["cluster_id"] = df["cluster_id"].astype("Int64")
-
-    match_rows = []
-
-    for _, row in df.iterrows():
-        match_rows.append({
-            "cluster_id": int(row["cluster_id"]),
-            "product_id": int(row["product_id"]),
-            "product_type": row["product_type"],
-            "score": float(row["score"]) if pd.notna(row["score"]) else None
-        })
-
-    self.client.table("product_cluster_links").insert(match_rows).execute()
-
-    print(f"Saved {len(match_rows)} matches.")
+        print(f"Saved {len(match_rows)} matches.")
 
     def get_clusters(self, keyword):
-    kw = keyword.lower()
+        kw = keyword.lower()
 
-    response = (
-        self.client
-        .table("clusters")
-        .select("*")
-        .ilike("name", f"%{kw}%")
-        .execute()
-    )
+        response = (
+            self.client
+            .table("clusters")
+            .select("*")
+            .ilike("name", f"%{kw}%")
+            .execute()
+        )
 
-    return pd.DataFrame(response.data)
+        return pd.DataFrame(response.data)
 
     def get_products_by_keyword(self, keyword):
 
-    # matching clusters
-    clusters = (
-        self.client
-        .table("clusters")
-        .select("id,name")
-        .ilike("name", f"%{keyword}%")
-        .execute()
-        .data
-    )
+        # matching clusters
+        clusters = (
+            self.client
+            .table("clusters")
+            .select("id,name")
+            .ilike("name", f"%{keyword}%")
+            .execute()
+            .data
+        )
 
-    if not clusters:
-        return pd.DataFrame(), pd.DataFrame()
+        if not clusters:
+            return pd.DataFrame(), pd.DataFrame()
 
-    cluster_ids = [c["id"] for c in clusters]
+        cluster_ids = [c["id"] for c in clusters]
 
-    # links
-    links = (
-        self.client
-        .table("product_cluster_links")
-        .select("cluster_id,product_id,product_type,score")
-        .in_("cluster_id", cluster_ids)
-        .execute()
-        .data
-    )
+        # links
+        links = (
+            self.client
+            .table("product_cluster_links")
+            .select("cluster_id,product_id,product_type,score")
+            .in_("cluster_id", cluster_ids)
+            .execute()
+            .data
+        )
 
-    if not links:
-        return pd.DataFrame(), pd.DataFrame()
+        if not links:
+            return pd.DataFrame(), pd.DataFrame()
 
-    links_df = pd.DataFrame(links)
+        links_df = pd.DataFrame(links)
 
-    # split
-    own_ids = links_df[links_df.product_type == "own"]["product_id"].tolist()
-    raw_ids = links_df[links_df.product_type == "raw"]["product_id"].tolist()
+        # split
+        own_ids = links_df[links_df.product_type == "own"]["product_id"].tolist()
+        raw_ids = links_df[links_df.product_type == "raw"]["product_id"].tolist()
 
-    # own products
-    own = (
-        self.client
-        .table("own_products")
-        .select("*")
-        .in_("id", own_ids)
-        .execute()
-        .data
-    )
+        # own products
+        own = (
+            self.client
+            .table("own_products")
+            .select("*")
+            .in_("id", own_ids)
+            .execute()
+            .data
+        )
 
-    # raw products
-    raw = (
-        self.client
-        .table("raw_products")
-        .select("*")
-        .in_("id", raw_ids)
-        .execute()
-        .data
-    )
-    return pd.DataFrame(own), pd.DataFrame(raw)
+        # raw products
+        raw = (
+            self.client
+            .table("raw_products")
+            .select("*")
+            .in_("id", raw_ids)
+            .execute()
+            .data
+        )
+        return pd.DataFrame(own), pd.DataFrame(raw)
 
