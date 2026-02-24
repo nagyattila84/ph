@@ -245,7 +245,7 @@ def page_controlpanel():
 
     keyword = st.text_input("Keresőszó", width=200)
 
-    if st.button("Árak letöltése", type="primary"):
+    if st.button("Árak letöltése", type="primary") or keyword:
         selected_shops = shops[shops["selected"]]
         
         with st.spinner("Árak letöltése folyamatban..."):
