@@ -231,7 +231,7 @@ def page_controlpanel():
 
         col1, col2 = st.columns([1,2], vertical_alignment="bottom")
         with col1:
-            keyword = st.text_input("Keresőszó", width=200)
+            keyword = st.text_input("Keresőszó")
 
         with col2:
             submitted = st.form_submit_button("Árak letöltése", type="primary")
@@ -250,7 +250,7 @@ def page_controlpanel():
         with col2:
             button = st.button("Árak mentése adatbázisba", type="primary")
         
-        expander = st.expander("Eredmény megtekintése")
+        expander = st.expander("Árak megtekintése")
         expander.table(price)
     
 
