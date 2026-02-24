@@ -89,7 +89,7 @@ class ProductMatcher:
     # Tömeges párosítás
     def match_products(self, products_df, clusters_df, th = None):
         if th:
-            threshold = th
+            self.threshold = th
         product_type = None
 
         if clusters_df is None or clusters_df.empty:
