@@ -229,9 +229,8 @@ def page_controlpanel():
 
     keyword = st.text_input("Keresőszó")
 
-    button = st.button("Árak letöltése", type="primary")
-
-    if button and keyword:
+    button1 = st.button("Árak letöltése", type="primary")
+    if button1 and keyword:
         selected_shops = shops[shops["selected"]]
 
         with st.spinner("Árak letöltése folyamatban..."):
@@ -241,7 +240,10 @@ def page_controlpanel():
         expander = st.expander("Árak megtekintése")
         expander.table(price)
     
-        button = st.button("Árak mentése adatbázisba", type="primary")
+        button2 = st.button("Árak mentése adatbázisba", type="primary")
+        if button2:
+            r = dm.save_raw_products_prices(price)
+            st.write(r)
 
     st.header("2.Termék párosítás")
     st.header("3.Árak összehasonlítása")
