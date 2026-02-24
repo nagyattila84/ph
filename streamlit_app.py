@@ -229,7 +229,7 @@ def page_controlpanel():
             use_container_width=False
         )
 
-        col1, col2 = st.columns(2, vertical_alignment="bottom")
+        col1, col2 = st.columns([1,2], vertical_alignment="bottom")
         with col1:
             keyword = st.text_input("Keresőszó", width=200)
 
@@ -244,7 +244,7 @@ def page_controlpanel():
 
         st.set_page_config(layout="wide")
         
-        col1, col2 = st.columns(2, vertical_alignment="bottom")
+        col1, col2 = st.columns([1,2], vertical_alignment="bottom")
         with col1:
             st.success("Kész!")
         with col2:
