@@ -267,8 +267,8 @@ def page_controlpanel():
     if st.button("🔗 Termékek párosítása", type="primary"):
             
             with st.spinner("Párosítás folyamatban..."):
-                products = 
-                clusters =
+                products = None
+                clusters = None
                 matched_df = match_products(products, clusters, threshold)
 
                 total = len(matched_df)
