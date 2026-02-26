@@ -311,7 +311,7 @@ def delete_block(label, delete_function):
 
     if button:
         if toggle:
-            #count = delete_function()
+            count = delete_function()
             st.success(f"{count} rekord törölve.")
         else:
             st.error("Aktiváld a megerősítést!")       
