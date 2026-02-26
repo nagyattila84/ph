@@ -299,22 +299,32 @@ def page_controlpanel():
                     )
 
     st.header("3.Adatok törlése")
-    delete_block("CLUSTER-ek törlése", dm.delete_all_clusters)
     
-
-def delete_block(label, delete_function):
+    if "delete_toggle" not in st.session_state:
+    st.session_state.delete_toggle = False
 
     col1, col2 = st.columns([2, 1])
 
-    toggle = col1.toggle(f"⚠ {label}")
-    button = col2.button("🗑 Törlés")
+    with col1:
+        st.session_state.delete_toggle = st.toggle(
+            "⚠ Raw ár adatok törlése",
+            value=st.session_state.delete_toggle
+        )
 
-    if button:
-        if toggle:
-            count = delete_function()
-            st.success(f"{count} rekord törölve.")
-        else:
-            st.error("Aktiváld a megerősítést!")       
+    with col2:
+        if st.button("🗑 Törlés", type="primary"):
+
+            if st.session_state.delete_toggle:
+                deleted_count = dm.delete_raw_prices()
+                st.success(f"✅ {deleted_count} rekord törölve.")
+
+                # reset
+                st.session_state.delete_toggle = False
+                st.rerun()
+
+            else:
+                st.error("Kapcsold be a megerősítést a törléshez!")
+          
 
 def page_settings():
     st.header("⚙️ Beállítások")
