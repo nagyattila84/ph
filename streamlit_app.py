@@ -307,7 +307,7 @@ def page_controlpanel():
 
     with col1:
         st.session_state.delete_cluster_toggle = st.toggle(
-            "⚠ CLUSTER-ek törlése",
+            "⚠ CLUSTER törlés engedélyezése",
             value=st.session_state.delete_cluster_toggle
         )
 
