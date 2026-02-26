@@ -333,7 +333,7 @@ def page_controlpanel():
         if st.button("🗑 Törlés", type="primary"):
 
             if st.session_state.delete_toggle:
-                deleted_count = dm.delete_all_clusters()
+                deleted_count = dm.delete_all_raw_products()
                 st.success(f"✅ {deleted_count} rekord törölve.")
                 st.session_state.delete_toggle = False
                 st.rerun()

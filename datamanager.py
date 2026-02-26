@@ -270,3 +270,16 @@ class SupaBaseDataManager:
 
     def delete_all_clusters(self):
         self.client.rpc("reset_clusters").execute()
+    def delete_all_raw_products(self):
+        try:
+            response = self.client.table("raw_products") \
+                .delete() \
+                .neq("id", 0) \
+                .execute()
+
+            deleted_count = len(response.data) if response.data else 0
+
+            return f"{deleted_count} raw product törölve."
+
+        except Exception as e:
+            return f"Hiba történt: {e}"
