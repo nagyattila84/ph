@@ -268,3 +268,5 @@ class SupaBaseDataManager:
         )
         return pd.DataFrame(own), pd.DataFrame(raw)
 
+    def delete_all_clusters(self):
+        self.client.rpc("reset_clusters").execute()
