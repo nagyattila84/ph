@@ -299,26 +299,23 @@ def page_controlpanel():
                     )
 
     st.header("3.Adatok törlése")
+    delete_block("Raw árak", dm.delete_raw_prices)
+    delete_block("Cluster kapcsolatok", dm.delete_cluster_links)
     
-    if "confirm_delete" not in st.session_state:
-        st.session_state.confirm_delete = False
 
-    if st.button("Adatok törlése", type="secondary"):
-        st.session_state.confirm_delete = True
+def delete_block(label, delete_function):
 
-    if st.session_state.confirm_delete:
-        st.warning("⚠ Biztosan törölni szeretnéd az adatokat? Ez nem visszavonható!")
+    col1, col2 = st.columns([2, 1])
 
-        col1, col2 = st.columns(2)
+    toggle = col1.toggle(f"⚠ {label}")
+    button = col2.button("🗑 Törlés")
 
-        if col1.button("Igen, törlöm"):
-            #dm.delete_raw_prices()  # saját metódus
-            st.success("Adatok törölve.")
-            st.session_state.confirm_delete = False
-
-        if col2.button("Mégse"):
-            st.session_state.confirm_delete = False
-       
+    if button:
+        if toggle:
+            count = delete_function()
+            st.success(f"{count} rekord törölve.")
+        else:
+            st.error("Aktiváld a megerősítést!")       
 
 def page_settings():
     st.header("⚙️ Beállítások")
