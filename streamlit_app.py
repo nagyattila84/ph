@@ -262,7 +262,7 @@ def page_controlpanel():
 
     st.header("2.Termék párosítás")
     threshold = st.slider("Minimum score?", 60, 100, 80)
-    st.write("A párosításhoz", threshold, "years old")
+    st.write("Termékek párosítás a", threshold, "pont felett")
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
@@ -298,7 +298,8 @@ def page_controlpanel():
                         matched_df[matched_df["is_new_cluster"] == True]
                     )
 
-
+    st.header("3.Adatok törlése")
+    
 
        
 
@@ -340,4 +341,5 @@ else:
 
     elif page == "Beállítások":
         page_settings()
+
 
