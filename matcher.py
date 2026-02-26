@@ -93,7 +93,7 @@ class ProductMatcher:
         product_type = None
 
         if clusters_df is None or clusters_df.empty:
-            clusters_df = pd.DataFrame(columns=["id", "name", "created_at"])
+            clusters_df = pd.DataFrame(columns=["id", "name"])
 
         if not clusters_df.empty:
             self.next_cluster_id = clusters_df["id"].max() + 1
