@@ -264,9 +264,24 @@ def page_controlpanel():
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Termékek párosítás a", threshold, "pont felett")
 
-    options = ["North", "East", "South", "West"]
-    selection = st.pills("Directions", options, selection_mode="multi")
-    st.markdown(f"Your selected options: {selection}.")
+    webshops_df = dm.read_data(
+        table_name="webshops",
+        columns=["id", "name"],
+        order_by="name"
+    )
+
+    # id -> name mapping
+    webshop_dict = dict(zip(webshops_df["name"], webshops_df["id"]))
+
+    selected_names = st.pills(
+        "Webshop kiválasztása",
+        options=list(webshop_dict.keys()),
+        selection_mode="multi"
+    )
+
+    # kiválasztott webshop id-k
+    selected_ids = [webshop_dict[name] for name in selected_names]
+    st.markdown(f"Your selected options: {selected_ids}.")
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
@@ -279,7 +294,7 @@ def page_controlpanel():
                     }
                 )
                 clusters = dm.read_data("clusters")
-                
+
                 matched_df = match_products(products_without_cluster, clusters, threshold)
 
                 total = len(matched_df)
