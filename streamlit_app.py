@@ -267,7 +267,7 @@ def page_controlpanel():
     webshops_df = dm.read_data(
         table_name="webshops",
         columns=["id", "name"],
-        order_by="name"
+        order_by="webshop_id"
     )
 
     # id -> name mapping
