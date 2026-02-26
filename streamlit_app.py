@@ -309,15 +309,15 @@ def page_controlpanel():
     if st.session_state.confirm_delete:
         st.warning("⚠ Biztosan törölni szeretnéd az adatokat? Ez nem visszavonható!")
 
-    col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
-    if col1.button("Igen, törlöm"):
-        #dm.delete_raw_prices()  # saját metódus
-        st.success("Adatok törölve.")
-        st.session_state.confirm_delete = False
+        if col1.button("Igen, törlöm"):
+            #dm.delete_raw_prices()  # saját metódus
+            st.success("Adatok törölve.")
+            st.session_state.confirm_delete = False
 
-    if col2.button("Mégse"):
-        st.session_state.confirm_delete = False
+        if col2.button("Mégse"):
+            st.session_state.confirm_delete = False
        
 
 def page_settings():
