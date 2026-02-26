@@ -264,12 +264,23 @@ def page_controlpanel():
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Termékek párosítás a", threshold, "pont felett")
 
+    options = ["North", "East", "South", "West"]
+    selection = st.pills("Directions", options, selection_mode="multi")
+    st.markdown(f"Your selected options: {selection}.")
+
     if st.button("🔗 Termékek párosítása", type="primary"):
             
             with st.spinner("Párosítás folyamatban..."):
-                products = None
-                clusters = None
-                matched_df = match_products(products, clusters, threshold)
+                products_without_cluster = dm.read_data(
+                    table_name="raw_products",
+                    query={
+                        "webshop_id": 1,
+                        "cluster_id": None
+                    }
+                )
+                clusters = dm.read_data("clusters")
+                
+                matched_df = match_products(products_without_cluster, clusters, threshold)
 
                 total = len(matched_df)
                 matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
