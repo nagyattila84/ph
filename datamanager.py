@@ -271,7 +271,7 @@ class SupaBaseDataManager:
     def delete_all_clusters(self):
         try:
             response = self.client.rpc("reset_clusters").execute()
-            return ("Sikeres törlés", response.data)
+            return response
 
         except Exception as e:
             print("RPC ERROR:", e)
