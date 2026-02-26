@@ -324,18 +324,18 @@ def page_controlpanel():
                 st.error("Kapcsold be a megerősítést a törléshez!")
 
     with col1:
-        st.session_state.delete_toggle = st.toggle(
-            "⚠ Idegen termékek törlése",
-            value=st.session_state.delete_toggle
+        st.session_state.delete_raw_products_toggle = st.toggle(
+            "⚠ Idegen termékek törlésének engedélyezése",
+            value=st.session_state.delete_raw_products_toggle
         )
 
     with col2:
-        if st.button("🗑 Törlés", type="primary"):
+        if st.button("Idegen termékek törlése", type="primary"):
 
-            if st.session_state.delete_toggle:
+            if st.session_state.delete_raw_products_toggle:
                 deleted_count = dm.delete_all_raw_products()
                 st.success(f"✅ {deleted_count} rekord törölve.")
-                st.session_state.delete_toggle = False
+                st.session_state.delete_raw_products_toggle = False
                 st.rerun()
 
             else:
