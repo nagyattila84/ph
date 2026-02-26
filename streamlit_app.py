@@ -323,6 +323,11 @@ def page_controlpanel():
             else:
                 st.error("Kapcsold be a megerősítést a törléshez!")
 
+    if "delete_raw_products_toggle" not in st.session_state:
+        st.session_state.delete_raw_products_toggle = False
+
+    col1, col2 = st.columns([1, 2])
+
     with col1:
         st.session_state.delete_raw_products_toggle = st.toggle(
             "⚠ Idegen termékek törlésének engedélyezése",
