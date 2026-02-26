@@ -290,12 +290,13 @@ def page_controlpanel():
     
     st.table(clusters)
     st.table(products_without_cluster)
+    matched_df = pm.match_products(products_without_cluster, clusters, threshold)
+    st.header("SIKERES PÁROSÍTÁS")
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
         with st.spinner("Párosítás folyamatban..."):
 
-            matched_df = pm.match_products(products_without_cluster, clusters, threshold)
 
             total = len(matched_df)
             matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
