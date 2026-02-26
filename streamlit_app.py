@@ -301,7 +301,7 @@ def page_controlpanel():
     st.header("3.Adatok törlése")
     
     if "delete_toggle" not in st.session_state:
-    st.session_state.delete_toggle = False
+        st.session_state.delete_toggle = False
 
     col1, col2 = st.columns([2, 1])
 
