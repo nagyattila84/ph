@@ -300,7 +300,11 @@ def page_controlpanel():
 
     st.header("3.Adatok törlése")
     
+    if "confirm_delete" not in st.session_state:
+        st.session_state.confirm_delete = False
 
+    if st.button("🗑 Adatok törlése", type="secondary"):
+        st.session_state.confirm_delete = True
        
 
 def page_settings():
