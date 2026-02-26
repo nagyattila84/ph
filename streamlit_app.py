@@ -293,7 +293,7 @@ def page_controlpanel():
 
                 products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
 
-                matched_df = pm.match_products(products_without_cluster, clusters, threshold)
+                matched_df = pm.match_products(products_without_cluster, clusters)
 
                 total = len(matched_df)
                 matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
