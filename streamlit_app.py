@@ -285,13 +285,11 @@ def page_controlpanel():
     selected_ids = [webshop_dict[name] for name in selected_names]
     st.markdown(f"Your selected options: {selected_ids}.")
                 
-    clusters = dm.read_data("clusters")
-    st.write(clusters)
-
     if st.button("🔗 Termékek párosítása", type="primary"):
             
             with st.spinner("Párosítás folyamatban..."):
                 
+                clusters = dm.read_data("clusters")
 
                 products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
 
