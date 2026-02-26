@@ -300,24 +300,24 @@ def page_controlpanel():
 
     st.header("3.Adatok törlése")
     
-    if "delete_toggle" not in st.session_state:
-        st.session_state.delete_toggle = False
+    if "delete_cluster_toggle" not in st.session_state:
+        st.session_state.delete_cluster_toggle = False
 
     col1, col2 = st.columns([1, 2])
 
     with col1:
-        st.session_state.delete_toggle = st.toggle(
+        st.session_state.delete_cluster_toggle = st.toggle(
             "⚠ CLUSTER-ek törlése",
-            value=st.session_state.delete_toggle
+            value=st.session_state.delete_cluster_toggle
         )
 
     with col2:
-        if st.button("Törlés", type="primary"):
+        if st.button("CLUSTER-ek törlése", type="primary"):
 
-            if st.session_state.delete_toggle:
+            if st.session_state.delete_cluster_toggle:
                 deleted_count = dm.delete_all_clusters()
                 st.success(f"✅ {deleted_count} rekord törölve.")
-                st.session_state.delete_toggle = False
+                st.session_state.delete_cluster_toggle = False
                 st.rerun()
 
             else:
