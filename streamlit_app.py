@@ -307,7 +307,7 @@ def page_controlpanel():
         st.session_state.confirm_delete = True
 
     if st.session_state.confirm_delete:
-    st.warning("⚠ Biztosan törölni szeretnéd az adatokat? Ez nem visszavonható!")
+        st.warning("⚠ Biztosan törölni szeretnéd az adatokat? Ez nem visszavonható!")
 
     col1, col2 = st.columns(2)
 
