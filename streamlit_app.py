@@ -310,13 +310,9 @@ def page_controlpanel():
             "⚠ CLUSTER-ek törlése",
             value=st.session_state.delete_toggle
         )
-        st.session_state.delete_toggle = st.toggle(
-            "⚠ Idegen termékek törlése",
-            value=st.session_state.delete_toggle
-        )
 
     with col2:
-        if st.button("🗑 Törlés", type="primary"):
+        if st.button("Törlés", type="primary"):
 
             if st.session_state.delete_toggle:
                 deleted_count = dm.delete_all_clusters()
@@ -327,7 +323,14 @@ def page_controlpanel():
             else:
                 st.error("Kapcsold be a megerősítést a törléshez!")
 
-        if st.button("🗑 Törlés2", type="primary"):
+    with col1:
+        st.session_state.delete_toggle = st.toggle(
+            "⚠ Idegen termékek törlése",
+            value=st.session_state.delete_toggle
+        )
+
+    with col2:
+        if st.button("🗑 Törlés", type="primary"):
 
             if st.session_state.delete_toggle:
                 deleted_count = dm.delete_all_clusters()
