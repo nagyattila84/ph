@@ -316,13 +316,13 @@ def page_controlpanel():
 
             if st.session_state.delete_cluster_toggle:
                 deleted_count = dm.delete_all_clusters()
-                st.success(f"✅ {deleted_count} rekord törölve.")
                 st.session_state.delete_cluster_toggle = False
                 st.rerun()
 
             else:
                 st.error("Kapcsold be a megerősítést a törléshez!")
 
+        st.success(f"✅ {deleted_count} rekord törölve.")
     if "delete_raw_products_toggle" not in st.session_state:
         st.session_state.delete_raw_products_toggle = False
 
