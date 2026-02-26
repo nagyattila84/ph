@@ -92,7 +92,7 @@ class ProductMatcher:
             self.threshold = th
         product_type = None
 
-        if clusters_df is None or pd.DataFrame(clusters_df.data).empty:
+        if clusters_df is None or clusters_df.empty:
             clusters_df = pd.DataFrame(columns=["id", "name"])
 
         if not clusters_df.empty:
