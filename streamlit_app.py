@@ -285,44 +285,44 @@ def page_controlpanel():
     selected_ids = [webshop_dict[name] for name in selected_names]
     st.markdown(f"Your selected options: {selected_ids}.")
                 
+    clusters = dm.read_data("clusters")
+    products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
+    
+    st.write(type(clusters))
+    st.write(type(products_without_cluster))
+    st.write(type(threshold))
     if st.button("🔗 Termékek párosítása", type="primary"):
-            clusters = dm.read_data("clusters")
-            products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
             
-            st.write(type(clusters))
-            st.write(type(products_without_cluster))
-            st.write(type(threshold))
+        with st.spinner("Párosítás folyamatban..."):
+
+            matched_df = pm.match_products(products_without_cluster, clusters, threshold)
+
+            total = len(matched_df)
+            matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
+            new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
+
+            st.write("💎 Szép dashboard megjelenítés")
+            col1, col2, col3 = st.columns(3)
+
+            col1.metric("📦 Feldolgozott termék", total)
+            col2.metric("🔗 Clusterhez kapcsolva", matched_count)
+            col3.metric("🆕 Új cluster szükséges", new_cluster_count)
+
+            st.write("🚀 Extra: százalékos arány")
+            if total > 0:
+                match_ratio = round(matched_count / total * 100, 1)
+                st.info(f"Match arány: {match_ratio}%")
             
-            with st.spinner("Párosítás folyamatban..."):
+            st.write("🎯 Ha külön akarod listázni")
+            with st.expander("🔗 Kapcsolt termékek"):
+                st.dataframe(
+                    matched_df[matched_df["is_new_cluster"] == False]
+                )
 
-                matched_df = pm.match_products(products_without_cluster, clusters, threshold)
-
-                total = len(matched_df)
-                matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
-                new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
-
-                st.write("💎 Szép dashboard megjelenítés")
-                col1, col2, col3 = st.columns(3)
-
-                col1.metric("📦 Feldolgozott termék", total)
-                col2.metric("🔗 Clusterhez kapcsolva", matched_count)
-                col3.metric("🆕 Új cluster szükséges", new_cluster_count)
-
-                st.write("🚀 Extra: százalékos arány")
-                if total > 0:
-                    match_ratio = round(matched_count / total * 100, 1)
-                    st.info(f"Match arány: {match_ratio}%")
-                
-                st.write("🎯 Ha külön akarod listázni")
-                with st.expander("🔗 Kapcsolt termékek"):
-                    st.dataframe(
-                        matched_df[matched_df["is_new_cluster"] == False]
-                    )
-
-                with st.expander("🆕 Új clusterre váró termékek"):
-                    st.dataframe(
-                        matched_df[matched_df["is_new_cluster"] == True]
-                    )
+            with st.expander("🆕 Új clusterre váró termékek"):
+                st.dataframe(
+                    matched_df[matched_df["is_new_cluster"] == True]
+                )
 
     st.header("3.Adatok törlése")
     
