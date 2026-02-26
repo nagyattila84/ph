@@ -307,3 +307,19 @@ class SupaBaseDataManager:
         except Exception as e:
             print("Hiba:", e)
             return pd.DataFrame()
+
+    def get_unclustered_own_products(self):
+        try:
+            response = (
+                self.client
+                .table("own_products")
+                .select("*")
+                .is_("cluster_id", None)
+                .execute()
+            )
+
+            return pd.DataFrame(response.data)
+
+        except Exception as e:
+            print("Hiba:", e)
+            return pd.DataFrame()
