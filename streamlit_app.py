@@ -303,7 +303,7 @@ def page_controlpanel():
     if "delete_toggle" not in st.session_state:
         st.session_state.delete_toggle = False
 
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([1, 2])
 
     with col1:
         st.session_state.delete_toggle = st.toggle(
