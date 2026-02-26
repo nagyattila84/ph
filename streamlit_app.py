@@ -286,16 +286,15 @@ def page_controlpanel():
     st.markdown(f"Your selected options: {selected_ids}.")
                 
     if st.button("🔗 Termékek párosítása", type="primary"):
+            clusters = dm.read_data("clusters")
+            products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
+            
+            st.write(type(clusters))
+            st.write(type(products_without_cluster))
+            st.write(type(threshold))
             
             with st.spinner("Párosítás folyamatban..."):
-                
-                clusters = dm.read_data("clusters")
 
-                products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
-
-                st.write(type(clusters))
-                st.write(type(products_without_cluster))
-                st.write(type(threshold))
                 matched_df = pm.match_products(products_without_cluster, clusters, threshold)
 
                 total = len(matched_df)
