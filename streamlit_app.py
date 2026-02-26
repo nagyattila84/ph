@@ -299,8 +299,8 @@ def page_controlpanel():
                     )
 
     st.header("3.Adatok törlése")
-    delete_block("Raw árak", dm.delete_raw_prices)
-    delete_block("Cluster kapcsolatok", dm.delete_cluster_links)
+    delete_block("Raw árak", st.write("ok"))
+    delete_block("Cluster kapcsolatok", st.write("ok"))
     
 
 def delete_block(label, delete_function):
