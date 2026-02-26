@@ -269,8 +269,14 @@ class SupaBaseDataManager:
         return pd.DataFrame(own), pd.DataFrame(raw)
 
     def delete_all_clusters(self):
-        self.client.rpc("reset_clusters").execute()
-        
+        try:
+            response = self.client.rpc("reset_clusters").execute()
+            return "Cluster reset sikeres."
+
+        except Exception as e:
+            print("RPC ERROR:", e)
+            return f"Hiba történt: {e}"
+
     def delete_all_raw_products(self):
         try:
             response = self.client.table("raw_products") \
