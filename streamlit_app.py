@@ -300,6 +300,8 @@ def page_controlpanel():
 
     st.header("3.Adatok törlése")
     
+    delete_result = ""
+
     if "delete_cluster_toggle" not in st.session_state:
         st.session_state.delete_cluster_toggle = False
 
@@ -315,8 +317,7 @@ def page_controlpanel():
         if st.button("CLUSTER-ek törlése", type="primary"):
 
             if st.session_state.delete_cluster_toggle:
-                deleted_count = dm.delete_all_clusters()
-                st.success(f"✅ {deleted_count} rekord törölve.")
+                delete_result = dm.delete_all_clusters()
                 st.session_state.delete_cluster_toggle = False
                 st.rerun()
 
@@ -338,15 +339,14 @@ def page_controlpanel():
         if st.button("Idegen termékek törlése", type="primary"):
 
             if st.session_state.delete_raw_products_toggle:
-                deleted_count = dm.delete_all_raw_products()
-                st.success(f"✅ {deleted_count} rekord törölve.")
+                delete_result = dm.delete_all_raw_products()
                 st.session_state.delete_raw_products_toggle = False
                 st.rerun()
 
             else:
                 st.error("Kapcsold be a megerősítést a törléshez!")
                 
-          
+    st.success(delete_result)
 
 def page_settings():
     st.header("⚙️ Beállítások")
