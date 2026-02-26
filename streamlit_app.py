@@ -326,6 +326,18 @@ def page_controlpanel():
 
             else:
                 st.error("Kapcsold be a megerősítést a törléshez!")
+
+        if st.button("🗑 Törlés", type="primary"):
+
+            if st.session_state.delete_toggle:
+                deleted_count = dm.delete_all_clusters()
+                st.success(f"✅ {deleted_count} rekord törölve.")
+                st.session_state.delete_toggle = False
+                st.rerun()
+
+            else:
+                st.error("Kapcsold be a megerősítést a törléshez!")
+                
           
 
 def page_settings():
