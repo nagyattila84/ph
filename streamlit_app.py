@@ -299,7 +299,7 @@ def page_controlpanel():
                     )
 
     st.header("3.Adatok törlése")
-    delete_block("CLUSTER-ek törlése", dm.delete_all_clusters())
+    delete_block("CLUSTER-ek törlése", dm.delete_all_clusters)
     
 
 def delete_block(label, delete_function):
