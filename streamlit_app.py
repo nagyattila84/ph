@@ -307,7 +307,11 @@ def page_controlpanel():
 
     with col1:
         st.session_state.delete_toggle = st.toggle(
-            "⚠ Raw ár adatok törlése",
+            "⚠ CLUSTER-ek törlése",
+            value=st.session_state.delete_toggle
+        )
+        st.session_state.delete_toggle = st.toggle(
+            "⚠ Idegen termékek törlése",
             value=st.session_state.delete_toggle
         )
 
@@ -315,10 +319,8 @@ def page_controlpanel():
         if st.button("🗑 Törlés", type="primary"):
 
             if st.session_state.delete_toggle:
-                deleted_count = dm.delete_raw_prices()
+                deleted_count = dm.delete_all_clusters()
                 st.success(f"✅ {deleted_count} rekord törölve.")
-
-                # reset
                 st.session_state.delete_toggle = False
                 st.rerun()
 
