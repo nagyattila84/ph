@@ -288,6 +288,8 @@ def page_controlpanel():
     clusters = dm.read_data("clusters")
     products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
     
+    st.table(products_without_cluster)
+
     st.write("products type:", type(products_without_cluster))
     st.write("clusters type:", type(clusters))
     if st.button("🔗 Termékek párosítása", type="primary"):
