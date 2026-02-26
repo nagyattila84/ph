@@ -286,6 +286,9 @@ def page_controlpanel():
     if st.button("🔗 Termékek párosítása", type="primary"):
             
             with st.spinner("Párosítás folyamatban..."):
+                
+                clusters = dm.get_unclustered_products_by_webshops(selected_ids)
+
                 products_without_cluster = dm.read_data(
                     table_name="raw_products",
                     query={
@@ -293,7 +296,6 @@ def page_controlpanel():
                         "cluster_id": None
                     }
                 )
-                clusters = dm.read_data("clusters")
 
                 matched_df = match_products(products_without_cluster, clusters, threshold)
 
