@@ -98,7 +98,7 @@ class SupaBaseDataManager:
 
         except Exception as e:
             print(f"Error reading data from Supabase table '{table_name}': {e}")
-            return pd.DataFrame(response.data)
+            return pd.DataFrame()  # ÜRES DF, nem response.data
 
     def read_webshops_from_db(self, table_name="webshops"):
         """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
