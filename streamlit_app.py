@@ -288,9 +288,9 @@ def page_controlpanel():
     clusters = dm.read_data("clusters")
     products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
     
-    st.write(type(clusters))
-    st.write(type(products_without_cluster))
-    st.write(type(threshold))
+    print(type(clusters))
+    print(type(products_without_cluster))
+    print(type(threshold))
     if st.button("🔗 Termékek párosítása", type="primary"):
             
         with st.spinner("Párosítás folyamatban..."):
