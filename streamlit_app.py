@@ -268,14 +268,14 @@ def page_controlpanel():
             is_null=["cluster_id"]
         )
         expander2 = st.expander("Saját termékek")
-        expander2.table(own_products_without_cluster)
+        expander2.table(st.session_state["own_products_without_cluster"])
         
 
     if st.button("Saját termékek clusterezése"):
         clusters = dm.read_data("clusters")
         with st.spinner("Párosítás folyamatban..."):            
 
-            matched_df = pm.match_products(own_products_without_cluster, clusters)
+            matched_df = pm.match_products(st.session_state["own_products_without_cluster"], clusters)
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
