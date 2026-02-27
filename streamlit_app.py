@@ -393,6 +393,7 @@ def page_controlpanel():
             if st.session_state.delete_cluster_toggle:
                 delete_result = dm.delete_all_clusters()
                 st.session_state.delete_cluster_toggle = False
+                st.success(delete_result)
                 st.rerun()
 
             else:
@@ -415,6 +416,7 @@ def page_controlpanel():
             if st.session_state.delete_raw_products_toggle:
                 delete_result = dm.delete_all_raw_products()
                 st.session_state.delete_raw_products_toggle = False
+                st.success(delete_result)
                 st.rerun()
 
             else:
