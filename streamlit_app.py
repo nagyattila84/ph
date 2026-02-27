@@ -258,6 +258,9 @@ def page_controlpanel():
                 st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
             del st.session_state.scraped_prices
 
+    #*************
+    #  PÁROSÍTÁS
+    #*************
     st.header("2.Termék párosítás")
     if st.button("Saját termékek betöltése"):
         expander2 = st.expander("Saját termékek")
