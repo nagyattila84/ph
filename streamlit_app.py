@@ -276,6 +276,7 @@ def page_controlpanel():
         with st.spinner("Párosítás folyamatban..."):            
 
             matched_df = pm.match_products(st.session_state["own_products_without_cluster"], clusters)
+            dm.process_matches_batch(matched_df)
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
