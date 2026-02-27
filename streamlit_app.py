@@ -424,10 +424,6 @@ def page_controlpanel():
                 
     st.success(delete_result)
 
-import streamlit as st
-import pandas as pd
-
-
 def page_data_explorer():
 
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
