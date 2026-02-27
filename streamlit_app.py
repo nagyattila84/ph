@@ -261,7 +261,7 @@ def page_controlpanel():
     #*************
     #  PÁROSÍTÁS
     #*************
-    st.header("2.Termék párosítás")
+    st.header("2.Saját termék párosítás")
     if st.button("Saját termékek betöltése"):
         st.session_state["own_products_without_cluster"] = dm.read_data(
             table_name="own_products",
@@ -305,7 +305,8 @@ def page_controlpanel():
                     matched_df[matched_df["is_new_cluster"] == True]
                 )
             
-    
+    st.header("3.Idegen termékek párosítása")
+
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
 
