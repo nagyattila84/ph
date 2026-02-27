@@ -263,8 +263,11 @@ def page_controlpanel():
             del st.session_state.scraped_prices
 
     st.header("2.Termék párosítás")
+    st.write("Saját termékek betöltése")
+
+    
     threshold = st.slider("Minimum score?", 60, 100, 80)
-    st.write("Termékek párosítás a", threshold, "pont felett")
+    st.write("Idegen termékek párosítása", threshold, "pont felett")
 
     webshops_df = dm.read_data(
         table_name="webshops",
@@ -285,18 +288,24 @@ def page_controlpanel():
     selected_ids = [webshop_dict[name] for name in selected_names]
     st.markdown(f"Your selected options: {selected_ids}.")
                 
-    clusters = dm.read_data("clusters")
-    products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
     
-    st.table(clusters)
-    st.table(products_without_cluster)
-    matched_df = pm.match_products(products_without_cluster, clusters, threshold)
-    st.header("SIKERES PÁROSÍTÁS")
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
-        with st.spinner("Párosítás folyamatban..."):
+        with st.spinner("Párosítás folyamatban..."):            
+            clusters = dm.read_data("clusters")
+            products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
 
+            expander = st.expander("Clusterek megtekintése")
+            expander.table(clusters)
+   
+            expander = st.expander("Idegen termékek megjelenítése")
+            expander.table(products_without_cluster)
+
+            st.table(products_without_cluster)
+
+            matched_df = pm.match_products(products_without_cluster, clusters, threshold)
+            st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
             matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
