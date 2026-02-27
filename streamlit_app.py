@@ -12,7 +12,7 @@ from matcher import *
 users = st.secrets["users"]
 stat = None
 dm = None
-pm = ProductMatcher
+pm = ProductMatcher()
 st.set_page_config(page_title="PriceHunter", layout="centered")
 
 # ============= SESSION INIT ===============
