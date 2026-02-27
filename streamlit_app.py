@@ -55,12 +55,12 @@ def page_dashboard():
 
     c1.metric("Webshopok", stat.count_shops())
     c2.metric("Clusterek", stat.count_clusters())
-    c3.metric("Saját termékek", stat.count_own_products())
+    c3.metric("Saját termékek", stat.count_own_products_without_cluster())
     c4.metric("Idegen termékek", stat.count_raw_products())
 
     df = pd.DataFrame({
         "type": ["Saját termék", "Idegen termék"],
-        "count": [stat.count_own_products(), stat.count_raw_products()]
+        "count": [stat.count_own_products_without_cluster(), stat.count_raw_products()]
     })
 
     fig = px.pie(df, names="type", values="count", hole=0.4)
@@ -265,11 +265,46 @@ def page_controlpanel():
     st.header("2.Termék párosítás")
     if st.button("Saját termékek betöltése"):
         expander2 = st.expander("Saját termékek")
-        own_products = dm.read_data(
-            table_name = "own_products",
+        own_products_without_cluster = dm.read_data(
+            table_name = "own_products_without_cluster",
             is_null = "cluster_id"
         )
-        expander2.table(own_products)
+        expander2.table(own_products_without_cluster)
+
+        if st.button2("Sajá termékek clusterezése"):
+            clusters = dm.read_data("clusters")
+            with st.spinner("Párosítás folyamatban..."):            
+
+                matched_df = pm.match_products(own_products_without_cluster, clusters)
+                st.header("SIKERES PÁROSÍTÁS")
+
+                total = len(matched_df)
+                matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
+                new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
+
+                st.write("💎 Szép dashboard megjelenítés")
+                col1, col2, col3 = st.columns(3)
+
+                col1.metric("📦 Feldolgozott termék", total)
+                col2.metric("🔗 Clusterhez kapcsolva", matched_count)
+                col3.metric("🆕 Új cluster szükséges", new_cluster_count)
+
+                st.write("🚀 Extra: százalékos arány")
+                if total > 0:
+                    match_ratio = round(matched_count / total * 100, 1)
+                    st.info(f"Match arány: {match_ratio}%")
+                
+                st.write("🎯 Ha külön akarod listázni")
+                with st.expander("🔗 Kapcsolt termékek"):
+                    st.dataframe(
+                        matched_df[matched_df["is_new_cluster"] == False]
+                    )
+
+                with st.expander("🆕 Új clusterre váró termékek"):
+                    st.dataframe(
+                        matched_df[matched_df["is_new_cluster"] == True]
+                    )
+            
     
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
