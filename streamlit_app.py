@@ -630,7 +630,7 @@ else:
     if page == "Dashboard":
         page_dashboard()
 
-    elif page == "Vezérlő":
+    elif page == "Vezérlőpult":
         page_controlpanel()
 
     elif page == "Adatok":
