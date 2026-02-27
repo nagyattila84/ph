@@ -424,7 +424,6 @@ def page_controlpanel():
 
 def page_data_explorer():
 
-    
     st.title("📊 Adat Explorer")
 
     tab1, tab2, tab3 = st.tabs(
