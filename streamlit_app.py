@@ -271,7 +271,7 @@ def page_controlpanel():
         )
         expander2.table(own_products_without_cluster)
 
-        if st.button2("Sajá termékek clusterezése"):
+        if st.button("Saját termékek clusterezése"):
             clusters = dm.read_data("clusters")
             with st.spinner("Párosítás folyamatban..."):            
 
