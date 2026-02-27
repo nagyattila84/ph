@@ -266,7 +266,7 @@ def page_controlpanel():
     if st.button("Saját termékek betöltése"):
         expander2 = st.expander("Saját termékek")
         own_products = dm.read_data(
-            table = "own_products",
+            table_name = "own_products",
             is_null = "cluster_id"
         )
         expander2.table
