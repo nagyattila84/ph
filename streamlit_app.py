@@ -269,7 +269,7 @@ def page_controlpanel():
             table_name = "own_products",
             is_null = "cluster_id"
         )
-        expander2.table
+        expander2.table(own_products)
     
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
