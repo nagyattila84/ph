@@ -14,7 +14,7 @@ stat = None
 dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
 stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
 pm = ProductMatcher()
-st.set_page_config(page_title="PriceHunter", layout="centered")
+st.set_page_config(page_title="PriceHunter", layout="wide")
 
 # ============= SESSION INIT ===============
 if "logged_in" not in st.session_state:
@@ -424,9 +424,7 @@ def page_controlpanel():
 
 def page_data_explorer():
 
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-
-    st.set_page_config(layout="wide")
+    
     st.title("📊 Adat Explorer")
 
     tab1, tab2, tab3 = st.tabs(
