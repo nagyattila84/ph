@@ -287,22 +287,19 @@ def page_controlpanel():
     # kiválasztott webshop id-k
     selected_ids = [webshop_dict[name] for name in selected_names]
     st.markdown(f"Your selected options: {selected_ids}.")
-                
-    
+
+    clusters = dm.read_data("clusters")
+    products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
+
+    expander = st.expander("Clusterek megtekintése")
+    expander.table(clusters)
+
+    expander = st.expander("Idegen termékek megjelenítése")
+    expander.table(products_without_cluster)
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
         with st.spinner("Párosítás folyamatban..."):            
-            clusters = dm.read_data("clusters")
-            products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
-
-            expander = st.expander("Clusterek megtekintése")
-            expander.table(clusters)
-   
-            expander = st.expander("Idegen termékek megjelenítése")
-            expander.table(products_without_cluster)
-
-            st.table(products_without_cluster)
 
             matched_df = pm.match_products(products_without_cluster, clusters, threshold)
             st.header("SIKERES PÁROSÍTÁS")
