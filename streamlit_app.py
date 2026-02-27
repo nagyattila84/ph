@@ -335,8 +335,7 @@ def page_controlpanel():
     #products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
     products_without_cluster = dm.dm.read_data(
         table_name="raw_products",
-        neq_filters = {"webshop_id": 0},
-        in_filters = {"webshop_id", selected_ids},
+        in_filters = {"webshop_id": selected_ids},
         order_by="id"
     )
     expander = st.expander("Clusterek megtekintése")
