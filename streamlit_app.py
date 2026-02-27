@@ -11,7 +11,8 @@ from matcher import *
 
 users = st.secrets["users"]
 stat = None
-dm = None
+dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
+stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
 pm = ProductMatcher()
 st.set_page_config(page_title="PriceHunter", layout="centered")
 
@@ -46,10 +47,7 @@ def login_page():
 
 # ================= PAGES =================
 def page_dashboard():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-    stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
-
-
+    
     st.header("📊 Dashboard")
     c1, c2, c3, c4 = st.columns(4)
 

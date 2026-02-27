@@ -18,6 +18,5 @@ class Statistic:
         return self.dm.count_rows("raw_products", filters)
 
     def get_webshop_product_stats(self, view):
-
         return dm.get_view("webshop_product_stats")
 
