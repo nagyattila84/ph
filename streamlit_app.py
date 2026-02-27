@@ -263,10 +263,11 @@ def page_controlpanel():
     #*************
     st.header("2.Termék párosítás")
     if st.button("Saját termékek betöltése"):
-    st.session_state["own_products_without_cluster"] = dm.read_data(
-        table_name="own_products",
-        is_null=["cluster_id"]
-    )
+        st.session_state["own_products_without_cluster"] = dm.read_data(
+            table_name="own_products",
+            is_null=["cluster_id"]
+        )
+        
     expander2 = st.expander("Saját termékek")
     expander2.table(own_products_without_cluster)
 
