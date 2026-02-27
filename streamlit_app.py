@@ -5,15 +5,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 from datamanager import SupaBaseDataManager
+from scraper import Scraper
+from matcher import *
 from analyst import PriceAnalyst
 from my_stat import Statistic
-from matcher import *
 
 users = st.secrets["users"]
-stat = None
 dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
+sc = Scraper()
 pm = ProductMatcher()
+stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
+
 st.set_page_config(page_title="PriceHunter", layout="wide")
 
 # ============= SESSION INIT ===============
@@ -195,10 +197,7 @@ def page_visual2():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_controlpanel():
-    from scraper import Scraper
-    sc = Scraper()
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-    stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
+    
     
     st.sidebar.header("📊 Vezérlőpult")
       
