@@ -263,8 +263,13 @@ def page_controlpanel():
             del st.session_state.scraped_prices
 
     st.header("2.Termék párosítás")
-    st.write("Saját termékek betöltése")
-
+    if st.button("Saját termékek betöltése"):
+        expander("Saját termékek")
+        own_products = dm.read_data(
+            table = own_products",
+            is_null = "cluster_id"
+        )
+        expander.table
     
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
