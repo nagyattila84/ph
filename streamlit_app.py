@@ -267,9 +267,9 @@ def page_controlpanel():
             table_name="own_products",
             is_null=["cluster_id"]
         )
+        expander2 = st.expander("Saját termékek")
+        expander2.table(own_products_without_cluster)
         
-    expander2 = st.expander("Saját termékek")
-    expander2.table(own_products_without_cluster)
 
     if st.button("Saját termékek clusterezése"):
         clusters = dm.read_data("clusters")
