@@ -424,6 +424,196 @@ def page_controlpanel():
                 
     st.success(delete_result)
 
+import streamlit as st
+import pandas as pd
+
+
+def page_data_explorer():
+
+    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
+
+    st.set_page_config(layout="wide")
+    st.title("📊 Adat Explorer")
+
+    tab1, tab2, tab3 = st.tabs(
+        ["🏠 Saját termékek", "🌍 Nyers termékek", "🧩 Clusterek"]
+    )
+
+    # =========================================================
+    # 🏠 SAJÁT TERMÉKEK
+    # =========================================================
+    with tab1:
+
+        st.subheader("Saját termékek")
+
+        with st.expander("🔎 Szűrők", expanded=True):
+
+            col1, col2, col3 = st.columns([1, 2, 1])
+
+            with col1:
+                cluster_filter = st.radio(
+                    "Cluster állapot",
+                    ["Összes", "Clusterelt", "Nem clusterelt"]
+                )
+
+            with col2:
+                search_text = st.text_input("Keresés név alapján")
+
+            with col3:
+                limit = st.selectbox("Sor limit", [50, 100, 500, 1000], index=1)
+
+        # ---- Query összeállítás ----
+        query = {}
+        is_null = []
+        not_null = []
+
+        if cluster_filter == "Nem clusterelt":
+            is_null = ["cluster_id"]
+
+        if cluster_filter == "Clusterelt":
+            not_null = ["cluster_id"]
+
+        own_df = dm.read_data(
+            table_name="own_products",
+            query=query,
+            is_null=is_null,
+            not_null=not_null,
+            order_by="id",
+        )
+
+        if search_text:
+            own_df = own_df[
+                own_df["name"].str.contains(search_text, case=False, na=False)
+            ]
+
+        own_df = own_df.head(limit)
+
+        # ---- Metrics ----
+        total = len(own_df)
+        clustered = len(own_df[own_df["cluster_id"].notna()]) if "cluster_id" in own_df else 0
+        unclustered = len(own_df[own_df["cluster_id"].isna()]) if "cluster_id" in own_df else 0
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Összes", total)
+        col2.metric("Clusterelt", clustered)
+        col3.metric("Nem clusterelt", unclustered)
+
+        st.dataframe(own_df, use_container_width=True)
+
+
+    # =========================================================
+    # 🌍 NYERS TERMÉKEK
+    # =========================================================
+    with tab2:
+
+        st.subheader("Nyers termékek")
+
+        # Webshop lista
+        webshops_df = dm.read_data(
+            table_name="webshops",
+            columns=["id", "name"],
+            neq_filters={"id": 0},
+            order_by="id"
+        )
+
+        webshop_dict = dict(zip(webshops_df["name"], webshops_df["id"]))
+
+        with st.expander("🔎 Szűrők", expanded=True):
+
+            col1, col2, col3, col4 = st.columns([1, 2, 2, 1])
+
+            with col1:
+                cluster_filter = st.radio(
+                    "Cluster állapot",
+                    ["Összes", "Clusterelt", "Nem clusterelt"]
+                )
+
+            with col2:
+                selected_webshops = st.multiselect(
+                    "Webshop",
+                    options=list(webshop_dict.keys())
+                )
+
+            with col3:
+                search_text = st.text_input("Keresés név alapján")
+
+            with col4:
+                limit = st.selectbox("Sor limit", [50, 100, 500, 1000], index=1)
+
+        in_filters = {}
+        is_null = []
+        not_null = []
+
+        if selected_webshops:
+            selected_ids = [webshop_dict[name] for name in selected_webshops]
+            in_filters = {"webshop_id": selected_ids}
+
+        if cluster_filter == "Nem clusterelt":
+            is_null = ["cluster_id"]
+
+        if cluster_filter == "Clusterelt":
+            not_null = ["cluster_id"]
+
+        raw_df = dm.read_data(
+            table_name="raw_products",
+            in_filters=in_filters,
+            is_null=is_null,
+            not_null=not_null,
+            order_by="id",
+        )
+
+        if search_text and not raw_df.empty:
+            raw_df = raw_df[
+                raw_df["name"].str.contains(search_text, case=False, na=False)
+            ]
+
+        raw_df = raw_df.head(limit)
+
+        total = len(raw_df)
+        clustered = len(raw_df[raw_df["cluster_id"].notna()]) if "cluster_id" in raw_df else 0
+        unclustered = len(raw_df[raw_df["cluster_id"].isna()]) if "cluster_id" in raw_df else 0
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Összes", total)
+        col2.metric("Clusterelt", clustered)
+        col3.metric("Nem clusterelt", unclustered)
+
+        st.dataframe(raw_df, use_container_width=True)
+
+
+    # =========================================================
+    # 🧩 CLUSTEREK
+    # =========================================================
+    with tab3:
+
+        st.subheader("Clusterek")
+
+        with st.expander("🔎 Szűrők", expanded=True):
+
+            col1, col2 = st.columns([2, 1])
+
+            with col1:
+                search_text = st.text_input("Cluster név keresés")
+
+            with col2:
+                limit = st.selectbox("Sor limit", [50, 100, 500, 1000], index=1)
+
+        clusters_df = dm.read_data(
+            table_name="clusters",
+            order_by="id"
+        )
+
+        if search_text:
+            clusters_df = clusters_df[
+                clusters_df["name"].str.contains(search_text, case=False, na=False)
+            ]
+
+        clusters_df = clusters_df.head(limit)
+
+        st.metric("Összes cluster", len(clusters_df))
+
+        st.dataframe(clusters_df, use_container_width=True)
+
 def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
@@ -455,7 +645,7 @@ else:
         page_controlpanel()
 
     elif page == "Vezérlő":
-        page_data()
+        page_data_explorer()
 
     elif page == "Keresés":
         page_search()
