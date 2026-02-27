@@ -266,7 +266,7 @@ def page_controlpanel():
         expander2 = st.expander("Saját termékek")
         own_products_without_cluster = dm.read_data(
             table_name = "own_products",
-            is_null: "cluster_id"
+            is_null = "cluster_id"
         )
         expander2.table(own_products_without_cluster)
 
