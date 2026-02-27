@@ -123,45 +123,6 @@ class SupaBaseDataManager:
             print(f"Error reading data from Supabase table '{table_name}': {e}")
             return pd.DataFrame()
 
-    def OLDA_read_data(
-        self,
-        table_name: str,
-        query: dict = None,
-        columns: list = None,
-        order_by: str = None,
-        descending: bool = False
-        ):
-        # Reads data from a specified Supabase table (extended)
-
-        if not self.client:
-            print("SupaBase client not initialized. Cannot read data.")
-            return None
-
-        try:
-            # oszlopok
-            select_cols = "*"
-            if columns:
-                select_cols = ",".join(columns)
-
-            qb = self.client.table(table_name).select(select_cols)
-
-            # where (régi query param megmarad!)
-            if query:
-                qb = qb.match(query)
-
-            # order by (új)
-            if order_by:
-                qb = qb.order(order_by, desc=descending)
-
-            response = qb.execute()
-
-            print(f"Successfully read data from table '{table_name}'.")
-            return pd.DataFrame(response.data)
-
-        except Exception as e:
-            print(f"Error reading data from Supabase table '{table_name}': {e}")
-            return pd.DataFrame()  # ÜRES DF, nem response.data
-
     def read_webshops_from_db(self, table_name="webshops"):
         """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
         data = self.read_data(table_name)
