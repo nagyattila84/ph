@@ -445,7 +445,7 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Vezérlő", "Keresés", "Vizuál", "Beállítások"]
+        ["Dashboard", "Vezérlőpult", "Adatok", "Keresés", "Vizuál", "Beállítások"]
     )
 
     if page == "Dashboard":
@@ -453,6 +453,9 @@ else:
 
     elif page == "Vezérlő":
         page_controlpanel()
+
+    elif page == "Vezérlő":
+        page_data()
 
     elif page == "Keresés":
         page_search()
