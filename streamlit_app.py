@@ -198,18 +198,17 @@ def page_visual2():
 
 def page_controlpanel():
     
-    
     st.sidebar.header("📊 Vezérlőpult")
-      
+        
     st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
-    
+
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
     st.header("1. Árak letöltése")
     st.write("Webáruházak kijelölése:")
-         
+            
     shops = dm.read_data("webshops", order_by="id", descending=False)    
    
     # hozzáadunk egy kijelölő oszlopot
@@ -634,7 +633,7 @@ else:
     elif page == "Vezérlő":
         page_controlpanel()
 
-    elif page == "Vezérlő":
+    elif page == "Adatok":
         page_data_explorer()
 
     elif page == "Keresés":
