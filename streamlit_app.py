@@ -16,7 +16,7 @@ sc = Scraper()
 pm = ProductMatcher()
 stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
 
-st.set_page_config(page_title="PriceHunter", layout="centered")
+st.set_page_config(page_title="PriceHunter", layout="wide")
 
 # ============= SESSION INIT ===============
 if "logged_in" not in st.session_state:
@@ -27,9 +27,12 @@ if "username" not in st.session_state:
 # ================= LOGIN =================
 def login_page():   
     st.image("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
-    st.title("Bejelentkezés")
-    username = st.text_input("Felhasználónév")
-    password = st.text_input("Jelszó", type="password")
+    
+    c1, c2, c3 = st.columns(3)
+
+    c2.title("Bejelentkezés")
+    c2.username = st.text_input("Felhasználónév")
+    c2.password = st.text_input("Jelszó", type="password")
 
     if st.button("Belépés"):
         ok = False
@@ -43,7 +46,6 @@ def login_page():
         if ok:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
-            st.set_page_config(layout="wide")
             st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
