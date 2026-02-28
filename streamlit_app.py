@@ -34,21 +34,21 @@ def login_page():
     username = c2.text_input("Felhasználónév", width=300)
     password = c2.text_input("Jelszó", type="password", width=300)
 
-    if st.button("Belépés"):
+    if c2.button("Belépés"):
         ok = False
     
         if username in users:
             try:
                 ok = check_password_hash(users[username], password)            
             except Exception as e:
-                st.write(e)
+                c2.write(e)
     
         if ok:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
             st.rerun()
         else:
-            st.error("Hibás felhasználónév vagy jelszó")
+            c2.error("Hibás felhasználónév vagy jelszó")
 
 # ================= PAGES =================
 def page_dashboard():
