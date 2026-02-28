@@ -26,7 +26,7 @@ if "username" not in st.session_state:
 
 # ================= LOGIN =================
 def login_page():   
-    st.sidebar.image("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
+    st.logo("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
     st.title("Bejelentkezés")
     username = st.text_input("Felhasználónév")
     password = st.text_input("Jelszó", type="password")
