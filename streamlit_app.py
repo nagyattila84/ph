@@ -43,7 +43,7 @@ def login_page():
         if ok:
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
-            st.set_page_config(page_title="PriceHunter", layout="wide")
+            st.set_page_config(layout="wide")
             st.rerun()
         else:
             st.error("Hibás felhasználónév vagy jelszó")
