@@ -201,7 +201,6 @@ def page_controlpanel():
     
     st.sidebar.header("📊 Vezérlőpult")
         
-    st.set_page_config(layout="wide")
     st.title("📊 Vezérlőpult")
 
     st.header("0. Saját árak feltöltése")
