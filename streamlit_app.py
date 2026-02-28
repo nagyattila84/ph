@@ -625,7 +625,7 @@ if not st.session_state.logged_in:
     login_page()
 
 else:  
-    st.sidebar.logo("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
+    st.logo("PriceHunter-logo-fekvő.png", width=400, use_container_width=True)
     st.sidebar.write(f"Bejelentkezve: {st.session_state.username}")
 
     if st.sidebar.button("Kijelentkezés"):
