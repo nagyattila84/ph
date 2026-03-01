@@ -28,7 +28,7 @@ if "username" not in st.session_state:
 def login_page():   
     
     c1, c2, c3 = st.columns(3)
-    c2.image("PriceHunter-logo-fekvő.png", width=300, use_container_width=False)
+    c2.image("Images\PriceHunter-logo-fekvő.png", width=300, use_container_width=False)
 
     c2.title("Bejelentkezés")
     username = c2.text_input("Felhasználónév", width=300)
