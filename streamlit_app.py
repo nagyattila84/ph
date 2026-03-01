@@ -350,7 +350,7 @@ def page_controlpanel():
     products_without_cluster = dm.read_data(
         table_name="raw_products",
         in_filters = {"webshop_id": selected_ids},
-        #is_null = ["cluster_id",]
+        is_null = ["cluster_id",]
         order_by="id"
     )
     ph_table("Clusterek megtekintése", clusters)
