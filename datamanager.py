@@ -60,8 +60,99 @@ class SupaBaseDataManager:
 
         return response.count
 
-    #csak 1000 rekordig működik
     def read_data(
+        self,
+        table_name: str,
+        query: dict = None,
+        neq_filters: dict = None,
+        in_filters: dict = None,
+        is_null: list = None,
+        not_null: list = None,
+        like_filters: dict = None,
+        columns: list = None,
+        order_by: str = None,
+        descending: bool = False,
+        batch_size: int = 800
+    ):
+
+        if not self.client:
+            print("SupaBase client not initialized.")
+            return pd.DataFrame()
+
+        try:
+            select_cols = "*"
+            if columns:
+                select_cols = ",".join(columns)
+
+            all_data = []
+            start = 0
+
+            while True:
+
+                qb = self.client.table(table_name).select(select_cols)
+
+                # = feltételek
+                if query:
+                    qb = qb.match(query)
+
+                # != feltételek
+                if neq_filters:
+                    for col, value in neq_filters.items():
+                        qb = qb.neq(col, value)
+
+                # IN feltételek
+                if in_filters:
+                    for col, values in in_filters.items():
+                        qb = qb.in_(col, values)
+
+                # LIKE feltételek
+                if like_filters:
+                    for col, value in like_filters.items():
+                        qb = qb.ilike(col, f"%{value}%")
+
+                # IS NULL
+                if is_null:
+                    if isinstance(is_null, str):
+                        is_null = [is_null]
+                    for col in is_null:
+                        qb = qb.is_(col, None)
+
+                # IS NOT NULL
+                if not_null:
+                    if isinstance(not_null, str):
+                        not_null = [not_null]
+                    for col in not_null:
+                        qb = qb.not_.is_(col, None)
+
+                # ORDER BY
+                if order_by:
+                    qb = qb.order(order_by, desc=descending)
+
+                # BATCH RANGE
+                qb = qb.range(start, start + batch_size - 1)
+
+                response = qb.execute()
+                data = response.data
+
+                if not data:
+                    break
+
+                all_data.extend(data)
+
+                if len(data) < batch_size:
+                    break
+
+                start += batch_size
+
+            print(f"Successfully read {len(all_data)} rows from '{table_name}'.")
+            return pd.DataFrame(all_data)
+
+        except Exception as e:
+            print(f"Error reading data from '{table_name}': {e}")
+            return pd.DataFrame()
+
+    #csak 1000 rekordig működik
+    def OLD_read_data(
         self,
         table_name: str,
         query: dict = None,          # = feltételek
