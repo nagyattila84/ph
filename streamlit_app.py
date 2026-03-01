@@ -50,6 +50,14 @@ def login_page():
         else:
             c2.error("Hibás felhasználónév vagy jelszó")
 
+# ============== PAGE ELEMENTS ==============
+
+#saját elem: tábla neve expand boxban + elemek száma, legördítés után lapozható formában 
+def ph_table(table_name, table_df):
+    count_rows = len(table_df)
+    expander = st.expander(table_name)
+    expander.table(st.session_state.scraped_prices)
+
 # ================= PAGES =================
 def page_dashboard():
     
