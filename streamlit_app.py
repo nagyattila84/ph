@@ -280,7 +280,7 @@ def page_controlpanel():
             table_name="own_products",
             is_null=["cluster_id"]
         )
-        ph_table("Saját termékek", st.session_state["own_products_without_cluster"])
+        ph_table("Saját termékek (cluster nélkül)", st.session_state["own_products_without_cluster"])
         
     if st.button("3. Saját termékek clusterezése"):
         clusters = dm.read_data("clusters")
