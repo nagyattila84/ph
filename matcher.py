@@ -274,7 +274,7 @@ class RapidClusterMatcher:
                 results.append({
                     "product_id": p["id"],
                     "product_type": product_type,
-                    "product_name": p["name"]
+                    "product_name": p["name"],
                     "cluster_id": best_cluster["id"],
                     "cluster_name": best_cluster["name"],
                     "score": best_score,
