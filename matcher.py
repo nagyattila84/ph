@@ -1,7 +1,7 @@
 import re
 import requests
-from bs4 import BeautifulSoup
 import pandas as pd
+from rapidfuzz import fuzz
 from difflib import SequenceMatcher
 from datetime import datetime
 
@@ -145,5 +145,149 @@ class ProductMatcher:
                 "is_new_cluster": True,
                 "cluster_name": p["name"]
             })
+
+        return pd.DataFrame(results)
+
+#**********************
+#    RAPID FUZZ
+#**********************
+class RapidClusterMatcher:
+
+    def __init__(self, threshold=85):
+        self.threshold = threshold
+
+
+    # ---------------- NORMALIZÁLÁS ---------------- #
+
+    def normalize(self, text):
+        text = str(text).lower()
+        text = re.sub(r"[^\w\s]", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
+        return text
+
+
+    def extract_numbers(self, text):
+        return set(re.findall(r"\d+", str(text)))
+
+
+    def prepare_df(self, df):
+
+        df = df.copy()
+        df["norm_name"] = df["name"].apply(self.normalize)
+        df["nums"] = df["name"].apply(self.extract_numbers)
+
+        return df
+
+
+    # ---------------- SCORE ---------------- #
+
+    def score(self, a, b):
+        return fuzz.token_sort_ratio(a, b)
+
+
+    # ---------------- CLUSTER INDEX ---------------- #
+
+    def build_index(self, clusters_df):
+
+        clusters = clusters_df.to_dict("records")
+
+        index = {"__all__": clusters}
+
+        for c in clusters:
+            for num in c["nums"]:
+                index.setdefault(num, []).append(c)
+
+        return index
+
+
+    # ---------------- FIND BEST ---------------- #
+
+    def find_best_match(self, product, index):
+
+        best_cluster = None
+        best_score = 0
+
+        # 🔥 SZÁM PREFILTER
+        if product["nums"]:
+            candidate_clusters = []
+
+            for num in product["nums"]:
+                candidate_clusters.extend(index.get(num, []))
+
+            # duplikáció törlés id alapján
+            candidate_clusters = list(
+                {c["id"]: c for c in candidate_clusters}.values()
+            )
+
+            # ha nincs azonos számú cluster → nincs match
+            if not candidate_clusters:
+                return None, 0
+
+        else:
+            candidate_clusters = index["__all__"]
+
+        # 🔥 SCORE
+        for c in candidate_clusters:
+
+            # ha mindkettőnek van szám → kötelező metszet
+            if product["nums"] and c["nums"]:
+                if not product["nums"] & c["nums"]:
+                    continue
+
+            s = self.score(product["norm_name"], c["norm_name"])
+
+            if s > best_score:
+                best_score = s
+                best_cluster = c
+
+        if best_score >= self.threshold:
+            return best_cluster, best_score
+
+        return None, best_score
+
+
+    # ---------------- MAIN MATCH ---------------- #
+
+    def match_products(self, products_df, clusters_df, th=None):
+
+        if th:
+            self.threshold = th
+
+        if clusters_df is None or clusters_df.empty:
+            clusters_df = pd.DataFrame(columns=["id", "name"])
+
+        products_df = self.prepare_df(products_df)
+        clusters_df = self.prepare_df(clusters_df)
+
+        index = self.build_index(clusters_df)
+
+        results = []
+
+        for _, p in products_df.iterrows():
+
+            product_type = "own" if p["webshop_id"] == 0 else "raw"
+
+            best_cluster, best_score = self.find_best_match(p, index)
+
+            if best_cluster:
+
+                results.append({
+                    "product_id": p["id"],
+                    "product_type": product_type,
+                    "cluster_id": best_cluster["id"],
+                    "score": best_score,
+                    "is_new_cluster": False
+                })
+
+            else:
+
+                results.append({
+                    "product_id": p["id"],
+                    "product_type": product_type,
+                    "cluster_id": None,
+                    "score": None,
+                    "is_new_cluster": True,
+                    "cluster_name": p["name"]
+                })
 
         return pd.DataFrame(results)
