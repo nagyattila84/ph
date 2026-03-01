@@ -367,7 +367,7 @@ def page_controlpanel():
             
         with st.spinner("Párosítás folyamatban..."):            
 
-            matched_df = rcm.match_products(products_without_cluster, clusters, threshold)
+            matched_df = pm.match_products(products_without_cluster, clusters, threshold)
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
