@@ -128,6 +128,7 @@ class ProductMatcher:
               results.append({
                     "product_id": p["id"],
                     "product_type": product_type,
+                    "product_name": p["name"],
                     "cluster_id": best_cluster["id"],
                     "score": best_score,
                     "is_new_cluster": False
