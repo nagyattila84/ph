@@ -347,9 +347,10 @@ def page_controlpanel():
 
     clusters = dm.read_data("clusters")
     #products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
-    products_without_cluster = dm.dm.read_data(
+    products_without_cluster = dm.read_data(
         table_name="raw_products",
         in_filters = {"webshop_id": selected_ids},
+        is_null = ["cluster_id",]
         order_by="id"
     )
     ph_table("Clusterek megtekintése", clusters)
