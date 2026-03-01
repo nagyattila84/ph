@@ -14,6 +14,7 @@ users = st.secrets["users"]
 dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
 sc = Scraper()
 pm = ProductMatcher()
+rcm = RapidClusterMatcher()
 stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
 
 st.set_page_config(page_title="PriceHunter", layout="wide")
