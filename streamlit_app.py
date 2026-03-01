@@ -258,8 +258,6 @@ def page_controlpanel():
         st.success(f"✅ {downloaded_count} termék sikeresen letöltve.")
 
     if "scraped_prices" in st.session_state:
-        #expander = st.expander("Árak megtekintése")
-        #expander.table(st.session_state.scraped_prices)
         ph_table("Árak megtekintése", st.session_state.scraped_prices)
     
         if st.button("💾 Árak mentése adatbázisba", type="primary"):
@@ -282,8 +280,7 @@ def page_controlpanel():
             table_name="own_products",
             is_null=["cluster_id"]
         )
-        expander2 = st.expander("Saját termékek")
-        expander2.table(st.session_state["own_products_without_cluster"])
+        ph_table("Saját termékek", st.session_state["own_products_without_cluster"])
         
     if st.button("3. Saját termékek clusterezése"):
         clusters = dm.read_data("clusters")
@@ -355,11 +352,9 @@ def page_controlpanel():
         in_filters = {"webshop_id": selected_ids},
         order_by="id"
     )
-    expander = st.expander("Clusterek megtekintése")
-    expander.table(clusters)
-
-    expander = st.expander("Idegen termékek megjelenítése")
-    expander.table(products_without_cluster)
+    ph_table("Clusterek megtekintése", clusters)
+    
+    ph_table("Idegen termékek megjelenítése", products_without_cluster)
 
     if st.button("🔗 Termékek párosítása", type="primary"):
             
