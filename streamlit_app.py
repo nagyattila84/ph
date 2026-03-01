@@ -286,7 +286,7 @@ def page_controlpanel():
         )
         ph_table("Saját termékek (cluster nélkül)", st.session_state["own_products_without_cluster"])
 
-    if len(st.session_state["own_products_without_cluster"]) > 0:    
+    if st.session_state["own_products_without_cluster"]:    
         if st.button("Saját termékek clusterezése"):
             clusters = dm.read_data("clusters")
             with st.spinner("Párosítás folyamatban..."):            
