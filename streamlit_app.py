@@ -214,14 +214,14 @@ def page_controlpanel():
     #*****************
     # SAJÁT ÁRAK 
     #*****************
-    st.space("small")
+    st.space("medium")
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
     #*****************
     # ÁRAK LETÖLTÉSE
     #*****************
-    st.space("small")
+    st.space("medium")
     st.header("1. Árak letöltése")
     st.write("Webáruházak kijelölése:")
             
@@ -276,7 +276,7 @@ def page_controlpanel():
     #*****************
     # SAJÁT TERMÉKEK PÁROSÍTÁSA
     #*****************
-    st.space("small")
+    st.space("medium")
     st.header("2.Saját termék párosítás")
     if st.button("Saját termékek betöltése"):
         st.session_state["own_products_without_cluster"] = dm.read_data(
@@ -286,7 +286,7 @@ def page_controlpanel():
         ph_table("Saját termékek (cluster nélkül)", st.session_state["own_products_without_cluster"])
 
     if len(st.session_state["own_products_without_cluster"]) > 0:    
-        if st.button("3. Saját termékek clusterezése"):
+        if st.button("Saját termékek clusterezése"):
             clusters = dm.read_data("clusters")
             with st.spinner("Párosítás folyamatban..."):            
 
@@ -324,7 +324,8 @@ def page_controlpanel():
     #*****************
     # IDEGEN TERMÉKEK PÁROSÍTÁSA
     #*****************        
-    st.header("4.Idegen termékek párosítása")
+    st.space("medium")
+    st.header("3.Idegen termékek párosítása")
 
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
@@ -394,7 +395,8 @@ def page_controlpanel():
                 st.dataframe(
                     matched_df[matched_df["is_new_cluster"] == True]
                 )
-
+    
+    st.space("medium")
     st.header("3.Adatok törlése")
     
     delete_result = ""
