@@ -55,7 +55,7 @@ def login_page():
 #saját elem: tábla neve expand boxban + elemek száma, legördítés után lapozható formában 
 def ph_table(table_name, table_df):
     label = table_name, "Elemszám: ", len(table_df)
-    expander = st.expander(table_name, icon=":material/table_eye:")
+    expander = st.expander(label, icon=":material/table_eye:")
     expander.table(table_df)
 
 # ================= PAGES =================
