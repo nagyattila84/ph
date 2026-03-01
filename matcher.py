@@ -207,37 +207,37 @@ class RapidClusterMatcher:
         best_cluster = None
         best_score = 0
 
-        # 🔥 SZÁM PREFILTER
-        if product["nums"]:
-            candidate_clusters = []
+        # jelöltek szám index alapján, de ne kizárólagos legyen
+        candidate_clusters = index["__all__"]
 
-            for num in product["nums"]:
-                candidate_clusters.extend(index.get(num, []))
-
-            # duplikáció törlés id alapján
-            candidate_clusters = list(
-                {c["id"]: c for c in candidate_clusters}.values()
-            )
-
-            # ha nincs azonos számú cluster → nincs match
-            if not candidate_clusters:
-                return None, 0
-
-        else:
-            candidate_clusters = index["__all__"]
-
-        # 🔥 SCORE
         for c in candidate_clusters:
 
-            # ha mindkettőnek van szám → kötelező metszet
-            if product["nums"] and c["nums"]:
-                if not product["nums"] & c["nums"]:
-                    continue
+            base_score = fuzz.token_sort_ratio(
+                product["norm_name"],
+                c["norm_name"]
+            )
 
-            s = self.score(product["norm_name"], c["norm_name"])
+            nums_p = product["nums"]
+            nums_c = c["nums"]
 
-            if s > best_score:
-                best_score = s
+            # ---------------- SOFT NUMBER LOGIC ---------------- #
+
+            if nums_p and nums_c:
+
+                overlap = nums_p & nums_c
+
+                if overlap:
+                    base_score += 5   # kis boost
+                else:
+                    base_score -= 10  # büntetés, de nem kizárás
+
+            elif nums_p or nums_c:
+                base_score -= 5       # enyhe büntetés
+
+            final_score = max(0, min(base_score, 100))
+
+            if final_score > best_score:
+                best_score = final_score
                 best_cluster = c
 
         if best_score >= self.threshold:
