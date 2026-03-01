@@ -201,8 +201,6 @@ def page_visual2():
 
 def page_controlpanel():
     
-    st.sidebar.header("📊 Vezérlőpult")
-        
     st.title("📊 Vezérlőpult")
 
     st.header("0. Saját árak feltöltése")
