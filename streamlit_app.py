@@ -203,9 +203,15 @@ def page_controlpanel():
     
     st.title("📊 Vezérlőpult")
 
+    #*****************
+    # SAJÁT ÁRAK 
+    #*****************
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
+    #*****************
+    # ÁRAK LETÖLTÉSE
+    #*****************
     st.header("1. Árak letöltése")
     st.write("Webáruházak kijelölése:")
             
@@ -258,9 +264,9 @@ def page_controlpanel():
                 st.error(f"❌ Hiba történt mentés közben:\n{result['error']}")
             del st.session_state.scraped_prices
 
-    #*************
-    #  PÁROSÍTÁS
-    #*************
+    #*****************
+    # SAJÁT TERMÉKEK PÁROSÍTÁSA
+    #*****************
     st.header("2.Saját termék párosítás")
     if st.button("Saját termékek betöltése"):
         st.session_state["own_products_without_cluster"] = dm.read_data(
@@ -270,8 +276,7 @@ def page_controlpanel():
         expander2 = st.expander("Saját termékek")
         expander2.table(st.session_state["own_products_without_cluster"])
         
-
-    if st.button("Saját termékek clusterezése"):
+    if st.button("3. Saját termékek clusterezése"):
         clusters = dm.read_data("clusters")
         with st.spinner("Párosítás folyamatban..."):            
 
@@ -305,8 +310,11 @@ def page_controlpanel():
                 st.dataframe(
                     matched_df[matched_df["is_new_cluster"] == True]
                 )
-            
-    st.header("3.Idegen termékek párosítása")
+
+    #*****************
+    # IDEGEN TERMÉKEK PÁROSÍTÁSA
+    #*****************        
+    st.header("4.Idegen termékek párosítása")
 
     threshold = st.slider("Minimum score?", 60, 100, 80)
     st.write("Idegen termékek párosítása", threshold, "pont felett")
