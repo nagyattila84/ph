@@ -55,7 +55,7 @@ def login_page():
 #saját elem: tábla neve expand boxban + elemek száma, legördítés után lapozható formában 
 def ph_table(table_name, table_df):
     count_rows = len(table_df)
-    expander = st.expander(table_name)
+    expander = st.expander(table_name, icon=":material/table_eye:")
     expander.table(st.session_state.scraped_prices)
 
 # ================= PAGES =================
