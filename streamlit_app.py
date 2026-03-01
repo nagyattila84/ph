@@ -56,7 +56,7 @@ def login_page():
 def ph_table(table_name, table_df):
     count_rows = len(table_df)
     expander = st.expander(table_name, icon=":material/table_eye:")
-    expander.table(st.session_state.scraped_prices)
+    expander.table(table_df)
 
 # ================= PAGES =================
 def page_dashboard():
@@ -258,8 +258,9 @@ def page_controlpanel():
         st.success(f"✅ {downloaded_count} termék sikeresen letöltve.")
 
     if "scraped_prices" in st.session_state:
-        expander = st.expander("Árak megtekintése")
-        expander.table(st.session_state.scraped_prices)
+        #expander = st.expander("Árak megtekintése")
+        #expander.table(st.session_state.scraped_prices)
+        ph_table("Árak megtekintése", st.session_state.scraped_prices)
     
         if st.button("💾 Árak mentése adatbázisba", type="primary"):
             
