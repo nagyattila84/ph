@@ -214,12 +214,14 @@ def page_controlpanel():
     #*****************
     # SAJÁT ÁRAK 
     #*****************
+    st.space("small")
     st.header("0. Saját árak feltöltése")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
 
     #*****************
     # ÁRAK LETÖLTÉSE
     #*****************
+    st.space("small")
     st.header("1. Árak letöltése")
     st.write("Webáruházak kijelölése:")
             
@@ -274,6 +276,7 @@ def page_controlpanel():
     #*****************
     # SAJÁT TERMÉKEK PÁROSÍTÁSA
     #*****************
+    st.space("small")
     st.header("2.Saját termék párosítás")
     if st.button("Saját termékek betöltése"):
         st.session_state["own_products_without_cluster"] = dm.read_data(
