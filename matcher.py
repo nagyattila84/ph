@@ -184,8 +184,13 @@ class RapidClusterMatcher:
     # ---------------- SCORE ---------------- #
 
     def score(self, a, b):
-        return fuzz.token_sort_ratio(a, b)
+        #return fuzz.token_sort_ratio(a, b)
 
+        base = fuzz.token_set_ratio(a, b)
+        alt  = fuzz.partial_ratio(a, b)
+        score = (base * 0.7 + alt * 0.3)
+
+        return score
 
     # ---------------- CLUSTER INDEX ---------------- #
 
