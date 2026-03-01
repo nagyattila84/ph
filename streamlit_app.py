@@ -363,12 +363,47 @@ def page_controlpanel():
     
     ph_table("Idegen termékek megjelenítése", products_without_cluster)
 
-    if st.button("🔗 Termékek párosítása", type="primary"):
+    if st.button("🔗 Termékek párosítása PM", type="primary"):
             
         with st.spinner("Párosítás folyamatban..."):            
 
             matched_df = pm.match_products(products_without_cluster, clusters, threshold)
             #matched_df = rcm.match_products(products_without_cluster, clusters, threshold)
+            st.header("SIKERES PÁROSÍTÁS")
+
+            total = len(matched_df)
+            matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
+            new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
+
+            st.write("💎 Szép dashboard megjelenítés")
+            col1, col2, col3 = st.columns(3)
+
+            col1.metric("📦 Feldolgozott termék", total)
+            col2.metric("🔗 Clusterhez kapcsolva", matched_count)
+            col3.metric("🆕 Új cluster szükséges", new_cluster_count)
+
+            st.write("🚀 Extra: százalékos arány")
+            if total > 0:
+                match_ratio = round(matched_count / total * 100, 1)
+                st.info(f"Match arány: {match_ratio}%")
+            
+            st.write("🎯 Ha külön akarod listázni")
+            with st.expander("🔗 Kapcsolt termékek"):
+                st.dataframe(
+                    matched_df[matched_df["is_new_cluster"] == False]
+                )
+
+            with st.expander("🆕 Új clusterre váró termékek"):
+                st.dataframe(
+                    matched_df[matched_df["is_new_cluster"] == True]
+                )
+   
+    if st.button("🔗 Termékek párosítása RCM", type="primary"):
+            
+        with st.spinner("Párosítás folyamatban..."):            
+
+            #matched_df = pm.match_products(products_without_cluster, clusters, threshold)
+            matched_df = rcm.match_products(products_without_cluster, clusters, threshold)
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
