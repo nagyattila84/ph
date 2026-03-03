@@ -333,7 +333,6 @@ def page_controlpanel():
 
     webshops_df = dm.read_data(
         table_name="webshops",
-        neq_filters = {"id": 0},
         columns=["id", "name"],
         order_by="id"
     )
