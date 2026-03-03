@@ -402,6 +402,12 @@ def page_controlpanel():
                 st.dataframe(
                     matched_df[matched_df["is_new_cluster"] == True]
                 )
+            if st.button("🆕 Clusterek MENTÉSE", type="primary"):
+                result = dm.process_matches_batch(matched_df[matched_df["is_new_cluster"] == True])
+                if result["success"]:
+                    st.success(f"✅ {result['count']} termék sikeresen mentve.")
+                else:
+                    st.error(f"Sikertelen mentés.")
    
     if st.button("🔗 Termékek párosítása RCM", type="primary"):
             
