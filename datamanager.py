@@ -151,69 +151,6 @@ class SupaBaseDataManager:
             print(f"Error reading data from '{table_name}': {e}")
             return pd.DataFrame()
 
-    #csak 1000 rekordig működik
-    def OLD_read_data(
-        self,
-        table_name: str,
-        query: dict = None,          # = feltételek
-        neq_filters: dict = None,    # != feltételek
-        in_filters: dict = None,     # IN feltételek
-        is_null: list = None,        # IS NULL oszlopok
-        not_null: list = None,       # IS NOT NULL oszlopok
-        columns: list = None,
-        order_by: str = None,
-        descending: bool = False
-    ):
-        #Universal read method with extended filtering support.
-
-        if not self.client:
-            print("SupaBase client not initialized. Cannot read data.")
-            return pd.DataFrame()
-
-        try:
-            select_cols = "*"
-            if columns:
-                select_cols = ",".join(columns)
-
-            qb = self.client.table(table_name).select(select_cols)
-
-            # = feltételek
-            if query:
-                qb = qb.match(query)
-
-            # != feltételek
-            if neq_filters:
-                for col, value in neq_filters.items():
-                    qb = qb.neq(col, value)
-
-            # IN feltételek
-            if in_filters:
-                for col, values in in_filters.items():
-                    qb = qb.in_(col, values)
-
-            # IS NULL
-            if is_null:
-                for col in is_null:
-                    qb = qb.is_(col, None)
-
-            # IS NOT NULL
-            if not_null:
-                for col in not_null:
-                    qb = qb.not_.is_(col, None)
-
-            # ORDER BY
-            if order_by:
-                qb = qb.order(order_by, desc=descending)
-
-            response = qb.execute()
-
-            print(f"Successfully read data from table '{table_name}'.")
-            return pd.DataFrame(response.data)
-
-        except Exception as e:
-            print(f"Error reading data from Supabase table '{table_name}': {e}")
-            return pd.DataFrame()
-
     def read_webshops_from_db(self, table_name="webshops"):
         """Reads webshops from the specified Supabase table and returns a list of Webshop instances."""
         data = self.read_data(table_name)
