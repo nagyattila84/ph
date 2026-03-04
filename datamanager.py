@@ -342,23 +342,6 @@ class SupaBaseDataManager:
         except Exception as e:
             return f"Hiba történt: {e}"
 
-    def get_unclustered_products_by_webshops(self, webshop_ids: list):
-        try:
-            response = (
-                self.client
-                .table("raw_products")
-                .select("*")
-                .is_("cluster_id", None)
-                .in_("webshop_id", webshop_ids)
-                .execute()
-            )
-
-            return pd.DataFrame(response.data)
-
-        except Exception as e:
-            print("Hiba:", e)
-            return pd.DataFrame()
-
     def get_unclustered_own_products(self):
         try:
             response = (
