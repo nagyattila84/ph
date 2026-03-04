@@ -352,7 +352,7 @@ def page_controlpanel():
     st.markdown(f"Your selected options: {selected_ids}.")
 
     clusters = dm.read_data("clusters")
-    #products_without_cluster = dm.get_unclustered_products_by_webshops(selected_ids)
+    
     products_without_cluster = dm.read_data(
         table_name="raw_products",
         in_filters = {"webshop_id": selected_ids},
