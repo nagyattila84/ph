@@ -216,8 +216,9 @@ def page_controlpanel():
     # SAJÁT ÁRAK 
     #*****************
     st.space("medium")
-    st.header("0. Saját árak feltöltése")
+    st.header("0. Saját termékadatok feltöltés")
     st.write("Az own_product táblába manuálisan kerülnek a saját termék adatok.")
+    st.write("fejleszteni... kapcsolás a letöltött termékadatokhoz, cikkszám szerint.")
 
     #*****************
     # ÁRAK LETÖLTÉSE
