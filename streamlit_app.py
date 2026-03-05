@@ -133,10 +133,22 @@ def page_search():
         st.dataframe(df)
 
 def page_price_setter():
+     st.title("💵 ÁRAK ELEMZÉSE")
 
+    tab1, tab2, tab3 = st.tabs(
+        ["Táblázat", "Grafikon", "blabla"]
+    )
 
-def page_visual3():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)    
+    with tab1:
+        page_visual3()
+    
+    with tab2:
+        page_visual()
+
+    with tab3:
+        page_visual2()
+
+def page_visual3():  
     st.title("Ár összehasonlító") 
     own_df, raw_df = dm.get_products_by_keyword("pgv")
     df = raw_df.copy()
