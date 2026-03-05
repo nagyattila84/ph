@@ -368,8 +368,8 @@ def page_controlpanel():
             
         with st.spinner("Párosítás folyamatban..."):            
 
-            matched_df = pm.match_products(products_without_cluster, clusters, threshold)
-            st.session_state["matched_df"] = matched_df
+            st.session_state["matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
+            matched_df = st.session_state["matched_df"]
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
