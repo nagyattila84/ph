@@ -451,12 +451,14 @@ def page_controlpanel():
 
     if "delete_result" not in st.session_state:
         st.session_state.delete_result = ""
+        st.session_state.st.session_state.delete_cluster_toggle = Flase
+    
     col1, col2 = st.columns(2)
 
     with col1:
         st.toggle(
             "⚠ CLUSTER törlés engedélyezése",
-            key="delete_cluster_toggle"
+            key=st.session_state.delete_cluster_toggle
         )
 
     with col2:
