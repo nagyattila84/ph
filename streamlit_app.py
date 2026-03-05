@@ -233,7 +233,12 @@ def page_visual():
     st.plotly_chart(fig, use_container_width=True)
 
 def page_visual2():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
+    
+    df = dm.read_data(
+        table = "raw_products",
+        
+    )
+
     fig = go.Figure()
     st.title("Ár összehasonlító")   
  
