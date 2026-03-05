@@ -410,7 +410,7 @@ def page_controlpanel():
             if result["success"]:
                 st.success(f"✅ {result['count']} termék sikeresen mentve.")
             else:
-                st.error(f"Sikertelen mentés.")
+                st.error(result["error"])
    
     if st.button("🔗 Termékek párosítása RCM", type="primary"):
             
