@@ -187,18 +187,31 @@ class SupaBaseDataManager:
 
     def process_matches_batch(self, df, batch=300):
 
-        df = df.astype(object).where(pd.notnull(df), None)
+        try: 
+            df = df.astype(object).where(pd.notnull(df), None)
 
-        for i in range(0, len(df), batch):
-            batch_df = df.iloc[i : i + batch].copy()
-            self.process_matches(batch_df)
+            total_processed = 0
 
-        print("All batches processed.")
+            for i in range(0, len(df), batch):
+                batch_df = df.iloc[i : i + batch].copy()
+                self.process_matches(batch_df)
+                total_processed += len(batch_df)
 
-        self.client.rpc("sync_raw_clusters").execute()
-        self.client.rpc("sync_own_clusters").execute()
+            self.client.rpc("sync_raw_clusters").execute()
+            self.client.rpc("sync_own_clusters").execute()
 
-        print("Clusters synced.")
+            return {
+                "success": True,
+                "count": total_processed
+            }
+        
+        except Exception as e:
+            return {
+                "success": False,
+                "count": 0,
+                "error": str(e)
+        }
+
 
     #df- result of matches in DataFrame with batch
     def process_matches(self, df):
