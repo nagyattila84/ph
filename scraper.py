@@ -136,13 +136,15 @@ class Scraper():
                 name = None
     
             #sku, cikkszám kikeresése
-            sku_element = product.find(shop["sku_selector"], class_=shop["sku_class"])
+            if shop["sku_selector"]:
+                sku_element = product.find(shop["sku_selector"], class_=shop["sku_class"])
+            else:
+                sku_element = product
+
             if sku_element:
                 if shop["sku_attr"]:
-                    # Safely get attribute value, default to "Hiányzik" if not found
                     sku = sku_element.attrs.get(shop["sku_attr"], "Hiányzik")
                 else:
-                    # If sku_attr is None, assume SKU is the text content
                     sku = sku_element.text.strip()
             else:
                 sku = None
