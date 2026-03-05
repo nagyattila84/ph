@@ -59,6 +59,43 @@ def ph_table(table_name, table_df):
     expander = st.expander(label_name, icon=":material/table_eye:")
     expander.table(table_df)
 
+def ph_matched_result_view(st, matched_df):
+    total = len(matched_df)
+    matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
+    new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("📦 Feldolgozott termék", total)
+    col2.metric("🔗 Clusterhez kapcsolva", matched_count)
+    col3.metric("🆕 Új cluster szükséges", new_cluster_count)
+
+    if total > 0:
+        match_ratio = round(matched_count / total * 100, 1)
+        st.info(f"Match arány: {match_ratio}%")
+    
+    with st.expander("🔗 Kapcsolt termékek"):
+        st.dataframe(
+            matched_df[matched_df["is_new_cluster"] == False]
+        )
+    if st.button("🔗 Kapcsolt termékek MENTÉSE", type="primary"):
+        result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == False])
+        if result["success"]:
+            st.success(f"✅ {result['count']} termék sikeresen mentve.")
+        else:
+            st.error(f"Sikertelen mentés.")
+
+    with st.expander("🆕 Új clusterre váró termékek"):
+        st.dataframe(
+            matched_df[matched_df["is_new_cluster"] == True]
+        )
+    if st.button("🆕 Clusterek MENTÉSE", type="primary"):
+        result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == True])
+        if result["success"]:
+            st.success(f"✅ {result['count']} termék sikeresen mentve.")
+        else:
+            st.error(result["error"])
+
 # ================= PAGES =================
 def page_dashboard():
     
@@ -377,49 +414,19 @@ def page_controlpanel():
         
         st.header("SIKERES PÁROSÍTÁS")
         
+        ########################################
         st.header("PriceMatcher eredménye")
+        ########################################
 
-        total = len(matched_df)
-        matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
-        new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
-
-        col1, col2, col3 = st.columns(3)
-
-        col1.metric("📦 Feldolgozott termék", total)
-        col2.metric("🔗 Clusterhez kapcsolva", matched_count)
-        col3.metric("🆕 Új cluster szükséges", new_cluster_count)
-
-        if total > 0:
-            match_ratio = round(matched_count / total * 100, 1)
-            st.info(f"Match arány: {match_ratio}%")
-        
-        with st.expander("🔗 Kapcsolt termékek"):
-            st.dataframe(
-                matched_df[matched_df["is_new_cluster"] == False]
-            )
-        if st.button("🔗 Kapcsolt termékek MENTÉSE", type="primary"):
-            result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == False])
-            if result["success"]:
-                st.success(f"✅ {result['count']} termék sikeresen mentve.")
-            else:
-                st.error(f"Sikertelen mentés.")
-
-        with st.expander("🆕 Új clusterre váró termékek"):
-            st.dataframe(
-                matched_df[matched_df["is_new_cluster"] == True]
-            )
-        if st.button("🆕 Clusterek MENTÉSE", type="primary"):
-            result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == True])
-            if result["success"]:
-                st.success(f"✅ {result['count']} termék sikeresen mentve.")
-            else:
-                st.error(result["error"])
+        ph_matched_result_view(st, st.session_state["pm_matched_df"])
 
         if "rcm_matched_df" in st.session_state:
 
             matched_df = st.session_state["rcm_matched_df"]
             
+            ###################################################
             st.header("RapidClusterMatcher eredménye")
+            ###################################################
 
             total = len(matched_df)
             matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
