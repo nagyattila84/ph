@@ -324,7 +324,10 @@ class SupaBaseDataManager:
     def delete_all_clusters(self):
         try:
             response = self.client.rpc("reset_clusters").execute()
-            return response
+            if response.data is not None:
+                return "Cluster adatok törölve."
+
+            return "A művelet lefutott, de nem érkezett vissza adat."
 
         except Exception as e:
             print("RPC ERROR:", e)
