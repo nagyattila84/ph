@@ -91,6 +91,56 @@ class Scraper():
     def __init__(self):
         pass
 
+    def extract_sku(self, product, shop):
+
+        # 1️⃣ CONFIG alapú keresés (ha a shop config megadja)
+        if shop.get("sku_selector"):
+            sku_element = product.find(
+                shop["sku_selector"],
+                class_=shop.get("sku_class")
+            )
+
+            if sku_element:
+                if shop.get("sku_attr"):
+                    sku = sku_element.attrs.get(shop["sku_attr"])
+                else:
+                    sku = sku_element.text.strip()
+
+                if sku:
+                    return sku
+
+        # 2️⃣ gyakori data attribútumok
+        for attr in [
+            "data-sku",
+            "data-product-sku",
+            "data-id-product",
+            "data-product-id",
+            "data-product"
+        ]:
+            sku = product.attrs.get(attr)
+            if sku:
+                return sku
+
+        # 3️⃣ hidden input mezők
+        hidden = product.find("input", {"name": ["sku", "product_sku", "id_product"]})
+        if hidden and hidden.get("value"):
+            return hidden["value"]
+
+        # 4️⃣ bármilyen "sku" szó az attribútumokban
+        for attr, value in product.attrs.items():
+            if "sku" in attr.lower():
+                return value
+
+        # 5️⃣ DOM text fallback
+        text_candidates = product.find_all(string=True)
+
+        for t in text_candidates:
+            txt = t.strip().lower()
+            if "sku" in txt or "cikkszám" in txt:
+                return txt
+
+        return None
+
     def get_price_from_multi_webshop_df(self, shops, search_word):
         results = pd.DataFrame()
         for _, row in shops.iterrows():
@@ -136,18 +186,7 @@ class Scraper():
                 name = None
     
             #sku, cikkszám kikeresése
-            if shop["sku_selector"]:
-                sku_element = product.find(shop["sku_selector"], class_=shop["sku_class"])
-            else:
-                sku_element = product
-
-            if sku_element:
-                if shop["sku_attr"]:
-                    sku = sku_element.attrs.get(shop["sku_attr"], "Hiányzik")
-                else:
-                    sku = sku_element.text.strip()
-            else:
-                sku = None
+            sku = self.extract_sku(product, shop)
     
             #url kikeresése
             link_element = product.find(shop["link_selector"], class_=shop["link_class"])
