@@ -449,56 +449,56 @@ def page_controlpanel():
     st.space("medium")
     st.header("3. Adatok törlése")
 
-if "delete_result" not in st.session_state:
-    st.session_state.delete_result = ""
-col1, col2 = st.columns(2)
+    if "delete_result" not in st.session_state:
+        st.session_state.delete_result = ""
+    col1, col2 = st.columns(2)
 
-with col1:
-    st.toggle(
-        "⚠ CLUSTER törlés engedélyezése",
-        key="delete_cluster_toggle"
-    )
+    with col1:
+        st.toggle(
+            "⚠ CLUSTER törlés engedélyezése",
+            key="delete_cluster_toggle"
+        )
 
-with col2:
-    if st.button("CLUSTER-ek törlése", type="primary"):
+    with col2:
+        if st.button("CLUSTER-ek törlése", type="primary"):
 
-        if st.session_state.delete_cluster_toggle:
+            if st.session_state.delete_cluster_toggle:
 
-            result = dm.delete_all_clusters()
+                result = dm.delete_all_clusters()
 
-            st.session_state.delete_result = result
-            st.session_state.delete_cluster_toggle = False
+                st.session_state.delete_result = result
+                st.session_state.delete_cluster_toggle = False
 
-            st.rerun()
+                st.rerun()
 
-        else:
-            st.session_state.delete_result = "Kapcsold be a megerősítést a törléshez!"
+            else:
+                st.session_state.delete_result = "Kapcsold be a megerősítést a törléshez!"
 
-if st.session_state.delete_result:
-    st.success(st.session_state.delete_result)
+    if st.session_state.delete_result:
+        st.success(st.session_state.delete_result)
 
-# -------- RAW PRODUCTS TÖRLÉS --------
+    # -------- RAW PRODUCTS TÖRLÉS --------
 
-col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-with col1:
-    confirm_raw = st.toggle(
-        "⚠ Idegen termékek törlésének engedélyezése",
-        key="delete_raw_products_toggle"
-    )
+    with col1:
+        confirm_raw = st.toggle(
+            "⚠ Idegen termékek törlésének engedélyezése",
+            key="delete_raw_products_toggle"
+        )
 
-with col2:
-    if st.button("Idegen termékek törlése", type="primary"):
+    with col2:
+        if st.button("Idegen termékek törlése", type="primary"):
 
-        if confirm_raw:
+            if confirm_raw:
 
-            result = dm.delete_all_raw_products()
-            st.session_state.delete_raw_products_toggle = False
-            st.session_state.delete_message = result
-            st.rerun()
+                result = dm.delete_all_raw_products()
+                st.session_state.delete_raw_products_toggle = False
+                st.session_state.delete_message = result
+                st.rerun()
 
-        else:
-            st.error("Kapcsold be a megerősítést a törléshez!")
+            else:
+                st.error("Kapcsold be a megerősítést a törléshez!")
 
 
 # -------- ÜZENET KIÍRÁS --------
