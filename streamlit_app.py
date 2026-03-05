@@ -133,11 +133,9 @@ def page_search():
         st.dataframe(df)
 
 def page_price_setter():
-     st.title("💵 ÁRAK ELEMZÉSE")
+    s0t.title("💵 ÁRAK ELEMZÉSE")
 
-    tab1, tab2, tab3 = st.tabs(
-        ["Táblázat", "Grafikon", "blabla"]
-    )
+    tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "blabla"])
 
     with tab1:
         page_visual3()
