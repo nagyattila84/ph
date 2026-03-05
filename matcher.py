@@ -128,6 +128,7 @@ class ProductMatcher:
               results.append({
                     "product_id": p["id"],
                     "product_type": product_type,
+                    "webshop_id": p["webshop_id"],
                     "product_name": p["name"],
                     "cluster_id": best_cluster["id"],
                     "cluster_name": best_cluster["name"],
@@ -142,6 +143,7 @@ class ProductMatcher:
             results.append({
                 "product_id": p["id"],
                 "product_type": product_type,
+                "webshop_id": p["webshop_id"],
                 "cluster_id": None,
                 "score": None,
                 "is_new_cluster": True,
@@ -281,6 +283,7 @@ class RapidClusterMatcher:
                 results.append({
                     "product_id": p["id"],
                     "product_type": product_type,
+                    "webshop_id": p["webshop_id"],
                     "product_name": p["name"],
                     "cluster_id": best_cluster["id"],
                     "cluster_name": best_cluster["name"],
@@ -293,6 +296,7 @@ class RapidClusterMatcher:
                 results.append({
                     "product_id": p["id"],
                     "product_type": product_type,
+                    "webshop_id": p["webshop_id"],
                     "cluster_id": None,
                     "score": None,
                     "is_new_cluster": True,
