@@ -212,23 +212,25 @@ class SupaBaseDataManager:
 
             for _, row in new_clusters.iterrows():
                 insert_payload.append({
-                    "name": row["cluster_name"]
+                    "name": row["cluster_name"],
+                    "webshop_id": row["webshop_id"]
                 })
 
             res = self.client.table("clusters").insert(insert_payload).execute()
 
             returned = res.data
 
-            # cluster_name → id mapping
+            # (cluster_name, webshop_id) → id mapping
             mapping = {
-                r["name"]: r["id"]
+                (r["name"], r["webshop_id"]): r["id"]
                 for r in returned
             }
 
             # visszatöltjük DF-be
             for i in df.index:
                 if df.at[i, "is_new_cluster"]:
-                    df.at[i, "cluster_id"] = mapping[df.at[i, "cluster_name"]]
+                    key = (df.at[i, "cluster_name"], df.at[i, "webshop_id"])
+                    df.at[i, "cluster_id"] = mapping[key]
 
         # MATCH TABLE INSERT
 
