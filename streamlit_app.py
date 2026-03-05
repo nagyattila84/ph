@@ -133,7 +133,7 @@ def page_search():
         st.dataframe(df)
 
 def page_price_setter():
-    s0t.title("💵 ÁRAK ELEMZÉSE")
+    st.title("💵 ÁRAK ELEMZÉSE")
 
     tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "blabla"])
 
