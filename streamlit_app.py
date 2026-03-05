@@ -235,8 +235,7 @@ def page_visual():
 def page_visual2():
     
     df = dm.read_data(
-        table = "raw_products",
-        
+        table = "raw_products"
     )
 
     fig = go.Figure()
