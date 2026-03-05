@@ -337,7 +337,7 @@ class SupaBaseDataManager:
         try:
             response = self.client.table("raw_products") \
                 .delete() \
-                .neq("id", 0) \
+                .neq("id", 99) \
                 .execute()
 
             deleted_count = len(response.data) if response.data else 0
