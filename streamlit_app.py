@@ -132,6 +132,9 @@ def page_search():
         st.subheader("Termékek")
         st.dataframe(df)
 
+def page_price_setter():
+
+
 def page_visual3():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)    
     st.title("Ár összehasonlító") 
@@ -653,7 +656,7 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Vezérlőpult", "Adatok", "Keresés", "Vizuál", "Beállítások"]
+        ["Dashboard", "Vezérlőpult", "Adatok", "Keresés", "Árak elemzése", "Beállítások"]
     )
 
     if page == "Dashboard":
@@ -668,8 +671,8 @@ else:
     elif page == "Keresés":
         page_search()
 
-    elif page == "Vizuál":
-        page_visual3()
+    elif page == "Árak elemzése":
+        page_price_setter()
 
     elif page == "Beállítások":
         page_settings()
