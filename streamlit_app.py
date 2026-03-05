@@ -330,7 +330,7 @@ def page_controlpanel():
     st.header("3.Idegen termékek párosítása")
 
     threshold = st.slider("Minimum score?", 60, 100, 80)
-    st.write("Idegen termékek párosítása", threshold, "pont felett")
+    st.write("Letöltött termékek párosítása", threshold, "pont felett")
 
     webshops_df = dm.read_data(
         table_name="webshops",
@@ -359,6 +359,7 @@ def page_controlpanel():
         is_null = ["cluster_id"],
         order_by="id"
     )
+
     ph_table("Clusterek megtekintése", clusters)
     
     ph_table("Idegen termékek megjelenítése", products_without_cluster)
@@ -368,7 +369,7 @@ def page_controlpanel():
         with st.spinner("Párosítás folyamatban..."):            
 
             matched_df = pm.match_products(products_without_cluster, clusters, threshold)
-            #matched_df = rcm.match_products(products_without_cluster, clusters, threshold)
+            st.session_state["matched_df"] = matched_df
             st.header("SIKERES PÁROSÍTÁS")
 
             total = len(matched_df)
@@ -393,7 +394,7 @@ def page_controlpanel():
                     matched_df[matched_df["is_new_cluster"] == False]
                 )
             if st.button("🔗 Kapcsolt termékek MENTÉSE", type="primary"):
-                result = dm.process_matches_batch(matched_df[matched_df["is_new_cluster"] == False])
+                result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == False])
                 if result["success"]:
                     st.success(f"✅ {result['count']} termék sikeresen mentve.")
                 else:
@@ -404,7 +405,7 @@ def page_controlpanel():
                     matched_df[matched_df["is_new_cluster"] == True]
                 )
             if st.button("🆕 Clusterek MENTÉSE", type="primary"):
-                result = dm.process_matches_batch(matched_df[matched_df["is_new_cluster"] == True])
+                result = dm.process_matches_batch(st.session_state["matched_df"][st.session_state["matched_df"]["is_new_cluster"] == True])
                 if result["success"]:
                     st.success(f"✅ {result['count']} termék sikeresen mentve.")
                 else:
@@ -414,7 +415,6 @@ def page_controlpanel():
             
         with st.spinner("Párosítás folyamatban..."):            
 
-            #matched_df = pm.match_products(products_without_cluster, clusters, threshold)
             matched_df = rcm.match_products(products_without_cluster, clusters, threshold)
             st.header("SIKERES PÁROSÍTÁS")
 
