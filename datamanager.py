@@ -249,19 +249,6 @@ class SupaBaseDataManager:
 
         print(f"Saved {len(match_rows)} matches.")
 
-    def get_clusters(self, keyword):
-        kw = keyword.lower()
-
-        response = (
-            self.client
-            .table("clusters")
-            .select("*")
-            .ilike("name", f"%{kw}%")
-            .execute()
-        )
-
-        return pd.DataFrame(response.data)
-
     def get_products_by_keyword(self, keyword):
 
         # matching clusters
@@ -341,19 +328,3 @@ class SupaBaseDataManager:
 
         except Exception as e:
             return f"Hiba történt: {e}"
-
-    def get_unclustered_own_products(self):
-        try:
-            response = (
-                self.client
-                .table("own_products")
-                .select("*")
-                .is_("cluster_id", None)
-                .execute()
-            )
-
-            return pd.DataFrame(response.data)
-
-        except Exception as e:
-            print("Hiba:", e)
-            return pd.DataFrame()
