@@ -454,7 +454,7 @@ def page_controlpanel():
 
     # -------- CLUSTERS TÖRLÉS --------
 
-    if st.button("CLUSTER-ek törlése", type="primary"):
+    if st.button("CLUSTER-ek törlése", type="primary", key="del_clusters"):
 
         result = dm.delete_all_clusters()
         st.session_state.delete_cluster_result = result
@@ -466,7 +466,7 @@ def page_controlpanel():
 
     # -------- RAW PRODUCTS TÖRLÉS --------
 
-    if st.button("Letöltött termékek törlése", type="primary"):
+    if st.button("Letöltött termékek törlése", type="primary", key="del_products"):
 
         result = dm.delete_all_raw_products()
         st.session_state.delete_raw_result = result
