@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from rapidfuzz import fuzz
 from difflib import SequenceMatcher
-from datetime import datetime
+from datetime import date
 
 #csoportosítás optimalizált!
 class ProductMatcher:
