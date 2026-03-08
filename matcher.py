@@ -26,7 +26,6 @@ class ProductMatcher:
     def prepare_df(self, df):
 
         df = df.copy()
-
         df["norm_name"] = df["name"].apply(self.normalize)
         df["nums"] = df["name"].apply(self.extract_numbers)
 
