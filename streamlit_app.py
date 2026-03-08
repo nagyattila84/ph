@@ -53,6 +53,10 @@ def login_page():
 
 # ============== PAGE ELEMENTS ==============
 
+def clear_session(obj):
+    if obj in st.session_state:
+        del st.session_state[obj]
+
 #saját elem: tábla neve expand boxban + elemek száma, legördítés után lapozható formában 
 def ph_table(table_name, table_df):
     label_name = table_name + " Elemszám: " + str(len(table_df))
