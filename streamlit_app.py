@@ -403,18 +403,21 @@ def page_controlpanel():
         selection_mode="multi"
     )
 
-    # kiválasztott webshop id-k
-    selected_ids = [webshop_dict[name] for name in selected_names]
-    st.markdown(f"Your selected options: {selected_ids}.")
+    if selected_names:
+            
+        # kiválasztott webshop id-k
+        selected_ids = [webshop_dict[name] for name in selected_names]
+        st.markdown(f"Your selected options: {selected_ids}.")
 
-    clusters = dm.read_data("clusters")
-    
-    products_without_cluster = dm.read_data(
-        table_name="raw_products",
-        in_filters = {"webshop_id": selected_ids},
-        is_null = ["cluster_id"],
-        order_by="id"
-    )
+        clusters = dm.read_data("clusters")
+        
+        
+        products_without_cluster = dm.read_data(
+            table_name="raw_products",
+            in_filters = {"webshop_id": selected_ids},
+            is_null = ["cluster_id"],
+            order_by="id"
+        )
 
     ph_table("Clusterek megtekintése", clusters)
     
