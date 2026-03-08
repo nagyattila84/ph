@@ -92,7 +92,7 @@ def ph_matched_result_view(st, matched_df):
             matched_df[matched_df["is_new_cluster"] == True]
         )
     if st.button("🆕 Clusterek MENTÉSE", type="primary"):
-        result = dm.process_matches_batch(st.session_state[matched_df][st.session_state[matched_df]["is_new_cluster"] == True])
+        result = dm.process_matches_batch(matched_df[matched_df]["is_new_cluster"] == True])
         if result["success"]:
             st.success(f"✅ {result['count']} termék sikeresen mentve.")
         else:
