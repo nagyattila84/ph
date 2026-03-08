@@ -444,26 +444,27 @@ def page_controlpanel():
     st.space("medium")
     st.header("3. Adatok törlése")
 
+    # -------- OWN PRODUCTS TÖRLÉS --------
+
     if st.button("CLUSTER-ek törlése", type="primary"):
 
         result = dm.delete_all_clusters()
-        st.session_state.delete_result = result
-
+        st.session_state.delete_cluster_result = result
         st.rerun()
 
-    if st.session_state.delete_result:
-        st.success(st.session_state.delete_result)
+    if st.session_state.delete_cluster_result:
+        st.success(st.session_state.delete_cluster_result)
 
     # -------- RAW PRODUCTS TÖRLÉS --------
 
     if st.button("Letöltött termékek törlése", type="primary"):
 
         result = dm.delete_all_raw_products()
-        st.session_state.delete_message = result
+        st.session_state.delete_raw_result = result
         st.rerun()
 
-    if st.session_state.delete_message:
-        st.success(st.session_state.delete_message)
+    if st.session_state.delete_raw_result:
+        st.success(st.session_state.delete_raw_result)
 
 def page_data_explorer():
 
