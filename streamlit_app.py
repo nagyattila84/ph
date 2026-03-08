@@ -439,7 +439,7 @@ def page_controlpanel():
 
         st.header("RapidClusterMatcher eredménye")
 
-        ph_matched_result_view(st, st.session_state["rcm_matched_df"])  
+        #ph_matched_result_view(st, st.session_state["rcm_matched_df"])  
     
     st.space("medium")
     st.header("3. Adatok törlése")
