@@ -90,6 +90,7 @@ class ProductMatcher:
         if th:
             self.threshold = th
         product_type = None
+        current_date = date.today().isoformat()
 
         if clusters_df is None or clusters_df.empty:
             clusters_df = pd.DataFrame(columns=["id", "name"])
@@ -145,6 +146,7 @@ class ProductMatcher:
                 "webshop_id": p["webshop_id"],
                 "cluster_id": None,
                 "score": None,
+                "matched_at": current_date,
                 "is_new_cluster": True,
                 "cluster_name": p["name"]
             })
