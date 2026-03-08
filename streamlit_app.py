@@ -419,31 +419,31 @@ def page_controlpanel():
             order_by="id"
         )
 
-    ph_table("Clusterek megtekintése", clusters)
-    
-    ph_table("Idegen termékek megjelenítése", products_without_cluster)
-
-    if st.button("🔗 Termékek párosítása PM", type="primary"):
-            
-        with st.spinner("Párosítás folyamatban..."):            
-
-            st.session_state["pm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
-            st.session_state["rcm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
-            
-    if "pm_matched_df" in st.session_state:
-      
-        st.header("SIKERES PÁROSÍTÁS")
+        ph_table("Clusterek megtekintése", clusters)
         
-        st.header("PriceMatcher eredménye")
+        ph_table("Idegen termékek megjelenítése", products_without_cluster)
 
-        ph_matched_result_view(st, st.session_state["pm_matched_df"])
+        if st.button("🔗 Termékek párosítása PM", type="primary"):
+                
+            with st.spinner("Párosítás folyamatban..."):            
 
-    if "rcm_matched_df" in st.session_state:
+                st.session_state["pm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
+                st.session_state["rcm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
+                
+        if "pm_matched_df" in st.session_state:
+        
+            st.header("SIKERES PÁROSÍTÁS")
+            
+            st.header("PriceMatcher eredménye")
 
-        st.header("RapidClusterMatcher eredménye")
+            ph_matched_result_view(st, st.session_state["pm_matched_df"])
 
-        #ph_matched_result_view(st, st.session_state["rcm_matched_df"])  
-    
+        if "rcm_matched_df" in st.session_state:
+
+            st.header("RapidClusterMatcher eredménye")
+
+            #ph_matched_result_view(st, st.session_state["rcm_matched_df"])  
+        
     st.space("medium")
     st.header("3. Adatok törlése")
 
