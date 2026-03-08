@@ -53,7 +53,7 @@ def login_page():
 
 # ============== PAGE ELEMENTS ==============
 
-def clear_session(obj):
+def clear_session_state(obj):
     if obj in st.session_state:
         del st.session_state[obj]
 
@@ -404,6 +404,8 @@ def page_controlpanel():
     selected_names = st.pills(
         "Webshop kiválasztása",
         options=list(webshop_dict.keys()),
+        key="pills_choice",
+        on_change=clear_session_state,
         selection_mode="multi"
     )
 
