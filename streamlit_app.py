@@ -405,7 +405,7 @@ def page_controlpanel():
         "Webshop kiválasztása",
         options=list(webshop_dict.keys()),
         key="pills_choice",
-        on_change=clear_session_state,
+        on_change=clear_session_state("pm_matched_df"),
         selection_mode="multi"
     )
 
