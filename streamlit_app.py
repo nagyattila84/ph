@@ -444,7 +444,15 @@ def page_controlpanel():
     st.space("medium")
     st.header("3. Adatok törlése")
 
-    # -------- OWN PRODUCTS TÖRLÉS --------
+    # session_state init
+    if "delete_cluster_result" not in st.session_state:
+        st.session_state.delete_cluster_result = None
+
+    if "delete_raw_result" not in st.session_state:
+        st.session_state.delete_raw_result = None
+
+
+    # -------- CLUSTERS TÖRLÉS --------
 
     if st.button("CLUSTER-ek törlése", type="primary"):
 
@@ -455,9 +463,10 @@ def page_controlpanel():
     if st.session_state.delete_cluster_result:
         st.success(st.session_state.delete_cluster_result)
 
+
     # -------- RAW PRODUCTS TÖRLÉS --------
 
-    if st.button2("Letöltött termékek törlése", type="primary"):
+    if st.button("Letöltött termékek törlése", type="primary"):
 
         result = dm.delete_all_raw_products()
         st.session_state.delete_raw_result = result
