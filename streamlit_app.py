@@ -459,7 +459,6 @@ def page_controlpanel():
     if st.button("Letöltött termékek törlése", type="primary"):
 
         result = dm.delete_all_raw_products()
-        st.session_state.delete_raw_products_toggle = False
         st.session_state.delete_message = result
         st.rerun()
 
