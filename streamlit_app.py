@@ -59,7 +59,7 @@ def ph_table(table_name, table_df):
     expander = st.expander(label_name, icon=":material/table_eye:")
     expander.table(table_df)
 
-def ph_matched_result_view(st, matched_df):
+def ph_matched_result_view(st, buttun_key_prefix, matched_df):
     total = len(matched_df)
     matched_count = len(matched_df[matched_df["is_new_cluster"] == False])
     new_cluster_count = len(matched_df[matched_df["is_new_cluster"] == True])
@@ -78,7 +78,7 @@ def ph_matched_result_view(st, matched_df):
         st.dataframe(
             matched_df[matched_df["is_new_cluster"] == False]
         )
-    if st.button("🔗 Kapcsolt termékek MENTÉSE", type="primary"):
+    if st.button("🔗 Kapcsolt termékek MENTÉSE", type="primary", key=f"{buttun_key_prefix}_save_products"):
         result = dm.process_matches_batch(
             matched_df[matched_df["is_new_cluster"] == False]
         )
@@ -91,7 +91,7 @@ def ph_matched_result_view(st, matched_df):
         st.dataframe(
             matched_df[matched_df["is_new_cluster"] == True]
         )
-    if st.button("🆕 Clusterek MENTÉSE", type="primary"):
+    if st.button("🆕 Clusterek MENTÉSE", type="primary", key=f"{buttun_key_prefix}_save_clusters"):
         result = dm.process_matches_batch(matched_df[matched_df["is_new_cluster"] == True])
         if result["success"]:
             st.success(f"✅ {result['count']} termék sikeresen mentve.")
