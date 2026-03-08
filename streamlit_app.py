@@ -429,20 +429,19 @@ def page_controlpanel():
 
                 st.session_state["pm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
                 st.session_state["rcm_matched_df"] = pm.match_products(products_without_cluster, clusters, threshold)
+                st.header("SIKERES PÁROSÍTÁS")
                 
         if "pm_matched_df" in st.session_state:
-        
-            st.header("SIKERES PÁROSÍTÁS")
             
             st.header("PriceMatcher eredménye")
 
-            ph_matched_result_view(st, st.session_state["pm_matched_df"])
+            ph_matched_result_view(st, "pm-", st.session_state["pm_matched_df"])
 
         if "rcm_matched_df" in st.session_state:
 
             st.header("RapidClusterMatcher eredménye")
 
-            #ph_matched_result_view(st, st.session_state["rcm_matched_df"])  
+            ph_matched_result_view(st, "rcm-", st.session_state["rcm_matched_df"])  
         
     st.space("medium")
     st.header("3. Adatok törlése")
