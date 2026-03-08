@@ -132,7 +132,8 @@ class ProductMatcher:
                     "product_name": p["name"],
                     "cluster_id": best_cluster["id"],
                     "cluster_name": best_cluster["name"],
-                    "score": best_score,
+                    "score": best_score,                    
+                    "matched_at": current_date,
                     "is_new_cluster": False
                 })
 
