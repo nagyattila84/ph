@@ -262,7 +262,12 @@ class SupaBaseDataManager:
 
         self.client.table("product_cluster_links").insert(match_rows).execute()
 
-        print(f"Saved {len(match_rows)} matches.")
+        r = sync_own_clusters()
+        r += sync_raw_clusters()
+
+        r += "Saved {len(match_rows)} matches."
+
+        return r
 
     def get_products_by_keyword(self, keyword):
 
@@ -320,6 +325,30 @@ class SupaBaseDataManager:
             .data
         )
         return pd.DataFrame(own), pd.DataFrame(raw)
+
+    def sync_own_clusters(self):
+        try:
+            response = self.client.rpc("sync_own_clusters").execute()
+            if response.data is not None:
+                return "Sikeres saját termék szinkron."
+
+            return "A saját termék szinkron lefutott, de nem érkezett vissza adat."
+
+        except Exception as e:
+            print("RPC ERROR:", e)
+            return f"Hiba történt: {e}"
+
+    def sync_raw_clusters(self):
+        try:
+            response = self.client.rpc("sync_raw_clusters").execute()
+            if response.data is not None:
+                return "Sikeres idegen termék szinkron."
+
+            return "Az idegen termék szinkron lefutott, de nem érkezett vissza adat."
+
+        except Exception as e:
+            print("RPC ERROR:", e)
+            return f"Hiba történt: {e}"
 
     def delete_all_clusters(self):
         try:
