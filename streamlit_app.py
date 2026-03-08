@@ -457,7 +457,7 @@ def page_controlpanel():
 
     # -------- RAW PRODUCTS TÖRLÉS --------
 
-    if st.button("Letöltött termékek törlése", type="primary"):
+    if st.button2("Letöltött termékek törlése", type="primary"):
 
         result = dm.delete_all_raw_products()
         st.session_state.delete_raw_result = result
