@@ -169,6 +169,7 @@ def page_price_data():
 
     df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
+    df = df.rename(columns=rename_map)
     st.dataframe(df)
 
 def page_visual():
