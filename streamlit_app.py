@@ -153,6 +153,12 @@ def page_price_setter():
 def page_price_data():  
     st.title("Ár adatok") 
 
+    webshops = dm.client.table("webshops").select("id, name").execute().data
+    webshops_df = pd.DataFrame(webshops)
+    st.dataframe(webshop_df)
+
+    shop_map = dict(zip(webshops_df["id"], websops_df["name"]))
+
     df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
     st.dataframe(df)
