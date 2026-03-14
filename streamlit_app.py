@@ -157,7 +157,7 @@ def page_price_data():
     webshops_df = pd.DataFrame(webshops)
     st.dataframe(webshops_df)
 
-    shop_map = dict(zip(webshops_df["id"], websops_df["name"]))
+    shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
 
     df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
