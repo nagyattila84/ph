@@ -142,7 +142,7 @@ def page_price_setter():
     tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "blabla"])
 
     with tab1:
-        page_visual3()
+        page_price_data()
     
     with tab2:
         page_visual()
@@ -150,7 +150,7 @@ def page_price_setter():
     with tab3:
         page_visual2()
 
-def page_visual3():  
+def page_price_data():  
     st.title("Ár adatok") 
 
     df = dm.client.table("price_data_view").select("*").execute().data
