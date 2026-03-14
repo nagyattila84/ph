@@ -159,6 +159,14 @@ def page_price_data():
 
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
 
+    rename_map = {}
+
+    for shop_id, shop_name in shop_map.items():
+
+        rename_map[f"shop{shop_id}_price"] = f"{shop_name} ár"
+        rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
+        rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
+
     df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
     st.dataframe(df)
