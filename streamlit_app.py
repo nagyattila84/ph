@@ -151,65 +151,11 @@ def page_price_setter():
         page_visual2()
 
 def page_visual3():  
-    st.title("Ár összehasonlító") 
-    own_df, raw_df = dm.get_products_by_keyword("pgv")
-    df = raw_df.copy()
+    st.title("Ár adatok") 
 
-    # Min / Max termékenként
-    df["min_price"] = df.groupby("cluster_id")["price"].transform("min")
-    df["max_price"] = df.groupby("cluster_id")["price"].transform("max")
-    
-    # Normalizált pozíció (0–1)
-    df["norm"] = (df["price"] - df["min_price"]) / (
-        df["max_price"] - df["min_price"]
-    ).fillna(0)
-
-    #Termékek limitálása
-    products = st.multiselect(
-        "Termékek",
-        df["cluster_id"].unique(),
-        df["cluster_id"].unique()[:5]
-    )
-    df = df[df["cluster_id"].isin(products)]
-
-    fig = go.Figure()
-
-    for product in df["cluster_id"].unique():
-        sub = df[df["cluster_id"] == product]
-    
-        # Számegyenes (min → max)
-        fig.add_trace(go.Scatter(
-            x=[0, 1],
-            y=[product, product],
-            mode="lines",
-            line=dict(width=2),
-            showlegend=False
-        ))
-    
-        # Pontok (webshop árak)
-        fig.add_trace(go.Scatter(
-            x=sub["norm"],
-            y=[product]*len(sub),
-            mode="markers",
-            marker=dict(size=10),
-            text=sub["webshop_id"],
-            customdata=sub["price"],
-            hovertemplate="%{text}<br>%{customdata} Ft",
-            showlegend=False
-        ))
-    
-    fig.update_layout(
-        height=600,
-        xaxis=dict(
-            range=[-0.05, 1.05],
-            tickvals=[0, 1],
-            ticktext=["Min", "Max"]
-        ),
-        yaxis_title="",
-        xaxis_title="Ár pozíció terméken belül"
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
+    df = dm.client.table("price_data_view").select("*").execute().data
+    df = pd.DataFrame(df)
+    st.dataframe(df)
 
 def page_visual():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
@@ -488,7 +434,7 @@ def page_data_explorer():
     st.title("📊 Adat Explorer")
 
     tab1, tab2, tab3 = st.tabs(
-        ["🏠 Ár adatok összesítve", "🌍 Nyers termékek", "🧩 Clusterek"]
+        ["🏠 Saját termékek", "🌍 Nyers termékek", "🧩 Ár adatok összesítve"]
     )
 
     # =========================================================
