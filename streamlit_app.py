@@ -488,15 +488,15 @@ def page_data_explorer():
     st.title("📊 Adat Explorer")
 
     tab1, tab2, tab3 = st.tabs(
-        ["🏠 Saját termékek", "🌍 Nyers termékek", "🧩 Clusterek"]
+        ["🏠 Ár adatok összesítve", "🌍 Nyers termékek", "🧩 Clusterek"]
     )
 
     # =========================================================
-    # 🏠 SAJÁT TERMÉKEK
+    # 🏠 ÁR ADATOK ÖSSZESÍTEV
     # =========================================================
     with tab1:
 
-        st.subheader("Saját termékek")
+        st.subheader("Ár adatok összesítve")
 
         with st.expander("🔎 Szűrők", expanded=True):
 
