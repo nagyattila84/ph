@@ -179,6 +179,10 @@ def page_price_data():
     df.to_excel(buffer, index=False)
     buffer.seek(0)
 
+    #árak számolása
+    price_cols = [c for c in df.columns if "_price" in c and "own" not in c]
+    df["competitor_count"] = df[price_cols].notna().sum(axis=1)
+
     st.download_button(
         label="📥 Excel letöltése",
         data=buffer,
