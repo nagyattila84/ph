@@ -170,7 +170,7 @@ def page_price_data():
         rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
         rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
-    df = dm.client.table("price_data_view").select("*").execute().data
+    df = dm.client.table("price_data_view2").select("*").execute().data
     df = pd.DataFrame(df)
     df = df.rename(columns=rename_map)
     st.dataframe(df)
@@ -182,6 +182,8 @@ def page_price_data():
     #árak számolása
     price_cols = [c for c in df.columns if "_price" in c and "own" not in c]
     df["competitor_count"] = df[price_cols].notna().sum(axis=1)
+
+
 
     st.download_button(
         label="📥 Excel letöltése",
