@@ -162,7 +162,7 @@ def calculate_recommended_price(row):
 
     min_price = row["competitor_min_price"]
     my_price = row["m_p1"]
-    purchase_price = row["purchase_price"]
+    purchase_price = row["m_pp"]
 
     if pd.isna(min_price):
         return np.nan
