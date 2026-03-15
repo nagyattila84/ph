@@ -162,7 +162,7 @@ def page_price_data():
     webshops_df = pd.DataFrame(webshops)
 
 
-    df = dm.client.table("price_data_view2").select("*").execute().data
+    df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
 
     #elemzés, számított értékek hozzáadása
@@ -177,9 +177,9 @@ def page_price_data():
 
     df["m_price_vs_min_%"] = (df["shop0_price"] / df["competitor_min_price"] * 100).replace([np.inf, -np.inf], np.nan)
 
-    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["purchase_price"] * 100).replace([np.inf, -np.inf], np.nan)
+    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_p_p"] * 100).replace([np.inf, -np.inf], np.nan)
 
-    df["price_diff"] = df["m_price"] - df["competitor_min_price"]
+    df["price_diff"] = df["shop0_price"] - df["competitor_min_price"]
     
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
