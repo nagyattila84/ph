@@ -161,7 +161,7 @@ def page_price_data():
     webshops_df = pd.DataFrame(webshops)
 
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
-
+    
     rename_map = {}
 
     for shop_id, shop_name in shop_map.items():
@@ -172,7 +172,6 @@ def page_price_data():
 
     df = dm.client.table("price_data_view2").select("*").execute().data
     df = pd.DataFrame(df)
-    df = df.rename(columns=rename_map)
     st.dataframe(df)
 
     buffer = io.BytesIO()
@@ -191,6 +190,7 @@ def page_price_data():
 
     df["price_diff"] = df["m_price"] - df["competitor_min_price"]
 
+    df = df.rename(columns=rename_map)
 
     st.download_button(
         label="📥 Excel letöltése",
