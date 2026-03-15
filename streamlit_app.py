@@ -179,7 +179,7 @@ def page_price_data():
 
     df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_pp"] * 100).replace([np.inf, -np.inf], np.nan)
 
-    df["price_diff"] = df["shop0_price"] - df["competitor_min_price"]
+    df["price_diff"] = df["shop0_p"] - df["competitor_min_price"]
     
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
