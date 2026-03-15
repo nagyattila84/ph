@@ -151,11 +151,12 @@ def page_price_setter():
         page_visual2()
 
 def page_price_data():  
+    import io
+
     st.title("Ár adatok") 
 
     webshops = dm.client.table("webshops").select("id, name").execute().data
     webshops_df = pd.DataFrame(webshops)
-    st.dataframe(webshops_df)
 
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
 
@@ -171,6 +172,19 @@ def page_price_data():
     df = pd.DataFrame(df)
     df = df.rename(columns=rename_map)
     st.dataframe(df)
+
+    buffer = io.BytesIO()
+    df.to_excel(buffer, index=False)
+    buffer.seek(0)
+
+    st.download_button(
+        label="📥 Excel letöltése",
+        data=buffer,
+        file_name="price_analysis.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+
 
 def page_visual():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
