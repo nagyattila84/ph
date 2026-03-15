@@ -145,9 +145,11 @@ def page_price_setter():
         page_price_data()
     
     with tab2:
+        st.write("2.fül")
         #page_visual()
 
     with tab3:
+        st.write("3.fül")
         #page_visual2()
 
 def page_price_data():  
