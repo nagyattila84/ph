@@ -167,7 +167,7 @@ def page_price_data():
 
     #elemzés, számított értékek hozzáadása
 
-    price_cols = [c for c in df.columns if c.endswith("_price")]
+    price_cols = [c for c in df.columns if c.endswith("_price") and not c.endswith("_sale_price")]
 
     df[price_cols] = df[price_cols].apply(pd.to_numeric, errors="coerce")
 
