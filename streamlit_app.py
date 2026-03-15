@@ -145,10 +145,10 @@ def page_price_setter():
         page_price_data()
     
     with tab2:
-        page_visual()
+        #page_visual()
 
     with tab3:
-        page_visual2()
+        #page_visual2()
 
 def page_price_data():  
     import io
