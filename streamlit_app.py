@@ -179,10 +179,17 @@ def page_price_data():
     df.to_excel(buffer, index=False)
     buffer.seek(0)
 
-    #árak számolása
-    price_cols = [c for c in df.columns if "_price" in c and "own" not in c]
-    df["competitor_count"] = df[price_cols].notna().sum(axis=1)
+    #árak kigyűjtése
+    price_cols = [c for c in df.columns if c.endswith("_price") and "shop" in c]
 
+    df["competitor_count"] = df[price_cols].notna().sum(axis=1)
+    df["competitor_avg_price"] = df[price_cols].mean(axis=1)
+    df["competitor_min_price"] = df[price_cols].min(axis=1)
+
+    df["m_price_vs_min_%"] = df["m_price"] / df["competitor_min_price"] * 100
+    df["min_price_vs_purchase_%"] = df["competitor_min_price"] / df["purchase_price"] * 100
+
+    df["price_diff"] = df["m_price"] - df["competitor_min_price"]
 
 
     st.download_button(
