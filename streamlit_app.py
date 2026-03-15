@@ -171,9 +171,9 @@ def page_price_data():
     df["competitor_avg_price"] = df[price_cols].mean(axis=1)
     df["competitor_min_price"] = df[price_cols].min(axis=1)
 
-    if df["competitor_min_price"] not_null:
+    if df["competitor_min_price"] > 0:
          df["m_price_vs_min_%"] = df["shop0_price"] / df["competitor_min_price"] * 100
-    if df["purchase_price"] not_null:
+    if df["purchase_price"] > 0:
         df["min_price_vs_purchase_%"] = df["competitor_min_price"] / df["purchase_price"] * 100
 
     df["price_diff"] = df["shop0_price"] - df["competitor_min_price"]
