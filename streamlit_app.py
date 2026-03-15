@@ -3,6 +3,9 @@ from werkzeug.security import check_password_hash
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import io
+import numpy as np
+import random
 
 from datamanager import SupaBaseDataManager
 from scraper import Scraper
@@ -190,9 +193,7 @@ def calculate_recommended_price(row):
     return price
 
 def page_price_data():  
-    import io
-    import numpy as np
-    import random
+
 
     st.title("Ár adatok") 
 
