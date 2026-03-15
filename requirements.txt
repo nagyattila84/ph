@@ -6,3 +6,4 @@ python-dotenv
 rapidfuzz
 werkzeug
 plotly
+openpyxl
