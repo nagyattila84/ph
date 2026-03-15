@@ -177,7 +177,7 @@ def page_price_data():
 
     df["m_price_vs_min_%"] = (df["shop0_price"] / df["competitor_min_price"] * 100).replace([np.inf, -np.inf], np.nan)
 
-    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_p_p"] * 100).replace([np.inf, -np.inf], np.nan)
+    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_pp"] * 100).replace([np.inf, -np.inf], np.nan)
 
     df["price_diff"] = df["shop0_price"] - df["competitor_min_price"]
     
