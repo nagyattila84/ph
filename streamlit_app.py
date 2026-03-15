@@ -222,7 +222,7 @@ def page_price_data():
 
     df["recommended_price"] = df.apply(calculate_recommended_price, axis=1)
 
-    df["price_change"] = df["recommended_price"] - df["m_price"]
+    df["price_change"] = df["recommended_price"] - df["m_p1"]
     
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
