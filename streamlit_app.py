@@ -154,6 +154,7 @@ def page_price_setter():
 
 def page_price_data():  
     import io
+    import numpy as np
 
     st.title("Ár adatok") 
 
@@ -165,18 +166,20 @@ def page_price_data():
     df = pd.DataFrame(df)
 
     #elemzés, számított értékek hozzáadása
-    price_cols = [c for c in df.columns if c.endswith("_price") and "shop" in c]
+
+    price_cols = [c for c in df.columns if c.endswith("_price")]
+
+    df[price_cols] = df[price_cols].apply(pd.to_numeric, errors="coerce")
 
     df["competitor_count"] = df[price_cols].notna().sum(axis=1)
     df["competitor_avg_price"] = df[price_cols].mean(axis=1)
     df["competitor_min_price"] = df[price_cols].min(axis=1)
 
-    if df["competitor_min_price"] > 0:
-         df["m_price_vs_min_%"] = df["shop0_price"] / df["competitor_min_price"] * 100
-    if df["purchase_price"] > 0:
-        df["min_price_vs_purchase_%"] = df["competitor_min_price"] / df["purchase_price"] * 100
+    df["m_price_vs_min_%"] = (df["m_price"] / df["competitor_min_price"] * 100).replace([np.inf, -np.inf], np.nan)
 
-    df["price_diff"] = df["shop0_price"] - df["competitor_min_price"]
+    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["purchase_price"] * 100).replace([np.inf, -np.inf], np.nan)
+
+    df["price_diff"] = df["m_price"] - df["competitor_min_price"]
     
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
