@@ -160,25 +160,11 @@ def page_price_data():
     webshops = dm.client.table("webshops").select("id, name").execute().data
     webshops_df = pd.DataFrame(webshops)
 
-    shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
-    
-    rename_map = {}
-
-    for shop_id, shop_name in shop_map.items():
-
-        rename_map[f"shop{shop_id}_price"] = f"{shop_name} ár"
-        rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
-        rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
     df = dm.client.table("price_data_view2").select("*").execute().data
     df = pd.DataFrame(df)
-    st.dataframe(df)
 
-    buffer = io.BytesIO()
-    df.to_excel(buffer, index=False)
-    buffer.seek(0)
-
-    #árak kigyűjtése
+    #elemzés, számított értékek hozzáadása
     price_cols = [c for c in df.columns if c.endswith("_price") and "shop" in c]
 
     df["competitor_count"] = df[price_cols].notna().sum(axis=1)
@@ -189,8 +175,24 @@ def page_price_data():
     df["min_price_vs_purchase_%"] = df["competitor_min_price"] / df["purchase_price"] * 100
 
     df["price_diff"] = df["m_price"] - df["competitor_min_price"]
+    
+    shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
+    
+    rename_map = {}
+
+    for shop_id, shop_name in shop_map.items():
+
+        rename_map[f"shop{shop_id}_price"] = f"{shop_name} ár"
+        rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
+        rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
     df = df.rename(columns=rename_map)
+    
+    st.dataframe(df)
+
+    buffer = io.BytesIO()
+    df.to_excel(buffer, index=False)
+    buffer.seek(0)
 
     st.download_button(
         label="📥 Excel letöltése",
