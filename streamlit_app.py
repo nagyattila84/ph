@@ -337,19 +337,14 @@ def page_price_data():
     
     st.dataframe(df)
 
-    buffer = io.BytesIO()
-    export_price_monitor_excel(df, "price_monitor.xlsx")
-    df.to_excel(buffer, index=False)
-    buffer.seek(0)
+    excel_file = create_price_monitor_excel(df)
 
     st.download_button(
-        label="📥 Excel letöltése",
-        data=buffer,
-        file_name="price_analysis.xlsx",
+        label="📥 Ár adatok letöltése",
+        data=excel_file,
+        file_name="price_monitor.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-
-
 
 def page_visual():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
