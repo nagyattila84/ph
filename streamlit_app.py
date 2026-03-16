@@ -338,7 +338,7 @@ def page_price_data():
     
     st.dataframe(df)
 
-    excel_file = pa.create_price_monitor_excel(df)
+    excel_file = pa.create_price_data_excel(df)
 
     st.download_button(
         label="📥 Ár adatok letöltése",
