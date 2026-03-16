@@ -19,7 +19,7 @@ class PriceAnalyst:
         return df
 
 
-    def create_price_data_excel(df):
+    def create_price_data_excel(self, df):
 
         output = BytesIO()
 
