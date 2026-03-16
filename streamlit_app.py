@@ -192,6 +192,105 @@ def calculate_recommended_price(row):
 
     return price
 
+def export_price_monitor_excel(df, filename="price_monitor.xlsx"):
+
+    writer = pd.ExcelWriter(filename, engine="xlsxwriter")
+    df.to_excel(writer, sheet_name="Prices", index=False)
+
+    workbook = writer.book
+    worksheet = writer.sheets["Prices"]
+
+    # formátumok
+    red_format = workbook.add_format({"font_color": "red"})
+    bold_format = workbook.add_format({"bold": True})
+    green_bold = workbook.add_format({"font_color": "green", "bold": True})
+
+    # fejléc rögzítés
+    worksheet.freeze_panes(1, 0)
+
+    # automata filter
+    worksheet.autofilter(
+        0,
+        0,
+        len(df),
+        len(df.columns) - 1
+    )
+
+    # shop price oszlopok
+    price_cols = [c for c in df.columns if c.startswith("shop") and c.endswith("_price")]
+
+    # saját ár oszlop
+    my_price_col = "m_price"
+
+    for row in range(len(df)):
+
+        my_price = df.iloc[row][my_price_col]
+
+        # konkurens árak kigyűjtése
+        prices = []
+        for col in price_cols:
+            val = df.iloc[row][col]
+            if pd.notna(val):
+                prices.append(val)
+
+        if len(prices) == 0:
+            continue
+
+        min_price = min(prices)
+
+        # ha saját ár a legolcsóbb
+        own_is_cheapest = pd.notna(my_price) and my_price <= min_price
+
+        # saját ár formázás
+        if own_is_cheapest:
+            col_idx = df.columns.get_loc(my_price_col)
+            worksheet.write(row+1, col_idx, my_price, green_bold)
+
+        # konkurens árak feldolgozása
+        for col in price_cols:
+
+            url_col = col.replace("_price", "_url")
+
+            price = df.iloc[row][col]
+            url = df.iloc[row][url_col] if url_col in df.columns else None
+
+            if pd.isna(price):
+                continue
+
+            col_idx = df.columns.get_loc(col)
+
+            cell_format = None
+
+            # olcsóbb mint mi
+            if pd.notna(my_price) and price < my_price:
+                cell_format = red_format
+
+            # legolcsóbb
+            if price == min_price:
+                cell_format = bold_format
+
+            # hyperlink írás
+            if pd.notna(url):
+
+                worksheet.write_url(
+                    row + 1,
+                    col_idx,
+                    url,
+                    cell_format,
+                    string=str(int(price))
+                )
+
+            else:
+                worksheet.write(row + 1, col_idx, price, cell_format)
+
+    # url oszlopok elrejtése
+    for col in df.columns:
+        if col.endswith("_url"):
+            idx = df.columns.get_loc(col)
+            worksheet.set_column(idx, idx, None, None, {"hidden": True})
+
+    writer.close()
+
 def page_price_data():  
 
 
@@ -239,6 +338,7 @@ def page_price_data():
     st.dataframe(df)
 
     buffer = io.BytesIO()
+    export_price_monitor_excel(df, "price_monitor.xlsx")
     df.to_excel(buffer, index=False)
     buffer.seek(0)
 
