@@ -16,6 +16,7 @@ from my_stat import Statistic
 users = st.secrets["users"]
 dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
 sc = Scraper()
+pa = PriceAnalyst()
 pm = ProductMatcher()
 rcm = RapidClusterMatcher()
 stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
@@ -337,7 +338,7 @@ def page_price_data():
     
     st.dataframe(df)
 
-    excel_file = create_price_monitor_excel(df)
+    excel_file = pa.create_price_monitor_excel(df)
 
     st.download_button(
         label="📥 Ár adatok letöltése",
