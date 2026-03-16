@@ -3,7 +3,7 @@ import numpy as np
 from io import BytesIO
 from datamanager import SupaBaseDataManager
 
-class PriceAnalyst:
+class PriceAnalyst():
 
     def __init__(self, dm):
         self.dm = dm

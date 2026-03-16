@@ -16,7 +16,7 @@ from my_stat import Statistic
 users = st.secrets["users"]
 dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
 sc = Scraper()
-pa = PriceAnalyst
+pa = PriceAnalyst()
 pm = ProductMatcher()
 rcm = RapidClusterMatcher()
 stat = Statistic(st.secrets.supabase.url, st.secrets.supabase.key)
