@@ -41,7 +41,7 @@ class PriceAnalyst:
         worksheet.autofilter(0, 0, len(df), len(df.columns) - 1)
 
         price_cols = [c for c in df.columns if c.startswith("shop") and c.endswith("_price")]
-        my_price_col = "m_price"
+        my_price_col = "shop0_p"
 
         for row in range(len(df)):
 
