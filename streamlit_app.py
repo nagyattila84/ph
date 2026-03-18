@@ -335,6 +335,9 @@ def page_price_data():
         rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
     df = df.rename(columns=rename_map)
+
+    if "price_df" not in st.session_state:
+        st.session_state.price_df = df.copy()
     
     st.dataframe(df)
 
