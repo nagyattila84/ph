@@ -84,12 +84,37 @@ class PriceAnalyst:
                     cell_format = bold_format
 
                 if pd.notna(url):
+
+                    # hyperlink formátum alapból (kék + aláhúzott)
+                    link_format = workbook.add_format({
+                        "font_color": "blue",
+                        "underline": 1
+                    })
+
+                    # kombinált formátum (ha van extra highlight)
+                    if cell_format == red_format:
+                        link_format = workbook.add_format({
+                            "font_color": "red",
+                            "underline": 1
+                        })
+                    elif cell_format == bold_format:
+                        link_format = workbook.add_format({
+                            "bold": True,
+                            "underline": 1
+                        })
+                    elif own_is_cheapest and col == my_price_col:
+                        link_format = workbook.add_format({
+                            "font_color": "green",
+                            "bold": True,
+                            "underline": 1
+                        })
+
                     worksheet.write_url(
                         row + 1,
                         col_idx,
                         url,
-                        cell_format,
-                        string=str(int(price))
+                        link_format,
+                        string=f"{price:,.0f}"
                     )
                 else:
                     worksheet.write(row + 1, col_idx, price, cell_format)
