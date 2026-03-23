@@ -128,17 +128,8 @@ def page_dashboard():
     st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort="-product_count")
 
 def page_search():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-    pa = PriceAnalyst(dm)
-    st.title("Ár összehasonlító")    
-    keyword = st.text_input("Keresőszó")
-    
-    if keyword:
-        #own_df, raw_df = dm.get_products_by_keyword(keyword)
-        df = pa.get_cluster_price_view(keyword)
-    
-        st.subheader("Termékek")
-        st.dataframe(df)
+    st.title("Kereső")    
+
 
 def page_price_setter():
     st.title("💵 ÁRAK ELEMZÉSE")
