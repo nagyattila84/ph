@@ -196,7 +196,7 @@ class PriceAnalyst:
 
         df["price_diff"] = df["shop0_p"] - df["competitor_min_price"]
 
-        df["recommended_price"] = df.apply(calculate_recommended_price, axis=1)
+        df["recommended_price"] = df.apply(self.calculate_recommended_price, axis=1)
 
         df["price_change"] = df["recommended_price"] - df["m_p1"]
 
