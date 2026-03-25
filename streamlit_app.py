@@ -209,7 +209,7 @@ def page_price_data():
         rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
         rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
-    df = pa.rename
+    df = pa.rename_price_df(df, webshops_df)
 
     if "price_df" not in st.session_state:
         st.session_state.price_df = df.copy()
