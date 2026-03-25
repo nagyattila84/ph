@@ -64,7 +64,13 @@ class PriceAnalyst:
             # normál mezők
             for col_idx, col in enumerate(export_cols):
                 val = df.iloc[row][col]
-                worksheet.write(excel_row, col_idx, val)
+                if pd.isna(val):
+                    worksheet.write_blank(excel_row, col_idx, None)
+                elif isinstance(val, (int, float)):
+                    worksheet.write_number(excel_row, col_idx, float(val))
+                else:
+                    worksheet.write(excel_row, col_idx, str(val))
+
 
             my_price = df.iloc[row].get(my_price_col)
 
