@@ -165,7 +165,7 @@ class PriceAnalyst:
 
         return df
 
-    def rename_price_df(self, df, webshops_df)
+    def rename_price_df(self, df, webshops_df):
         shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
         
         rename_map = {}
