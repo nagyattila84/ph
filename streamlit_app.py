@@ -147,42 +147,7 @@ def page_price_setter():
         st.write("3.fül")
         #page_visual2()
 
-def price_to_9(price):
-    if pd.isna(price):
-        return price
-    price = int(round(price))
-    return int(str(price)[:-1] + "9") if price > 9 else 9
 
-def calculate_recommended_price(row):
-
-    min_price = row["competitor_min_price"]
-    my_price = row["m_p1"]
-    purchase_price = row["m_pp"]
-
-    if pd.isna(min_price):
-        return np.nan
-
-    # 1 induló ár = minimum ár
-    price = min_price
-
-    # 2 ha mi vagyunk a legolcsóbbak → emeljük minimum árra
-    if my_price <= min_price:
-        price = min_price
-
-    # 3 random ±1%
-    rand = random.uniform(-0.01, 0.01)
-    price = price * (1 + rand)
-
-    # 4 9-re végződjön
-    price = price_to_9(price)
-
-    # 5 minimum profit védelem
-    min_allowed = purchase_price * 1.1
-
-    if price < min_allowed:
-        price = price_to_9(min_allowed)
-
-    return price
 
 def page_price_data():  
 
