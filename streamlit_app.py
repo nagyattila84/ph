@@ -315,6 +315,8 @@ def page_price_data():
 
     df["price_change"] = df["recommended_price"] - df["m_p1"]
     
+    excel_file = pa.create_price_data_excel(df)
+
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
     rename_map = {}
@@ -331,8 +333,6 @@ def page_price_data():
         st.session_state.price_df = df.copy()
     
     st.dataframe(df)
-
-    excel_file = pa.create_price_data_excel(df)
 
     st.download_button(
         label="📥 Ár adatok letöltése",
