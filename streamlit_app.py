@@ -195,25 +195,7 @@ def page_price_data():
     df = dm.client.table("price_data_view").select("*").execute().data
     df = pd.DataFrame(df)
 
-    #elemzés, számított értékek hozzáadása
-
-    price_cols = [c for c in df.columns if c.endswith("_price") and not c.endswith("_sale_price")]
-
-    df[price_cols] = df[price_cols].apply(pd.to_numeric, errors="coerce")
-
-    df["competitor_count"] = df[price_cols].notna().sum(axis=1)
-    df["competitor_avg_price"] = df[price_cols].mean(axis=1)
-    df["competitor_min_price"] = df[price_cols].min(axis=1)
-
-    df["m_price_vs_min_%"] = (df["shop0_p"] / df["competitor_min_price"] * 100).replace([np.inf, -np.inf], np.nan)
-
-    df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_pp"] * 100).replace([np.inf, -np.inf], np.nan)
-
-    df["price_diff"] = df["shop0_p"] - df["competitor_min_price"]
-
-    df["recommended_price"] = df.apply(calculate_recommended_price, axis=1)
-
-    df["price_change"] = df["recommended_price"] - df["m_p1"]
+    df = pa.analys_price_data(df)
     
     excel_file = pa.create_price_data_excel(df)
 
@@ -227,7 +209,7 @@ def page_price_data():
         rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
         rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
 
-    df = df.rename(columns=rename_map)
+    df = pa.ren
 
     if "price_df" not in st.session_state:
         st.session_state.price_df = df.copy()
