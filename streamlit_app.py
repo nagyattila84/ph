@@ -186,7 +186,6 @@ def calculate_recommended_price(row):
 
 def page_price_data():  
 
-
     st.title("Ár adatok") 
 
     webshops = dm.client.table("webshops").select("id, name").execute().data
