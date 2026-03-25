@@ -169,13 +169,13 @@ class PriceAnalyst:
         price = price * (1 + rand)
 
         # 4 9-re végződjön
-        price = price_to_9(price)
+        price = self.price_to_9(price)
 
         # 5 minimum profit védelem
         min_allowed = purchase_price * 1.1
 
         if price < min_allowed:
-            price = price_to_9(min_allowed)
+            price = self.price_to_9(min_allowed)
 
         return price
 
