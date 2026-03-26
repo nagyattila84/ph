@@ -142,13 +142,13 @@ class PriceAnalyst:
 
         return output
 
-    def price_to_9(price):
+    def price_to_9(self, price):
         if pd.isna(price):
             return price
         price = int(round(price))
         return int(str(price)[:-1] + "9") if price > 9 else 9
 
-    def calculate_recommended_price(row):
+    def calculate_recommended_price(self, row):
 
         min_price = row["competitor_min_price"]
         my_price = row["m_p1"]
