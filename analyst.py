@@ -300,7 +300,7 @@ class PriceAnalyst:
                 for c in price_cols
             ]
 
-            min_formula = f"=MIN({','.join(price_cells)})"
+            min_formula = f"=MINHA({','.join(price_cells)})"
 
             worksheet.write_formula(
                 excel_row,
