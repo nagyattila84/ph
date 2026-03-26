@@ -175,6 +175,8 @@ class PriceAnalyst:
         return price
 
     def analys_price_data(self, df):
+        df["m_p1"] = pd.to_numeric(df["m_p1"], errors="coerce")
+        df["m_pp"] = pd.to_numeric(df["m_pp"], errors="coerce")
 
         price_cols = [c for c in df.columns if c.endswith("_price") and not c.endswith("_sale_price")]
 
