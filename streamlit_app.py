@@ -161,7 +161,8 @@ def page_price_data():
 
     df = pa.analys_price_data(df)
     
-    excel_file = pa.create_price_data_excel_formulas(df)
+    #excel_file = pa.create_price_data_excel_formulas(df)
+    excel_file = pa.create_amazon_pricing_excel(df)
 
     shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
     
