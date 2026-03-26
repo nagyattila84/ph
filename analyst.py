@@ -368,3 +368,170 @@ class PriceAnalyst:
         output.seek(0)
 
         return output
+
+    def create_amazon_pricing_excel(self, df):
+
+        from io import BytesIO
+        import xlsxwriter.utility as xl
+
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine="xlsxwriter")
+
+        workbook = writer.book
+
+        # =========================
+        # 📊 CONTROL SHEET
+        # =========================
+        ctrl = workbook.add_worksheet("Controls")
+
+        ctrl.write("A1", "Min margin %")
+        ctrl.write("B1", 0.10)
+
+        ctrl.write("A2", "Undercut %")
+        ctrl.write("B2", -0.01)
+
+        ctrl.write("A3", "Round to 9")
+        ctrl.write("B3", 1)
+
+        # =========================
+        # 📈 PRICE SHEET
+        # =========================
+        ws = workbook.add_worksheet("Prices")
+        writer.sheets["Prices"] = ws
+
+        price_cols = [c for c in df.columns if c.endswith("_price")]
+        url_cols = [c for c in df.columns if c.endswith("_url")]
+        export_cols = [c for c in df.columns if c not in price_cols + url_cols]
+
+        extra_cols = ["min_price", "buybox_price", "recommended_price", "profit"]
+
+        all_cols = export_cols + price_cols + extra_cols
+
+        col_map = {c: i for i, c in enumerate(all_cols)}
+
+        # --- HEADER ---
+        for col, idx in col_map.items():
+            ws.write(0, idx, col)
+
+        # =========================
+        # 📦 ADATOK
+        # =========================
+        for r in range(len(df)):
+            row = r + 1
+
+            # sima mezők
+            for col in export_cols:
+                val = df.iloc[r][col]
+                c = col_map[col]
+
+                if pd.isna(val):
+                    ws.write_blank(row, c, None)
+                elif isinstance(val, (int, float)):
+                    ws.write_number(row, c, float(val))
+                else:
+                    ws.write(row, c, str(val))
+
+            # price + hyperlink
+            for col in price_cols:
+                price = df.iloc[r][col]
+                url = df.iloc[r].get(col.replace("_price", "_url"))
+
+                c = col_map[col]
+
+                if pd.isna(price):
+                    continue
+
+                if pd.notna(url):
+                    ws.write_formula(row, c, f'=HYPERLINK("{url}","{int(price)}")')
+                else:
+                    ws.write_number(row, c, float(price))
+
+            # =========================
+            # 🧮 MIN PRICE
+            # =========================
+            price_cells = [
+                xl.xl_rowcol_to_cell(row, col_map[c])
+                for c in price_cols
+            ]
+
+            min_formula = f"=MIN({','.join(price_cells)})"
+
+            ws.write_formula(row, col_map["min_price"], min_formula)
+
+            min_cell = xl.xl_rowcol_to_cell(row, col_map["min_price"])
+
+            # =========================
+            # 🏆 BUY BOX (undercut)
+            # =========================
+            buybox_formula = f"={min_cell}*(1+Controls!B2)"
+            ws.write_formula(row, col_map["buybox_price"], buybox_formula)
+
+            buybox_cell = xl.xl_rowcol_to_cell(row, col_map["buybox_price"])
+
+            # =========================
+            # 💰 RECOMMENDED PRICE
+            # =========================
+            purchase_cell = xl.xl_rowcol_to_cell(row, col_map["m_pp"])
+
+            rec_formula = (
+                f"=MAX("
+                f"{buybox_cell},"
+                f"{purchase_cell}*(1+Controls!B1)"
+                f")"
+            )
+
+            # 9-re végződés (Excel hack 😄)
+            rec_formula = (
+                f"=IF(Controls!B3=1,"
+                f"INT({rec_formula}/10)*10+9,"
+                f"{rec_formula})"
+            )
+
+            ws.write_formula(row, col_map["recommended_price"], rec_formula)
+
+            rec_cell = xl.xl_rowcol_to_cell(row, col_map["recommended_price"])
+
+            # =========================
+            # 📈 PROFIT
+            # =========================
+            profit_formula = f"={rec_cell}-{purchase_cell}"
+            ws.write_formula(row, col_map["profit"], profit_formula)
+
+        # =========================
+        # 🎨 CONDITIONAL FORMATTING
+        # =========================
+
+        # profit < 0 → piros
+        ws.conditional_format(
+            1, col_map["profit"],
+            len(df), col_map["profit"],
+            {
+                "type": "cell",
+                "criteria": "<",
+                "value": 0,
+                "format": workbook.add_format({"font_color": "red"})
+            }
+        )
+
+        # recommended = buybox → zöld (nyerő ár)
+        ws.conditional_format(
+            1, col_map["recommended_price"],
+            len(df), col_map["recommended_price"],
+            {
+                "type": "formula",
+                "criteria": f"={xl.xl_rowcol_to_cell(1, col_map['recommended_price'])}="
+                            f"{xl.xl_rowcol_to_cell(1, col_map['buybox_price'])}",
+                "format": workbook.add_format({"font_color": "green", "bold": True})
+            }
+        )
+
+        # =========================
+        # EXTRÁK
+        # =========================
+        ws.freeze_panes(1, 0)
+        ws.autofilter(0, 0, len(df), len(all_cols) - 1)
+
+        writer.close()
+        output.seek(0)
+
+        return output
