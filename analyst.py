@@ -226,3 +226,145 @@ class PriceAnalyst:
         df = df.rename(columns=rename_map)
 
         return df
+
+    def create_price_data_excel_formulas(self, df):
+
+        from io import BytesIO
+        import xlsxwriter.utility as xl
+
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine="xlsxwriter")
+
+        workbook = writer.book
+        worksheet = workbook.add_worksheet("Prices")
+        writer.sheets["Prices"] = worksheet
+
+        # --- OSZLOPOK ---
+        price_cols = [c for c in df.columns if c.endswith("_price")]
+        url_cols = [c for c in df.columns if c.endswith("_url")]
+        export_cols = [c for c in df.columns if c not in price_cols + url_cols]
+
+        # EXTRA oszlopok (Excel számolja)
+        extra_cols = ["min_price", "recommended_price"]
+
+        all_cols = export_cols + price_cols + extra_cols
+
+        # --- HEADER ---
+        for col_idx, col in enumerate(all_cols):
+            worksheet.write(0, col_idx, col)
+
+        col_index_map = {col: idx for idx, col in enumerate(all_cols)}
+
+        # --- ADATOK ---
+        for row in range(len(df)):
+            excel_row = row + 1
+
+            # --- SIMA ADATOK ---
+            for col in export_cols:
+                val = df.iloc[row][col]
+                col_idx = col_index_map[col]
+
+                if pd.isna(val):
+                    worksheet.write_blank(excel_row, col_idx, None)
+                elif isinstance(val, (int, float)):
+                    worksheet.write_number(excel_row, col_idx, float(val))
+                else:
+                    worksheet.write(excel_row, col_idx, str(val))
+
+            # --- PRICE + LINK ---
+            for col in price_cols:
+                price = df.iloc[row][col]
+                url_col = col.replace("_price", "_url")
+                url = df.iloc[row].get(url_col)
+
+                col_idx = col_index_map[col]
+
+                if pd.isna(price):
+                    continue
+
+                if pd.notna(url):
+                    worksheet.write_formula(
+                        excel_row,
+                        col_idx,
+                        f'=HYPERLINK("{url}","{int(price)}")'
+                    )
+                else:
+                    worksheet.write_number(excel_row, col_idx, float(price))
+
+            # --- MIN PRICE (Excel formula) ---
+            price_cells = [
+                xl.xl_rowcol_to_cell(excel_row, col_index_map[c])
+                for c in price_cols
+            ]
+
+            min_formula = f"=MIN({','.join(price_cells)})"
+
+            worksheet.write_formula(
+                excel_row,
+                col_index_map["min_price"],
+                min_formula
+            )
+
+            # --- RECOMMENDED PRICE (egyszerűsített logika Excelben) ---
+            min_cell = xl.xl_rowcol_to_cell(excel_row, col_index_map["min_price"])
+            purchase_col = "m_pp"
+
+            if purchase_col in col_index_map:
+                purchase_cell = xl.xl_rowcol_to_cell(excel_row, col_index_map[purchase_col])
+
+                rec_formula = (
+                    f"=IF({min_cell}=\"\", \"\", "
+                    f"MAX({min_cell}*0.99, {purchase_cell}*1.1))"
+                )
+            else:
+                rec_formula = f"={min_cell}*0.99"
+
+            worksheet.write_formula(
+                excel_row,
+                col_index_map["recommended_price"],
+                rec_formula
+            )
+
+        # --- CONDITIONAL FORMATTING ---
+
+        # min price highlight (bold)
+        for col in price_cols:
+            col_idx = col_index_map[col]
+
+            worksheet.conditional_format(
+                1, col_idx,
+                len(df), col_idx,
+                {
+                    "type": "formula",
+                    "criteria": f"={xl.xl_rowcol_to_cell(1, col_idx)}="
+                                f"{xl.xl_rowcol_to_cell(1, col_index_map['min_price'])}",
+                    "format": workbook.add_format({"bold": True})
+                }
+            )
+
+        # piros: ha olcsóbb mint saját ár
+        if "shop0_p" in col_index_map:
+            my_col = col_index_map["shop0_p"]
+
+            for col in price_cols:
+                col_idx = col_index_map[col]
+
+                worksheet.conditional_format(
+                    1, col_idx,
+                    len(df), col_idx,
+                    {
+                        "type": "formula",
+                        "criteria": f"={xl.xl_rowcol_to_cell(1, col_idx)}"
+                                    f"<{xl.xl_rowcol_to_cell(1, my_col)}",
+                        "format": workbook.add_format({"font_color": "red"})
+                    }
+                )
+
+        # --- EXTRÁK ---
+        worksheet.freeze_panes(1, 0)
+        worksheet.autofilter(0, 0, len(df), len(all_cols) - 1)
+
+        writer.close()
+        output.seek(0)
+
+        return output
