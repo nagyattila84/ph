@@ -3,6 +3,9 @@ import random
 import numpy as np
 from io import BytesIO
 from datamanager import SupaBaseDataManager
+import xlsxwriter.utility as xl
+
+
 
 class PriceAnalyst:
 
@@ -370,9 +373,6 @@ class PriceAnalyst:
         return output
 
     def create_amazon_pricing_excel(self, df):
-
-        from io import BytesIO
-        import xlsxwriter.utility as xl
 
         output = BytesIO()
         writer = pd.ExcelWriter(output, engine="xlsxwriter")
