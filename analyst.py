@@ -142,7 +142,7 @@ class PriceAnalyst:
 
         return output
 
-     def price_to_9(self, price):
+    def price_to_9(self, price):
         if pd.isna(price):
             return price
         price = int(round(price))
