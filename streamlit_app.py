@@ -5,7 +5,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import io
 import numpy as np
-import random
 
 from datamanager import SupaBaseDataManager
 from scraper import Scraper
