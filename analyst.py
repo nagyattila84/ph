@@ -216,3 +216,4 @@ class PriceAnalyst:
         df = df.rename(columns=rename_map)
 
         return df
+        
