@@ -142,7 +142,7 @@ class PriceAnalyst:
 
         return output
 
-    def price_to_9(self, price):
+     def price_to_9(self, price):
         if pd.isna(price):
             return price
         price = int(round(price))
@@ -157,21 +157,16 @@ class PriceAnalyst:
         if pd.isna(min_price):
             return np.nan
 
-        # 1 induló ár = minimum ár
         price = min_price
 
-        # 2 ha mi vagyunk a legolcsóbbak → emeljük minimum árra
-        if my_price <= min_price:
+        if pd.notna(my_price) and my_price <= min_price:
             price = min_price
 
-        # 3 random ±1%
         rand = random.uniform(-0.01, 0.01)
         price = price * (1 + rand)
 
-        # 4 9-re végződjön
         price = self.price_to_9(price)
 
-        # 5 minimum profit védelem
         min_allowed = purchase_price * 1.1
 
         if price < min_allowed:
@@ -180,7 +175,6 @@ class PriceAnalyst:
         return price
 
     def analys_price_data(self, df):
-        #elemzés, számított értékek hozzáadása
 
         price_cols = [c for c in df.columns if c.endswith("_price") and not c.endswith("_sale_price")]
 
@@ -190,9 +184,13 @@ class PriceAnalyst:
         df["competitor_avg_price"] = df[price_cols].mean(axis=1)
         df["competitor_min_price"] = df[price_cols].min(axis=1)
 
-        df["m_price_vs_min_%"] = (df["shop0_p"] / df["competitor_min_price"] * 100).replace([np.inf, -np.inf], np.nan)
+        df["m_price_vs_min_%"] = (
+            df["shop0_p"] / df["competitor_min_price"] * 100
+        ).replace([np.inf, -np.inf], np.nan)
 
-        df["min_price_vs_purchase_%"] = (df["competitor_min_price"] / df["m_pp"] * 100).replace([np.inf, -np.inf], np.nan)
+        df["min_price_vs_purchase_%"] = (
+            df["competitor_min_price"] / df["m_pp"] * 100
+        ).replace([np.inf, -np.inf], np.nan)
 
         df["price_diff"] = df["shop0_p"] - df["competitor_min_price"]
 
