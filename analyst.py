@@ -154,20 +154,29 @@ class PriceAnalyst:
         my_price = row["m_p1"]
         purchase_price = row["m_pp"]
 
+        # --- VALIDÁLÁS ---
         if pd.isna(min_price):
             return np.nan
 
-        price = min_price
+        if pd.isna(purchase_price):
+            return np.nan
 
+        # --- ALAP ÁR ---
+        price = float(min_price)
+
+        # --- LOGIKA ---
         if pd.notna(my_price) and my_price <= min_price:
-            price = min_price
+            price = float(min_price)
 
+        # --- RANDOM ---
         rand = random.uniform(-0.01, 0.01)
         price = price * (1 + rand)
 
+        # --- KEREKÍTÉS ---
         price = self.price_to_9(price)
 
-        min_allowed = purchase_price * 1.1
+        # --- MIN PROFIT ---
+        min_allowed = float(purchase_price) * 1.1
 
         if price < min_allowed:
             price = self.price_to_9(min_allowed)
@@ -216,4 +225,3 @@ class PriceAnalyst:
         df = df.rename(columns=rename_map)
 
         return df
-        
