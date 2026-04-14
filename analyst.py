@@ -230,6 +230,22 @@ class PriceAnalyst:
 
         return df
 
+    def create_raw_prices_to_excel(self, df):
+        from io import BytesIO
+        import pandas as pd
+
+        output = BytesIO()
+
+        # teljesen alap export
+        df.to_excel(
+            output,
+            index=False,      # ne legyen index oszlop
+            sheet_name="Data" # opcionális
+        )
+
+        output.seek(0)
+        return output
+    
     def create_price_data_excel_formulas(self, df):
 
         from io import BytesIO
