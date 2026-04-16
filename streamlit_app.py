@@ -138,12 +138,13 @@ def page_price_analys():
     
     with tab2:
         st.write("2.fül")
-        #page_visual()
+        page_graf()
 
     with tab3:
         st.write("3.fül")
-        #page_visual2()
+        page_visual2()
 
+# ÁRAK ELEMZÉSE -> TÁBLÁZAT
 def page_price_data():  
 
     st.title("Ár adatok") 
@@ -185,7 +186,8 @@ def page_price_data():
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-def page_visual():
+# ÁRAK ELEMZÉSE -> GRAFIKON
+def page_graf():
     dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
     st.title("Ár összehasonlító")   
  
@@ -210,6 +212,7 @@ def page_visual():
     
     st.plotly_chart(fig, use_container_width=True)
 
+# ÁRAK ELEMZÉSE -> 3.fül
 def page_visual2():
     
     df = dm.read_data(
