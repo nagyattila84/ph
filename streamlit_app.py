@@ -127,124 +127,6 @@ def page_dashboard():
 
     st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort="-product_count")
 
-# ÁRAK ELEMZÉSE
-def page_price_analys():
-    st.title("💵 ÁRAK ELEMZÉSE")
-
-    tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "Árazás"])
-
-    with tab1:
-        page_price_data()
-    
-    with tab2:
-        st.write("2.fül")
-        #page_graf()
-
-    with tab3:
-        st.write("3.fül")
-        #page_visual2()
-
-# ÁRAK ELEMZÉSE -> TÁBLÁZAT
-def page_price_data():  
-
-    st.title("Ár adatok") 
-
-    webshops = dm.client.table("webshops").select("id, name").execute().data
-    webshops_df = pd.DataFrame(webshops)
-
-
-    df = dm.client.table("price_data_view").select("*").execute().data
-    df = pd.DataFrame(df)
-
-    df = pa.analys_price_data(df)
-    
-    #excel_file = pa.create_price_data_excel_formulas(df)
-    #excel_file = pa.create_amazon_pricing_excel(df)
-    excel_file = pa.create_raw_prices_to_excel(df)
-
-    shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
-    
-    rename_map = {}
-
-    for shop_id, shop_name in shop_map.items():
-
-        rename_map[f"shop{shop_id}_price"] = f"{shop_name} ár"
-        rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
-        rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
-
-    df = pa.rename_price_df(df, webshops_df)
-
-    if "price_df" not in st.session_state:
-        st.session_state.price_df = df.copy()
-    
-    st.dataframe(df)
-
-    st.download_button(
-        label="📥 Ár adatok letöltése",
-        data=excel_file,
-        file_name="price_monitor.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
-
-# ÁRAK ELEMZÉSE -> GRAFIKON
-def page_graf():
-    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
-    st.title("Ár összehasonlító")   
- 
-    own_df, raw_df = dm.get_products_by_keyword("hunter")
-    fig = px.strip(
-        own_df,
-        x="price",
-        y="sku",
-        color="webshop_id",
-        orientation="h",
-        hover_data=["name", "price4"]
-    )
-    
-    fig.update_traces(jitter=0.3, marker=dict(size=10))
-    
-    fig.update_layout(
-        height=600,
-        showlegend=True,
-        xaxis_title="Ár",
-        yaxis_title=""
-    )
-    
-    st.plotly_chart(fig, use_container_width=True)
-
-# ÁRAK ELEMZÉSE -> ÁRAZÁS
-def page_visual2():
-    
-    df = dm.read_data(
-        table = "raw_products"
-    )
-
-    fig = go.Figure()
-    st.title("Ár összehasonlító")   
- 
-    own_df, raw_df = dm.get_products_by_keyword("hunter")
-    
-    for product in raw_df["id"].unique():
-        sub = raw_df[raw_df["id"] == product]
-    
-        fig.add_trace(go.Scatter(
-            x=[sub.price.min(), sub.price.max()],
-            y=[product, product],
-            mode="lines",
-            line=dict(width=2),
-            showlegend=False
-        ))
-    
-        fig.add_trace(go.Scatter(
-            x=sub.price,
-            y=[product]*len(sub),
-            mode="markers",
-            text=sub.webshop_id,
-            hovertemplate="%{text}<br>%{x} Ft"
-        ))
-    
-    st.plotly_chart(fig, use_container_width=True)
-
 # VEZÉRLŐPULT
 def page_controlpanel():
     
@@ -461,6 +343,124 @@ def page_controlpanel():
     if st.session_state.delete_raw_result:
         st.success(st.session_state.delete_raw_result)
 
+# ÁRAK ELEMZÉSE
+def page_price_analys():
+    st.title("💵 ÁRAK ELEMZÉSE")
+
+    tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "Árazás"])
+
+    with tab1:
+        page_price_data()
+    
+    with tab2:
+        st.write("2.fül")
+        #page_graf()
+
+    with tab3:
+        st.write("3.fül")
+        #page_visual2()
+
+# ÁRAK ELEMZÉSE -> TÁBLÁZAT
+def page_price_data():  
+
+    st.title("Ár adatok") 
+
+    webshops = dm.client.table("webshops").select("id, name").execute().data
+    webshops_df = pd.DataFrame(webshops)
+
+
+    df = dm.client.table("price_data_view").select("*").execute().data
+    df = pd.DataFrame(df)
+
+    df = pa.analys_price_data(df)
+    
+    #excel_file = pa.create_price_data_excel_formulas(df)
+    #excel_file = pa.create_amazon_pricing_excel(df)
+    excel_file = pa.create_raw_prices_to_excel(df)
+
+    shop_map = dict(zip(webshops_df["id"], webshops_df["name"]))
+    
+    rename_map = {}
+
+    for shop_id, shop_name in shop_map.items():
+
+        rename_map[f"shop{shop_id}_price"] = f"{shop_name} ár"
+        rename_map[f"shop{shop_id}_sale_price"] = f"{shop_name} akciós ár"
+        rename_map[f"shop{shop_id}_url"] = f"{shop_name} link"
+
+    df = pa.rename_price_df(df, webshops_df)
+
+    if "price_df" not in st.session_state:
+        st.session_state.price_df = df.copy()
+    
+    st.dataframe(df)
+
+    st.download_button(
+        label="📥 Ár adatok letöltése",
+        data=excel_file,
+        file_name="price_monitor.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+# ÁRAK ELEMZÉSE -> GRAFIKON
+def page_graf():
+    dm = SupaBaseDataManager(st.secrets.supabase.url, st.secrets.supabase.key)
+    st.title("Ár összehasonlító")   
+ 
+    own_df, raw_df = dm.get_products_by_keyword("hunter")
+    fig = px.strip(
+        own_df,
+        x="price",
+        y="sku",
+        color="webshop_id",
+        orientation="h",
+        hover_data=["name", "price4"]
+    )
+    
+    fig.update_traces(jitter=0.3, marker=dict(size=10))
+    
+    fig.update_layout(
+        height=600,
+        showlegend=True,
+        xaxis_title="Ár",
+        yaxis_title=""
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+
+# ÁRAK ELEMZÉSE -> ÁRAZÁS
+def page_visual2():
+    
+    df = dm.read_data(
+        table = "raw_products"
+    )
+
+    fig = go.Figure()
+    st.title("Ár összehasonlító")   
+ 
+    own_df, raw_df = dm.get_products_by_keyword("hunter")
+    
+    for product in raw_df["id"].unique():
+        sub = raw_df[raw_df["id"] == product]
+    
+        fig.add_trace(go.Scatter(
+            x=[sub.price.min(), sub.price.max()],
+            y=[product, product],
+            mode="lines",
+            line=dict(width=2),
+            showlegend=False
+        ))
+    
+        fig.add_trace(go.Scatter(
+            x=sub.price,
+            y=[product]*len(sub),
+            mode="markers",
+            text=sub.webshop_id,
+            hovertemplate="%{text}<br>%{x} Ft"
+        ))
+    
+    st.plotly_chart(fig, use_container_width=True)
+
 # ADATOK
 def page_data():
 
@@ -667,7 +667,7 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Vezérlőpult", "Adatok", "Árak elemzése", "Beállítások"]
+        ["Dashboard", "Vezérlőpult", "Árak elemzése", "Adatok", "Beállítások"]
     )
 
     if page == "Dashboard":
