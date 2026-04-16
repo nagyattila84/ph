@@ -126,10 +126,6 @@ def page_dashboard():
 
     st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort="-product_count")
 
-def page_search():
-    st.title("Kereső")    
-
-
 def page_price_setter():
     st.title("💵 ÁRAK ELEMZÉSE")
 
@@ -145,8 +141,6 @@ def page_price_setter():
     with tab3:
         st.write("3.fül")
         #page_visual2()
-
-
 
 def page_price_data():  
 
@@ -461,7 +455,7 @@ def page_controlpanel():
     if st.session_state.delete_raw_result:
         st.success(st.session_state.delete_raw_result)
 
-def page_data_explorer():
+def page_data():
 
     st.title("📊 Adat Explorer")
 
@@ -665,7 +659,7 @@ else:
 
     page = st.sidebar.radio(
         "Menü",
-        ["Dashboard", "Vezérlőpult", "Adatok", "Keresés", "Árak elemzése", "Beállítások"]
+        ["Dashboard", "Vezérlőpult", "Adatok", "Árak elemzése", "Beállítások"]
     )
 
     if page == "Dashboard":
@@ -675,7 +669,7 @@ else:
         page_controlpanel()
 
     elif page == "Adatok":
-        page_data_explorer()
+        page_data()
 
     elif page == "Keresés":
         page_search()
@@ -685,5 +679,3 @@ else:
 
     elif page == "Beállítások":
         page_settings()
-
-
