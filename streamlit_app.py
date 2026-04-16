@@ -106,6 +106,7 @@ def ph_matched_result_view(st, buttun_key_prefix, matched_df):
             st.error(result["error"])
 
 # ================= PAGES =================
+# DASHBOARD
 def page_dashboard():
     
     st.header("📊 Dashboard")
@@ -126,7 +127,8 @@ def page_dashboard():
 
     st.bar_chart(dm.get_view("webshop_product_stats"), x="name", y="product_count", x_label="Webáruház", y_label="Termék", sort="-product_count")
 
-def page_price_setter():
+# ÁRAK ELEMZÉSE
+def page_price_analys():
     st.title("💵 ÁRAK ELEMZÉSE")
 
     tab1, tab2, tab3 = st.tabs(["Táblázat", "Grafikon", "blabla"])
@@ -240,6 +242,7 @@ def page_visual2():
     
     st.plotly_chart(fig, use_container_width=True)
 
+# VEZÉRLŐPULT
 def page_controlpanel():
     
     st.title("📊 Vezérlőpult")
@@ -455,6 +458,7 @@ def page_controlpanel():
     if st.session_state.delete_raw_result:
         st.success(st.session_state.delete_raw_result)
 
+# ADATOK
 def page_data():
 
     st.title("📊 Adat Explorer")
@@ -638,6 +642,7 @@ def page_data():
 
         st.dataframe(clusters_df, use_container_width=True)
 
+# BEÁLLÍTÁSOK
 def page_settings():
     st.header("⚙️ Beállítások")
     st.write("User:", st.session_state.username)
@@ -675,7 +680,7 @@ else:
         page_search()
 
     elif page == "Árak elemzése":
-        page_price_setter()
+        page_price_analys()
 
     elif page == "Beállítások":
         page_settings()
