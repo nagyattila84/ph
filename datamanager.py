@@ -24,7 +24,7 @@ class SupaBaseDataManager:
     #    ha VAN -> felülírja, de nem duplikálja 
     def save_raw_products_prices(self, df):
 
-        df = df.replace({np.nan: None})
+        df = df.astype(object).where(pd.notnull(df), None)
 
         try:
             data = df.to_dict(orient="records")
